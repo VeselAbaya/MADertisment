@@ -1,0 +1,283 @@
+@import "../auth-form/auth-form.css";
+@import "../common/modal/modal.css";
+@import "../common/loader/loader.css";
+
+body {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+
+    overflow-x: hidden;
+
+    display: flex;
+
+    font-family: sans-serif;
+}
+
+.ad-selector {
+    display: none;
+
+    margin: auto;
+    width: 500px;
+    min-width: 500px;
+}
+
+.ad-selector__title {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.ad-selector__description {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+
+    font-size: 18px;
+}
+
+.ad-selector__form {
+    width: 100%;
+}
+
+.ad-selector__platforms {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+
+    padding: 0;
+
+    list-style: none;
+}
+
+.ad-selector__platform {
+    width: 95%;
+
+    position: relative;
+
+    border-bottom: 1px solid #aaa;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.ad-selector__platform:first-child {
+    padding-top: 0;
+}
+
+.ad-selector__platform:last-child {
+    border-bottom: none;
+}
+
+.ad-selector__checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.ad-selector__label {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/*.ad-selector__label:hover .ad-selector__platform-descr {*/
+    /*-webkit-line-clamp: unset;*/
+/*}*/
+
+.checkmark {
+    position: relative;
+}
+
+.checkmark {
+    width: 20px;
+    flex-shrink: 0;
+    height: 20px;
+    border: 3px solid #6E0510;
+
+    margin-right: 10px;
+}
+
+.checkmark:after {
+    display: none;
+
+    content: "";
+    width: 10px;
+    height: 5px;
+
+    position: absolute;
+    top: 5px;
+    left: 4px;
+
+    border: solid #6E0510;
+    border-right: none;
+    border-top: none;
+    transform: rotate(-45deg);
+}
+
+.ad-selector__checkbox:checked ~ .checkmark:after {
+    display: block;
+}
+
+.ad-selector__checkbox:focus ~ .checkmark,
+.ad-selector__checkbox:focus ~ .checkmark:after {
+    border-color: #b5051a;
+}
+
+.ad-selector__checkbox:disabled ~.checkmark,
+.ad-selector__label:hover .ad-selector__checkbox:disabled ~.checkmark {
+    background-color: #aaaaaa;
+}
+
+.ad-selector__label:hover .checkmark {
+    background-color: rgba(0, 0, 0, .2);
+}
+
+.ad-selector__platform-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    padding: 0 10px;
+    height: 100%;
+}
+
+.ad-selector__platform-icon {
+    border-radius: 50%;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+
+    object-fit: contain;
+}
+
+.wrapper {
+    flex-basis: 80%;
+}
+
+.ad-selector__platform-name,
+.ad-selector__platform-descr {
+    margin: 0
+}
+
+.ad-selector__platform-descr {
+    /*http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation!*/
+    /*overflow: hidden;*/
+    /*display: -webkit-box;*/
+    /*-webkit-line-clamp: 2;*/
+    /*-webkit-box-orient: vertical;*/
+
+    font-size: 14px;
+}
+
+.ad-selector__platform-button {
+    outline-color: transparent;
+    border: none;
+
+    background-color: transparent;
+    background-size: cover;
+
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+/*Tooltip*/
+.ad-selector__platform-button--tooltip:before {
+    content: "";
+    position: absolute;
+    left: 102%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 0;
+    height: 0;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 20px solid #f1f1f1;
+
+    opacity: 0;
+    transition: all .2s;
+}
+
+.ad-selector__platform-button--tooltip:after {
+    position: absolute;
+    left: 106%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 75px;
+    height: 32px;
+    border-radius: 5px;
+
+    text-align: center;
+    line-height: 32px;
+
+    background-color: #f1f1f1;
+
+    opacity: 0;
+    transition: all .3s;
+}
+
+.ad-selector__platform-button--tooltip:hover:after {
+    left: 104%;
+}
+
+.ad-selector__platform-button--tooltip:hover:before {
+    left: 100%;
+}
+
+.ad-selector__platform-button--tooltip:hover:after,
+.ad-selector__platform-button--tooltip:hover:before {
+    opacity: 1;
+}
+/*Tooltip*/
+
+.ad-selector__platform-button--settings {
+    background-image: url('img/settings.png');
+    background-position: center;
+    cursor: pointer;
+}
+
+.ad-selector__platform-button--settings:focus {
+    outline-color: #b5051a;
+}
+
+.ad-selector__platform-button--active {
+    background-image: url('img/active.png');
+    background-position: center;
+}
+
+.ad-selector__platform-button--not-active {
+    background-image: url('img/not_active.png');
+    background-position: center;
+}
+
+.ad-selector__platform-button--changed {
+    background-image: url('img/changed.png');
+    background-position: center;
+}
+
+.ad-selector__platform-button ~ .checkmark {
+    background-color: transparent;
+}
+
+.ad-selector__platform-button--active:after {
+    content: "Active";
+}
+
+.ad-selector__platform-button--not-active:after {
+    content: "Not active"
+}
+
+.ad-selector__platform-button--changed:after {
+    content: "Changed";
+}
+
+.alert-message {
+    font-size: 18px;
+}

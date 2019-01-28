@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>MAD authorization form</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="auth-form.css">
+</head>
+<body>
+    <div class="auth">
+        <h1 class="auth__title">MADvertisement</h1>
+
+        <form class="auth__form" action="#">
+            <div class="auth__form-group">
+                <label for="login" class="auth__form-label">Login</label>
+                <input id="login" name="login" class="auth__form-field" type="text" autofocus>
+            </div>
+
+            <div class="auth__form-group">
+                <label for="password" class="auth__form-label">Password</label>
+                <input id="password" name="password" class="auth__form-field" type="password">
+            </div>
+
+            <button class="button" id="auth__form-submit" type="submit" disabled>Login</button>
+        </form>
+
+        <!-- loader -->
+        <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        <!-- loader -->
+    </div>
+
+    <!-- modals -->
+    <div class="modal-overlay"></div>
+
+    <div class="modal network-alert">
+        <button class="modal__close"></button>
+        <div class="modal__body">
+            <p class="alert-message">Ошибка: проверьте соединение с интернетом</p>
+            <button class="button">Повторить</button>
+        </div>
+    </div>
+
+    <div class="modal forbidden-alert">
+        <button class="modal__close"></button>
+        <div class="modal__title"></div>
+        <div class="modal__body">
+            <p class="alert-message">Неверные данные</p>
+        </div>
+    </div>
+    <!-- modals -->
+
+    <script src="auth-form.js"></script>
+</body>
+</html>

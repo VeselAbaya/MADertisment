@@ -1,0 +1,89 @@
+import {ipcRenderer} from 'electron'
+import axios from 'axios'
+import {Modal, NetworkAlert} from "../common/modal/modal"
+import {loaderUp, loaderDown} from "../common/loader/loader"
+import {authFormInit, submitButtonStatus} from "../common/authFormInit-script/authFormInit"
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const submitButton = document.querySelector('#auth__form-submit')
+    const fields = {
+        login: document.querySelector('#login'),
+        password: document.querySelector('#password')
+    }
+
+    authFormInit(fields, submitButton)
+
+    const auth = document.querySelector('.auth')
+    const authForm = auth.querySelector('.auth__form')
+
+    // modals
+    const networkAlert = new NetworkAlert({
+        overlay: document.querySelector('.modal-overlay'),
+        container: document.querySelector('.network-alert'),
+        onOpen: () => {
+            auth.style.filter = 'blur(8px)'
+            networkAlert.container.querySelector('.button').focus()
+            submitButton.disabled = true
+        },
+        onClose: () => {
+            Object.values(fields).forEach(field => { field.disabled = false })
+            auth.style.filter = ''
+            submitButton.disabled = submitButtonStatus(fields)
+            fields.login.focus()
+        },
+        retryButton: document.querySelector('.network-alert .button'),
+        onRetry: () => { submitButton.click() }
+    })
+
+    const forbiddenAlert = new Modal({
+        overlay: document.querySelector('.modal-overlay'),
+        container: document.querySelector('.forbidden-alert'),
+        onOpen: () => {
+            auth.style.filter = 'blur(8px)'
+            submitButton.disabled = true
+        },
+        onClose: () => {
+            Object.values(fields).forEach(field => { field.disabled = false })
+            auth.style.filter = ''
+            submitButton.disabled = submitButtonStatus(fields)
+            fields.login.focus()
+        }
+    })
+    // modals
+
+    // submit
+    authForm.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        authForm.querySelector('.button').disabled = true
+        loaderUp()
+        Object.values(fields).forEach(field => { field.disabled = true })
+
+        try {
+            const res = await axios.post('http://madadvertisement.ru/auth', {
+                login: fields.login.value,
+                password: fields.password.value
+            })
+
+            localStorage.setItem('userData', JSON.stringify({
+                user: res.data.user,
+                login: fields.login.value,
+                password: fields.password.value
+            }))
+
+            // TODO maybe no need to store token in main process???
+            ipcRenderer.send('auth:success', res.data.user.token)
+        } catch (error) {
+            console.log(error)
+
+            if (error.message === 'Network Error') {
+                loaderDown()
+                networkAlert.open()
+            }
+            else if (error.response.status === 403) {
+                loaderDown()
+                forbiddenAlert.open()
+            }
+        }
+    })
+})

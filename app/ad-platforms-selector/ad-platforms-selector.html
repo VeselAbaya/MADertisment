@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertisment platforms</title>
+
+    <link rel="stylesheet" href="ad-platforms-selector.css">
+</head>
+<body>
+    <div class="ad-selector">
+        <h1 class="ad-selector__title">Select Ad Platforms</h1>
+        <p class="ad-selector__description">Select platforms in which you'd want to publish your ad</p>
+
+        <form class="ad-selector__form" action="#">
+            <ul class="ad-selector__platforms"></ul>
+        </form>
+    </div>
+
+    <!-- loader -->
+    <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <!-- loader -->
+
+    <!-- modals -->
+    <div class="modal-overlay"></div>
+
+    <div class="modal">
+        <button class="modal__close"></button>
+        <h2 class="modal__title">Account data</h2>
+        <div class="modal__body">
+            <form class="auth__form">
+                <div class="auth__form-group">
+                    <label for="login" class="auth__form-label">Login</label>
+                    <input id="login" name="login" class="auth__form-field" type="text" autofocus>
+                </div>
+
+                <div class="auth__form-group">
+                    <label for="password" class="auth__form-label">Password</label>
+                    <input id="password" name="password" class="auth__form-field">
+                </div>
+
+                <button class="button" type="submit" id="auth__form-submit" disabled>Сохранить</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal network-alert">
+        <button class="modal__close"></button>
+        <div class="modal__body">
+            <p class="alert-message">Ошибка: проверьте соединение с интернетом</p>
+            <button class="button">Повторить</button>
+        </div>
+    </div>
+
+    <div class="modal forbidden-alert">
+        <button class="modal__close"></button>
+        <div class="modal__title"></div>
+        <div class="modal__body">
+            <p class="alert-message">Ошибка авторизации: авторизуйтесь</p>
+        </div>
+    </div>
+    <!-- modals -->
+
+    <script src="ad-platforms-selector.js"></script>
+</body>
+</html>

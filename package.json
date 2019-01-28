@@ -1,0 +1,17 @@
+{
+  "name": "mad",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./app/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "electron-prebuilt-compile": "^4.0.0"
+  }
+}
