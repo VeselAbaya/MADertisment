@@ -3,27 +3,27 @@ const interfaceInit = (options) => {
         if (!data.active)
             return {
                 img: 'img/not_active.png',
-                class: 'ad-selector__platform-button--not-active ' +
-                       'ad-selector__platform-button--tooltip'
+                class: 'ad-selector__platform-button--not-active',
+                tooltip: 'not-active'
             }
 
         if (options.canChangeData)
             return {
                 img: 'img/settings.png',
-                class: 'ad-selector__platform-button--settings'
+                class: 'ad-selector__platform-button--settings',
             }
 
         if (data.changed)
             return {
                 img: 'img/changed.png',
-                class: 'ad-selector__platform-button--changed ' +
-                       'ad-selector__platform-button--tooltip'
+                class: 'ad-selector__platform-button--changed',
+                tooltip: 'changed'
             }
         else
             return {
                 img: 'img/active.png',
-                class: 'ad-selector__platform-button--active ' +
-                       'ad-selector__platform-button--tooltip'
+                class: 'ad-selector__platform-button--active',
+                tooltip: 'active'
             }
     }
 
@@ -47,11 +47,13 @@ const interfaceInit = (options) => {
                     </div>
         
                     <button type="button" data-id="${data.id}"
-                            style="${options.showStatuses || options.canChangeData && data.active ? '' : 'display: none'}"
-                            class="ad-selector__platform-button ${buttonData.class}"
+                            style="${options.showStatuses || options.canChangeData && data.active ? 
+                                        '' : 'display: none'}"
+                            class="ad-selector__platform-button ad-selector__platform-button--tooltip
+                                   ad-selector__platform-button--tooltip-${buttonData.tooltip}"
                             ${buttonData.class.includes('settings') ? '' : 'tabindex="-1"'}>
-                        <img src="${buttonData.img}" width="56" height="56"
-                             class="platform-button__icon">
+                            <span class="ad-selector__platform-button ${buttonData.class}"
+                                  data-id="${data.id}"></span>
                     </button>
                 </label>
             </li>
@@ -109,7 +111,14 @@ export class AdPlatformSelector {
     }
 
     blinkSettings(id) {
-        const button =
-          this.container.querySelector(`.ad-selector__platform-button--settings[data-id="${id}"]`)
+        console.log(id)
+        console.log(this.container.querySelector(`button[data-id="${id}"]`))
+
+        const icon = this.container.querySelector(`button[data-id="${id}"] span`)
+        icon.style.backgroundColor = '#b5051a'
+
+        setTimeout(() => {
+            icon.style.backgroundColor = '#000000'
+        }, 200)
     }
 }

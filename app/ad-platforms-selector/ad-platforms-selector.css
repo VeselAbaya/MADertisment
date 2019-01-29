@@ -174,17 +174,63 @@ body {
     outline-color: transparent;
     border: none;
 
-    background-color: transparent;
+    background-color: black;
     background-size: cover;
 
+    display: block;
     width: 56px;
     height: 56px;
     padding: 0;
     flex-shrink: 0;
+
+    transition: background-color .2s;
+}
+
+.ad-selector__platform-button--settings {
+    -webkit-mask-image: url('img/settings.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    cursor: pointer;
+}
+
+.ad-selector__platform-button--settings:focus {
+    outline-color: #b5051a;
+}
+
+.ad-selector__platform-button--active {
+    -webkit-mask-image: url('img/active.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button--not-active {
+    -webkit-mask-image: url('img/not_active.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button--changed {
+    -webkit-mask-image: url('img/changed.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button ~ .checkmark {
+    background-color: transparent;
+}
+
+.alert-message {
+    font-size: 18px;
 }
 
 /*Tooltip*/
-.ad-selector__platform-button--tooltip:before {
+.ad-selector__platform-button--tooltip {
+    background-color: transparent;
+}
+
+.ad-selector__platform-button--tooltip-active:before,
+.ad-selector__platform-button--tooltip-not-active:before,
+.ad-selector__platform-button--tooltip-changed:before {
     content: "";
     position: absolute;
     left: 102%;
@@ -235,49 +281,16 @@ body {
 .ad-selector__platform-button--tooltip:hover:before {
     opacity: 1;
 }
-/*Tooltip*/
 
-.ad-selector__platform-button--settings {
-    background-image: url('img/settings.png');
-    background-position: center;
-    cursor: pointer;
-}
-
-.ad-selector__platform-button--settings:focus {
-    outline-color: #b5051a;
-}
-
-.ad-selector__platform-button--active {
-    background-image: url('img/active.png');
-    background-position: center;
-}
-
-.ad-selector__platform-button--not-active {
-    background-image: url('img/not_active.png');
-    background-position: center;
-}
-
-.ad-selector__platform-button--changed {
-    background-image: url('img/changed.png');
-    background-position: center;
-}
-
-.ad-selector__platform-button ~ .checkmark {
-    background-color: transparent;
-}
-
-.ad-selector__platform-button--active:after {
+.ad-selector__platform-button--tooltip-active:after {
     content: "Active";
 }
 
-.ad-selector__platform-button--not-active:after {
+.ad-selector__platform-button--tooltip-not-active:after {
     content: "Not active"
 }
 
-.ad-selector__platform-button--changed:after {
+.ad-selector__platform-button--tooltip-changed:after {
     content: "Changed";
 }
-
-.alert-message {
-    font-size: 18px;
-}
+/*Tooltip*/
