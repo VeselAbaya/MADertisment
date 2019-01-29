@@ -65,14 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 password: fields.password.value
             })
 
-            localStorage.setItem('userData', JSON.stringify({
-                user: res.data.user,
-                login: fields.login.value,
-                password: fields.password.value
-            }))
-
-            // TODO maybe no need to store token in main process???
-            ipcRenderer.send('auth:success', res.data.user.token)
+            ipcRenderer.send('auth:success', res.data.user)
         } catch (error) {
             if (error.message === 'Network Error') {
                 loaderDown()
