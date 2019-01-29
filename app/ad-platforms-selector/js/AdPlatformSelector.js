@@ -78,6 +78,13 @@ export class AdPlatformSelector {
         interfaceInit(options)
     }
 
+    get selectedPlatformsIds() {
+        const checkboxes = this.container.querySelectorAll('.ad-selector__form input[type="checkbox"]')
+        return Array.from(checkboxes)
+          .filter(el => el.checked === true)
+          .map(el => parseInt(el.id))
+    }
+
     modalOpen(id) {
         if (!this.modal.opened) {
             this.modal.open()
