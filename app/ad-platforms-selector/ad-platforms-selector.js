@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modalCloseButton = document.querySelector('.modal__close')
         document.querySelectorAll('.ad-selector__platform-button--settings').forEach(button => {
             button.addEventListener('click', () => {
+                console.log(selector.selectedPlatformsIds)
                 selector.blinkSettings(parseInt(button.dataset['id']))
 
                 modalCloseButton.dataset['id'] = button.dataset['id']
@@ -170,11 +171,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         else if (error.response.status === 403) {
             loaderDown()
+            // in case if token isn't valid
             const forbiddenAlert = new Modal({
                 container: document.querySelector('.forbidden-alert'),
                 overlay: document.querySelector('.modal-overlay'),
                 onClose: () => { ipcRenderer.send('adPlatformSelector:error') }
             })
+            forbiddenAlert.open()
         }
     }
 })
