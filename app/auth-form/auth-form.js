@@ -74,8 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // TODO maybe no need to store token in main process???
             ipcRenderer.send('auth:success', res.data.user.token)
         } catch (error) {
-            console.log(error)
-
             if (error.message === 'Network Error') {
                 loaderDown()
                 networkAlert.open()

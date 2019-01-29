@@ -1,3 +1,5 @@
+import {focusLabel, blurLabel} from "../../common/authFormInit-script/authFormInit"
+
 const interfaceInit = (options) => {
     const button = (data) => {
         if (!data.active)
@@ -80,20 +82,22 @@ export class AdPlatformSelector {
         if (!this.modal.opened) {
             this.modal.open()
 
-            const loginField = this.modal.container.querySelector('#login')
-            const passwordField = this.modal.container.querySelector('#password')
+            const loginField = document.querySelector('#login')
+            const passwordField = document.querySelector('#password')
 
             const authData = this.platformsAuthData.find(el => el.id === id)
             loginField.value = authData.login
             passwordField.value = authData.password
 
-            if (loginField.value && passwordField.value)
+            if (loginField.value && passwordField.value) {
                 document.querySelector('#auth__form-submit').disabled = false
+                document.querySelectorAll('.auth__form-label').forEach(label => {
+                    // TODO fix that SHIT!!!
+                    focusLabel(label)
+                })
+            }
             else
                 document.querySelector('#auth__form-submit').disabled = true
-
-            passwordField.focus()
-            loginField.focus()
         }
     }
 
@@ -111,9 +115,6 @@ export class AdPlatformSelector {
     }
 
     blinkSettings(id) {
-        console.log(id)
-        console.log(this.container.querySelector(`button[data-id="${id}"]`))
-
         const icon = this.container.querySelector(`button[data-id="${id}"] span`)
         icon.style.backgroundColor = '#b5051a'
 

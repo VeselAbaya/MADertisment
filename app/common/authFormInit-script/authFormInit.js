@@ -1,11 +1,11 @@
-const focusLabel = (label) => {
+export const focusLabel = (label) => {
     label.style.transition = 'all .1s'
     label.style.color = '#b5051a'
     label.style.fontSize = '16px'
     label.style.top = '-8px'
 }
 
-const blurLabel = (label) => {
+export const blurLabel = (label) => {
     label.style.transition = 'all .1s'
     label.style.fontSize = '24px'
     label.style.top = '7px'
@@ -17,14 +17,15 @@ export const submitButtonStatus = (fields) => { // value of submitButton.disable
 
 export const authFormInit = (fields, submitButton) => {
     // let userData = localStorage.getItem('userData')
-
     // focus and blur
     fields.login.addEventListener('focus', () => {
+        console.log('focus login')
         const label = document.querySelector('label[for="login"]')
         focusLabel(label)
     })
 
     fields.login.addEventListener('blur', (event) => {
+        console.log('blur login')
         const label = document.querySelector('label[for="login"]')
         label.style.color = '#aaaaaa'
         if (event.target.value === '')

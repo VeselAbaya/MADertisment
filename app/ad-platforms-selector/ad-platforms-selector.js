@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 onClose: () => { selector.container.style.filter = '' }
             }),
             canChangeData: true,
-            showCheckboxes: false,
+            showCheckboxes: true,
             showStatuses: true,
             platformsAuthData : [
                 {
@@ -137,7 +137,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const modalCloseButton = document.querySelector('.modal__close')
         document.querySelectorAll('.ad-selector__platform-button--settings').forEach(button => {
             button.addEventListener('click', () => {
-                console.log('----', button.dataset['id'])
                 selector.blinkSettings(parseInt(button.dataset['id']))
 
                 modalCloseButton.dataset['id'] = button.dataset['id']
