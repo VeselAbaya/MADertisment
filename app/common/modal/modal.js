@@ -2,12 +2,12 @@ export class Modal {
     constructor(options) {
         this.container = options.container                                      // DOMElement
         this.overlay = options.overlay                                          // DOMElement
-        this.onOpen = options.onOpen || (() =>{})                               // function
-        this.onClose = options.onClose || (() =>{})                             // function
+        this.onOpen = options.onOpen || (() => {})                               // function
+        this.onClose = options.onClose || (() => {})                             // function
         this.onCloseButtonClick = options.onCloseButtonClick || (() => {})  // function
         this.opened = false
 
-        this.container.style.display = 'block' // to avoid blink due to page rendering
+        this.container.style.display = 'block'
 
         this.container.querySelector('.modal__close').addEventListener('click', () => {
             this.close()
@@ -27,6 +27,7 @@ export class Modal {
 
             document.body.style.overflowY = 'hidden'
 
+            this.container.style.visibility = 'visible'
             this.container.style.top = '4vh'
             this.container.style.opacity = 1
 
@@ -42,6 +43,7 @@ export class Modal {
 
             document.body.style.overflowY = 'auto'
 
+            this.container.style.visibility = 'hidden'
             this.container.style.top = '0vh'
             this.container.style.opacity = 0
 

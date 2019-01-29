@@ -1,4 +1,5 @@
 .modal {
+    visibility: hidden;
     display: none;
 
     width: 350px;
