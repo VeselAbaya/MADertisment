@@ -32,9 +32,15 @@ app.on('ready', () => {
         if (fs.existsSync('./app/data/auth-data.json'))
             authData = JSON.parse(fs.readFileSync('./app/data/auth-data.json').toString() || '""')
 
+        let standardPlatformsIds
+        if (fs.existsSync('./app/data/standard-platforms-ids.json'))
+            standardPlatformsIds =
+              JSON.parse(fs.readFileSync('./app/data/standard-platforms-ids.json').toString() || '""')
+
         mainWindow.webContents.send('response:data', {
             user: userData || {},
-            auth: authData || []
+            auth: authData || [],
+            standardPlatformsIds: standardPlatformsIds || []
         })
     })
 
@@ -45,5 +51,16 @@ app.on('ready', () => {
         fs.writeFile('./app/data/auth-data.json', JSON.stringify(authDataArray, null, '\t'), (err) => {
             // TODO maybe some handle???
         })
+    })
+
+    ipcMain.on('standardPlatformsIds:save', (event, standardPlatformsIds) => {
+        fs.writeFile('./app/data/standard-platforms-ids.json',
+                     JSON.stringify(standardPlatformsIds), (err) => {
+            // TODO maybe some handle???
+        })
+    })
+
+    ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {
+        // TODO go to form
     })
 })

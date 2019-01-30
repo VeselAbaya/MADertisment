@@ -1,3 +1,4 @@
+import {ipcRenderer} from 'electron'
 import {focusLabel, blurLabel} from "../../common/authFormInit-script/authFormInit"
 
 const genHTML = (options) => {
@@ -34,9 +35,10 @@ const genHTML = (options) => {
         const buttonData = button(data)
         markup += `
             <li class="ad-selector__platform">
-                <label class="ad-selector__label">
-                    <input class="ad-selector__checkbox" id="${data.id}" 
-                           ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox">
+                <label class="ad-selector__label custom-checkbox-label">
+                    <input class="custom-checkbox ad-selector__checkbox" id="${data.id}" 
+                           ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
+                           ${options.standardPlatformsIds.includes(data.id) ? 'checked': ''}>
                     <span class="checkmark" 
                           style="${options.showCheckboxes ? "" : "display: none"}"></span>
                     <div class="ad-selector__platform-info">
@@ -67,14 +69,15 @@ const genHTML = (options) => {
 
 export class AdPlatformSelector {
     constructor(options) {
-        this.platformsData = options.platformsData          // Array
-        this.platformsAuthData = options.platformsAuthData  // Array
-        this.showCheckboxes = options.showCheckboxes        // boolean
-        this.showStatuses = options.showStatuses            // boolean
-        this.canChangeData = options.canChangeData          // boolean
-        this.container = options.container                  // DOMElement
-        this.modal = options.modal                          // /app/common/modal
-        this.currentOpenedId = null                         // Number
+        this.platformsData = options.platformsData               // Array
+        this.platformsAuthData = options.platformsAuthData       // Array
+        this.standardPlatformsIds = options.standardPlatformsIds // Array
+        this.showCheckboxes = options.showCheckboxes             // boolean
+        this.showStatuses = options.showStatuses                 // boolean
+        this.canChangeData = options.canChangeData               // boolean
+        this.container = options.container                       // DOMElement
+        this.modal = options.modal                               // /app/common/modal
+        this.currentOpenedId = null                              // Number
 
         genHTML(options)
 
@@ -89,13 +92,22 @@ export class AdPlatformSelector {
             })
         })
 
-        // const startButton = this.container.querySelector('.ad-selector__submit')
-        // const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
-        // checkboxes.forEach(checkbox => {
-        //     checkbox.addEventListener('input', () => {
-        //         startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
-        //     })
-        // })
+        const startButton = this.container.querySelector('.ad-selector__submit')
+        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('input', () => {
+                startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
+            })
+        })
+
+        const rememberCheckbox = this.container.querySelector('.ad-selector__remember-checkbox')
+        this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
+            event.preventDefault()
+            if (rememberCheckbox.checked)
+                ipcRenderer.send('standardPlatformsIds:save', this.selectedPlatformsIds)
+
+            ipcRenderer.send('adPlatformsSelector:submit')
+        })
     }
 
     get selectedPlatformsIds() {

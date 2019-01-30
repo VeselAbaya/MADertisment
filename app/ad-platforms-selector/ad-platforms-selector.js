@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const selector = new AdPlatformSelector({
                 platformsData,
+                standardPlatformsIds: data.standardPlatformsIds,
                 container: document.querySelector('.ad-selector'),
                 modal: new AccoutDataAlert({
                     overlay: document.querySelector('.modal-overlay'),
