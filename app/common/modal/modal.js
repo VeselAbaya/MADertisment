@@ -1,3 +1,5 @@
+import {authFormInit} from "../authFormInit-script/authFormInit"
+
 export class Modal {
     constructor(options) {
         this.container = options.container                                      // DOMElement
@@ -62,6 +64,23 @@ export class NetworkAlert extends Modal {
         this.retryButton.addEventListener('click', () => {
             this.close()
             this.onRetry()
+        })
+    }
+}
+
+export class AccoutDataAlert extends Modal {
+    constructor(options) {
+        super(options)
+        this.onFormSubmit = options.onFormSubmit || ((event) => {})  // function
+
+        authFormInit({
+            login: this.container.querySelector('#login'),
+            password: this.container.querySelector('#password')
+        }, this.container.querySelector('#auth__form-submit'))
+
+        this.container.querySelector('.auth__form').addEventListener('submit', (event) => {
+            this.onFormSubmit(event)
+            this.close()
         })
     }
 }

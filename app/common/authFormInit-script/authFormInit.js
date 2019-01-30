@@ -6,6 +6,7 @@ export const focusLabel = (label) => {
 }
 
 export const blurLabel = (label) => {
+    label.style.color = '#aaaaaa'
     label.style.transition = 'all .1s'
     label.style.fontSize = '24px'
     label.style.top = '7px'
@@ -19,13 +20,11 @@ export const authFormInit = (fields, submitButton) => {
     // let userData = localStorage.getItem('userData')
     // focus and blur
     fields.login.addEventListener('focus', () => {
-        console.log('focus login')
         const label = document.querySelector('label[for="login"]')
         focusLabel(label)
     })
 
     fields.login.addEventListener('blur', (event) => {
-        console.log('blur login')
         const label = document.querySelector('label[for="login"]')
         label.style.color = '#aaaaaa'
         if (event.target.value === '')

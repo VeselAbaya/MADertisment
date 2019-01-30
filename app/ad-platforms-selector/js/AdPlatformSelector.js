@@ -1,6 +1,6 @@
 import {focusLabel, blurLabel} from "../../common/authFormInit-script/authFormInit"
 
-const interfaceInit = (options) => {
+const genHTML = (options) => {
     const button = (data) => {
         if (!data.active)
             return {
@@ -74,12 +74,32 @@ export class AdPlatformSelector {
         this.canChangeData = options.canChangeData          // boolean
         this.container = options.container                  // DOMElement
         this.modal = options.modal                          // /app/common/modal
+        this.currentOpenedId = null                         // Number
 
-        interfaceInit(options)
+        genHTML(options)
+
+        this.container.querySelectorAll('.ad-selector__platform-button--settings').forEach(button => {
+            button.addEventListener('click', () => {
+                const platformId = parseInt(button.dataset['id'])
+                this.blinkSettings(platformId)
+
+                setTimeout(() => {
+                    this.modalOpen(platformId)
+                }, 400)
+            })
+        })
+
+        // const startButton = this.container.querySelector('.ad-selector__submit')
+        // const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        // checkboxes.forEach(checkbox => {
+        //     checkbox.addEventListener('input', () => {
+        //         startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
+        //     })
+        // })
     }
 
     get selectedPlatformsIds() {
-        const checkboxes = this.container.querySelectorAll('.ad-selector__form input[type="checkbox"]')
+        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
         return Array.from(checkboxes)
           .filter(el => el.checked === true)
           .map(el => parseInt(el.id))
@@ -87,38 +107,37 @@ export class AdPlatformSelector {
 
     modalOpen(id) {
         if (!this.modal.opened) {
+            this.currentOpenedId = id
             this.modal.open()
 
-            const loginField = document.querySelector('#login')
-            const passwordField = document.querySelector('#password')
+            const loginField = this.modal.container.querySelector('#login')
+            const passwordField = this.modal.container.querySelector('#password')
 
-            const authData = this.platformsAuthData.find(el => el.id === id)
-            loginField.value = authData.login
-            passwordField.value = authData.password
+            const authData = this.platformsAuthData.find(el => el.id === this.currentOpenedId)
+            if (authData) {
+                loginField.value = authData.login
+                passwordField.value = authData.password
+            }
 
             if (loginField.value && passwordField.value) {
-                document.querySelector('#auth__form-submit').disabled = false
-                document.querySelectorAll('.auth__form-label').forEach(label => {
+                this.modal.container.querySelector('#auth__form-submit').disabled = false
+                this.modal.container.querySelectorAll('.auth__form-label').forEach(label => {
                     // TODO fix that SHIT!!!
                     focusLabel(label)
                 })
             }
             else
-                document.querySelector('#auth__form-submit').disabled = true
+                this.modal.container.querySelector('#auth__form-submit').disabled = true
         }
     }
 
-    modalClose(id) {
-        if (this.modal.opened) {
-            this.modal.close()
-
-            const loginField = this.modal.container.querySelector('#login')
-            const passwordField = this.modal.container.querySelector('#password')
-
-            const authData = this.platformsAuthData.find(el => el.id === id)
-            authData.login = loginField.value
-            authData.password = passwordField.value
-        }
+    modalClose() {
+        this.modal.container.querySelector('#login').value = ''
+        this.modal.container.querySelector('#password').value = ''
+        this.modal.container.querySelectorAll('.auth__form-label').forEach(label => {
+            // TODO fix that SHIT!!!
+            blurLabel(label)
+        })
     }
 
     blinkSettings(id) {

@@ -23,9 +23,27 @@ app.on('ready', () => {
         mainWindow.loadURL(`file://${__dirname}/auth-form/auth-form.html`)
     })
 
-    ipcMain.on('request:userData', () => {
-        fs.readFile('./app/data/user.json', (err, userData) => {
-            mainWindow.webContents.send('response:userData', JSON.parse(userData.toString()))
+    ipcMain.on('request:data', () => {
+        let userData
+        if (fs.existsSync('./app/data/user.json'))
+            userData = JSON.parse(fs.readFileSync('./app/data/user.json').toString() || '""')
+
+        let authData
+        if (fs.existsSync('./app/data/auth-data.json'))
+            authData = JSON.parse(fs.readFileSync('./app/data/auth-data.json').toString() || '""')
+
+        mainWindow.webContents.send('response:data', {
+            user: userData || {},
+            auth: authData || []
+        })
+    })
+
+    ipcMain.on('authData:save', (event, authDataArray) => {
+        if (!fs.existsSync('./app/data'))
+            fs.mkdirSync('./app/data')
+
+        fs.writeFile('./app/data/auth-data.json', JSON.stringify(authDataArray, null, '\t'), (err) => {
+            // TODO maybe some handle???
         })
     })
 })
