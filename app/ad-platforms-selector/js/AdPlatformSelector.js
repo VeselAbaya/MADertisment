@@ -111,7 +111,8 @@ export class AdPlatformSelector {
                 ipcRenderer.send('standardPlatformsIds:save', selectedPlatformsIds)
 
             selectedPlatformsIds.forEach(id => {
-                if (!this.platformsAuthData.find(authData => authData.id === id))
+                const authData = this.platformsAuthData.find(authData => authData.id === id)
+                if (!authData || !authData.login || !authData.password)
                     this.blinkSettings(id)
             })
 
@@ -141,14 +142,11 @@ export class AdPlatformSelector {
             }
 
             if (loginField.value && passwordField.value) {
-                this.modal.container.querySelector('#auth__form-submit').disabled = false
                 this.modal.container.querySelectorAll('.auth__form-label').forEach(label => {
                     // TODO fix that SHIT!!!
                     focusLabel(label)
                 })
             }
-            else
-                this.modal.container.querySelector('#auth__form-submit').disabled = true
         }
     }
 

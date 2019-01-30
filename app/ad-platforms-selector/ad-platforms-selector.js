@@ -3,7 +3,6 @@ import axios from 'axios'
 import {AdPlatformSelector} from "./js/AdPlatformSelector"
 import {Modal, NetworkAlert, AccoutDataAlert} from "../common/modal/modal"
 import {loaderDown, loaderUp} from "../common/loader/loader"
-import {authFormInit} from "../common/authFormInit-script/authFormInit"
 
 document.addEventListener('DOMContentLoaded', () => {
     ipcRenderer.on('response:data', async (event, data) => {
@@ -38,22 +37,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         const passwordValue = event.target[1].value
                         let index =
                           selector.platformsAuthData.findIndex(el => el.id === selector.currentOpenedId)
-                        if (index === -1) {
-                            selector.platformsAuthData.push({
-                                id: platformId,
-                                login: loginValue,
-                                password: passwordValue
-                            })
-                        }
-                        else {
-                            selector.platformsAuthData[index] = {
-                                id: platformId,
-                                login: loginValue,
-                                password: passwordValue
-                            }
-                        }
 
-                        ipcRenderer.send('authData:save', selector.platformsAuthData)
+                        if (loginValue && passwordValue) {
+                            if (index === -1) {
+                                selector.platformsAuthData.push({
+                                    id: platformId,
+                                    login: loginValue,
+                                    password: passwordValue
+                                })
+                            }
+                            else {
+                                selector.platformsAuthData[index] = {
+                                    id: platformId,
+                                    login: loginValue,
+                                    password: passwordValue
+                                }
+                            }
+
+                            ipcRenderer.send('authData:save', selector.platformsAuthData)
+                        }
+                        else { // remove case (save with empty fields)
+                            selector.platformsAuthData.splice(index, 1)
+                            ipcRenderer.send('authData:remove', selector.currentOpenedId)
+                        }
                     }
                 }),
                 canChangeData: true,
@@ -61,8 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 showStatuses: true,
                 platformsAuthData : data.auth
             })
-
-            const startButton = selector.container.querySelector('ad-selector__submit')
         } catch (error) {
             console.log(error)
             if (error.message === 'Network Error') {

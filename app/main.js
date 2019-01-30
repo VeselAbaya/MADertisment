@@ -53,6 +53,20 @@ app.on('ready', () => {
         })
     })
 
+    ipcMain.on('authData:remove', (event, platformId) => {
+        if (fs.existsSync('./app/data/auth-data.json')) {
+            const authDataArray =
+              JSON.parse(fs.readFileSync('./app/data/auth-data.json').toString() || '""')
+
+            const removeIndex = authDataArray.findIndex(authData => authData.id === platformId)
+            authDataArray.splice(removeIndex, 1)
+
+            fs.writeFile('./app/data/auth-data.json', JSON.stringify(authDataArray, null, '\t'), (err) => {
+                // TODO maybe some handle???
+            })
+        }
+    })
+
     ipcMain.on('standardPlatformsIds:save', (event, standardPlatformsIds) => {
         fs.writeFile('./app/data/standard-platforms-ids.json',
                      JSON.stringify(standardPlatformsIds), (err) => {

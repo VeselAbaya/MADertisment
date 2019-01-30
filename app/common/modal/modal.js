@@ -76,7 +76,7 @@ export class AccoutDataAlert extends Modal {
         authFormInit({
             login: this.container.querySelector('#login'),
             password: this.container.querySelector('#password')
-        }, this.container.querySelector('#auth__form-submit'))
+        }) // don't give the second argument because want to enabled submit in case of empty fields
 
         this.container.querySelector('.auth__form').addEventListener('submit', (event) => {
             this.onFormSubmit(event)

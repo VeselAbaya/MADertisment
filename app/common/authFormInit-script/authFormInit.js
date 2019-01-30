@@ -43,13 +43,15 @@ export const authFormInit = (fields, submitButton) => {
             blurLabel(label)
     })
 
-    Object.values(fields).forEach((field) => {
-        field.addEventListener('input', (event) => {
-            submitButton.disabled = submitButtonStatus(fields)
+    if (submitButton) {
+        Object.values(fields).forEach((field) => {
+            field.addEventListener('input', (event) => {
+                submitButton.disabled = submitButtonStatus(fields)
+            })
         })
-    })
 
-    submitButton.disabled = submitButtonStatus(fields)
+        submitButton.disabled = submitButtonStatus(fields)
+    }
 
     // if (userData) {
     //     userData = JSON.parse(userData)
