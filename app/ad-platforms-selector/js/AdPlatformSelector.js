@@ -88,12 +88,15 @@ export class AdPlatformSelector {
 
                 setTimeout(() => {
                     this.modalOpen(platformId)
-                }, 400)
+                }, 1000)
             })
         })
 
         const startButton = this.container.querySelector('.ad-selector__submit')
-        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        if (this.selectedPlatformsIds.length)
+            startButton.disabled = false
+
+            const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('input', () => {
                 startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
@@ -103,8 +106,14 @@ export class AdPlatformSelector {
         const rememberCheckbox = this.container.querySelector('.ad-selector__remember-checkbox')
         this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
             event.preventDefault()
+            const selectedPlatformsIds = this.selectedPlatformsIds
             if (rememberCheckbox.checked)
-                ipcRenderer.send('standardPlatformsIds:save', this.selectedPlatformsIds)
+                ipcRenderer.send('standardPlatformsIds:save', selectedPlatformsIds)
+
+            selectedPlatformsIds.forEach(id => {
+                if (!this.platformsAuthData.find(authData => authData.id === id))
+                    this.blinkSettings(id)
+            })
 
             ipcRenderer.send('adPlatformsSelector:submit')
         })
@@ -158,6 +167,6 @@ export class AdPlatformSelector {
 
         setTimeout(() => {
             icon.style.backgroundColor = '#000000'
-        }, 200)
+        }, 500)
     }
 }
