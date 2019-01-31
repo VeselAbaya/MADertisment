@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const platformsData = (await axios({
                 url: 'http://madadvertisement.ru/api/platforms',
                 method: 'get',
-                headers: {'token': data.user.token}
+                headers: {'token': data.user.user.token}
             })).data.ad_platforms
             loaderDown()
             adSelectorContainer.style.display = 'block'
 
             const selector = new AdPlatformSelector({
                 platformsData,
-                standardPlatformsIds: data.standardPlatformsIds,
+                standardPlatformsIds: data.user.user.defaultAdPlatformIds,
                 container: document.querySelector('.ad-selector'),
                 modal: new AccoutDataAlert({
                     overlay: document.querySelector('.modal-overlay'),

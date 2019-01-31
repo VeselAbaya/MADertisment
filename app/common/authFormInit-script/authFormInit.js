@@ -13,38 +13,23 @@ export const blurLabel = (label) => {
 }
 
 export const submitButtonStatus = (fields) => { // value of submitButton.disabled
-    return !(fields.login.value && fields.password.value);
+    return !(fields.every(field => field.value));
 }
 
 export const authFormInit = (fields, submitButton) => {
-    // let userData = localStorage.getItem('userData')
-    // focus and blur
-    fields.login.addEventListener('focus', () => {
-        const label = document.querySelector('label[for="login"]')
-        focusLabel(label)
-    })
+    fields.forEach(field => {
+        const label = field.closest('.auth__form-group').querySelector('label')
+        field.addEventListener('focus', () => { focusLabel(label) })
 
-    fields.login.addEventListener('blur', (event) => {
-        const label = document.querySelector('label[for="login"]')
-        label.style.color = '#aaaaaa'
-        if (event.target.value === '')
-            blurLabel(label)
-    })
-
-    fields.password.addEventListener('focus', () => {
-        const label = document.querySelector('label[for="password"]')
-        focusLabel(label)
-    })
-
-    fields.password.addEventListener('blur', (event) => {
-        const label = document.querySelector('label[for="password"]')
-        label.style.color = '#aaaaaa'
-        if (event.target.value === '')
-            blurLabel(label)
+        field.addEventListener('blur', () => {
+            label.style.color = '#aaaaaa'
+            if (field.value === '')
+                blurLabel(label)
+        })
     })
 
     if (submitButton) {
-        Object.values(fields).forEach((field) => {
+        fields.forEach((field) => {
             field.addEventListener('input', (event) => {
                 submitButton.disabled = submitButtonStatus(fields)
             })

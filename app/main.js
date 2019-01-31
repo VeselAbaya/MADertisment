@@ -9,7 +9,6 @@ const paths = {
     data: './app/data/',
     dataUser: './app/data/user.json',
     dataAuth: './app/data/auth-data.json',
-    dataStandardPlatforms: './app/data/standard-platforms-ids.json'
 }
 
 let prevPagePath = ''
@@ -46,15 +45,11 @@ app.on('ready', () => {
         if (fs.existsSync(paths.dataAuth))
             authData = JSON.parse(fs.readFileSync(paths.dataAuth).toString() || '""')
 
-        let standardPlatformsIds
-        if (fs.existsSync(paths.dataStandardPlatforms))
-            standardPlatformsIds =
-              JSON.parse(fs.readFileSync(paths.dataStandardPlatforms).toString() || '""')
+        console.log(userData)
 
         mainWindow.webContents.send('response:data', {
             user: userData || {},
             auth: authData || [],
-            standardPlatformsIds: standardPlatformsIds || []
         })
     })
 
@@ -79,13 +74,6 @@ app.on('ready', () => {
                 // TODO maybe some handle???
             })
         }
-    })
-
-    ipcMain.on('standardPlatformsIds:save', (event, standardPlatformsIds) => {
-        fs.writeFile(paths.dataStandardPlatforms,
-                     JSON.stringify(standardPlatformsIds), (err) => {
-            // TODO maybe some handle???
-        })
     })
 
     ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {

@@ -8,11 +8,12 @@ import {authFormInit, submitButtonStatus} from "../common/authFormInit-script/au
 document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.querySelector('#auth__form-submit')
     const fields = {
-        login: document.querySelector('#login'),
+        company: document.querySelector('#company'),
+        login: document.querySelector('#email'),
         password: document.querySelector('#password')
     }
 
-    authFormInit(fields, submitButton)
+    authFormInit(Object.values(fields), submitButton)
 
     const auth = document.querySelector('.auth')
     const authForm = auth.querySelector('.auth__form')
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onClose: () => {
             Object.values(fields).forEach(field => { field.disabled = false })
             auth.style.filter = ''
-            submitButton.disabled = submitButtonStatus(fields)
+            submitButton.disabled = submitButtonStatus(Object.values(fields))
             fields.login.focus()
         }
     })
@@ -61,11 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const res = await axios.post('http://madadvertisement.ru/auth', {
-                login: fields.login.value,
+                domain: fields.company.value,
+                email: fields.login.value,
                 password: fields.password.value
             })
 
-            ipcRenderer.send('auth:success', res.data.user)
+            ipcRenderer.send('auth:success', res.data)
         } catch (error) {
             if (error.message === 'Network Error') {
                 loaderDown()
