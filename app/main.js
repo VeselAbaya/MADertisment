@@ -43,8 +43,8 @@ app.on('ready', () => {
             userData = JSON.parse(fs.readFileSync(paths.dataUser).toString() || '""')
 
         let authData
-        if (fs.existsSync(paths.auth))
-            authData = JSON.parse(fs.readFileSync(paths.auth).toString() || '""')
+        if (fs.existsSync(paths.dataAuth))
+            authData = JSON.parse(fs.readFileSync(paths.dataAuth).toString() || '""')
 
         let standardPlatformsIds
         if (fs.existsSync(paths.dataStandardPlatforms))
