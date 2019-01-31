@@ -68,8 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 platformsAuthData : data.auth
             })
         } catch (error) {
-            console.log(error)
-            if (error.message === 'Network Error') {
+            if (error.message === 'All platforms are not active') {
+                const notActiveErrorAlert = new Modal({
+                    container: document.querySelector('.not-active-error-alert'),
+                    overlay: document.querySelector('.modal-overlay'),
+                    onClose: () => { ipcRenderer.send('adPlatformSelector:error') }
+                })
+                notActiveErrorAlert.open()
+            }
+            else if (error.message === 'Network Error') {
                 loaderDown()
                 const networkAlert = new NetworkAlert({
                     container: document.querySelector('.network-alert'),

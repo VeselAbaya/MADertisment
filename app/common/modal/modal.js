@@ -18,7 +18,7 @@ export class Modal {
 
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape')
-                this.close()
+                this.container.querySelector('.modal__close').click()
         })
     }
 

@@ -37,8 +37,8 @@ const genHTML = (options) => {
             <li class="ad-selector__platform">
                 <label class="ad-selector__label custom-checkbox-label">
                     <input class="custom-checkbox ad-selector__checkbox" id="${data.id}" 
-                           ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
-                           ${options.standardPlatformsIds.includes(data.id) ? 'checked': ''}>
+                       ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
+                       ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked': ''}>
                     <span class="checkmark" 
                           style="${options.showCheckboxes ? "" : "display: none"}"></span>
                     <div class="ad-selector__platform-info">
@@ -96,7 +96,7 @@ export class AdPlatformSelector {
         if (this.selectedPlatformsIds.length)
             startButton.disabled = false
 
-            const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('input', () => {
                 startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
@@ -118,6 +118,10 @@ export class AdPlatformSelector {
 
             ipcRenderer.send('adPlatformsSelector:submit')
         })
+
+        // error if all platforms are not active
+        if (this.platformsData.every(platform => !platform.active))
+            throw new Error('All platforms are not active')
     }
 
     get selectedPlatformsIds() {
