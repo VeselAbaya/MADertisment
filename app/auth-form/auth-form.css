@@ -57,6 +57,11 @@ body {
     border-color: #b5051a;
 }
 
+.auth__form-field:disabled + .auth__form-label {
+    background-color: rgb(235, 235, 228);
+    color: #ffffff;
+}
+
 .auth__form-label {
     position: absolute;
     left: 10px;
@@ -67,6 +72,9 @@ body {
     color: #aaaaaa;
     font-size: 24px;
     text-align: center;
+
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 
     background-color: white;
 }
