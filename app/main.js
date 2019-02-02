@@ -7,6 +7,7 @@ const paths = {
     auth: `file://${__dirname}/auth-form/auth-form.html`,
     adPlatformSelector: `file://${__dirname}/ad-platforms-selector/ad-platforms-selector.html`,
     adTypeSelector: `file://${__dirname}/ad-type-selector/ad-type-selector.html`,
+    publishing: `file://${__dirname}/publishing/publishing.html`,
     data: './app/data/',
     dataUser: './app/data/user.json',
     dataAuth: './app/data/auth-data.json',
@@ -17,7 +18,7 @@ let prevPagePath = ''
 let mainWindow
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
-    mainWindow.loadURL(paths.auth)
+    mainWindow.loadURL(paths.publishing)
 
     ipcMain.on('auth:success', (event, userData) => {
         if (!fs.existsSync(paths.data))

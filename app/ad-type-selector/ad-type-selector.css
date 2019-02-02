@@ -64,3 +64,11 @@ body {
     background-color: rgba(181, 5, 26, .2);
     border-bottom-color: #b5051a;
 }
+
+.type-selector__type:disabled {
+    color: rgba(0, 0, 0, .25);
+}
+
+.type-selector__type:disabled:hover {
+    background-color: transparent;
+}
