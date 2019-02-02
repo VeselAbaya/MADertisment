@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron'
 import axios from 'axios'
 import {AdPlatformSelector} from "./js/AdPlatformSelector"
-import {Modal, NetworkAlert, AccoutDataAlert} from "../common/modal/modal"
+import {Modal, NetworkAlert, AccountDataAlert} from "../common/modal/modal"
 import {loaderDown, loaderUp} from "../common/loader/loader"
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 platformsData,
                 standardPlatformsIds: data.user.user.defaultAdPlatformIds,
                 container: document.querySelector('.ad-selector'),
-                modal: new AccoutDataAlert({
+                modal: new AccountDataAlert({
                     overlay: document.querySelector('.modal-overlay'),
                     container: document.querySelector('.modal'),
                     onOpen: () => { selector.container.style.filter = 'blur(8px)' },

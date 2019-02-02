@@ -18,6 +18,7 @@ body {
     display: none;
 
     margin: auto;
+    margin-bottom: 15px;
     width: 500px;
     min-width: 500px;
 }

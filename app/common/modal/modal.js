@@ -68,7 +68,7 @@ export class NetworkAlert extends Modal {
     }
 }
 
-export class AccoutDataAlert extends Modal {
+export class AccountDataAlert extends Modal {
     constructor(options) {
         super(options)
         this.onFormSubmit = options.onFormSubmit || ((event) => {})  // function

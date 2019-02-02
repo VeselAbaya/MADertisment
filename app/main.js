@@ -18,7 +18,7 @@ let prevPagePath = ''
 let mainWindow
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
-    mainWindow.loadURL(paths.publishing)
+    mainWindow.loadURL(paths.auth)
 
     ipcMain.on('auth:success', (event, userData) => {
         if (!fs.existsSync(paths.data))
@@ -81,6 +81,6 @@ app.on('ready', () => {
     })
 
     ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {
-        // TODO go to form
+        mainWindow.loadURL(paths.publishing)
     })
 })
