@@ -7,26 +7,27 @@ const genHTML = (options) => {
             return {
                 img: 'img/not_active.png',
                 class: 'ad-selector__platform-button--not-active',
-                tooltip: 'not-active'
+                type: 'not-active'
             }
 
         if (options.canChangeData)
             return {
                 img: 'img/settings.png',
                 class: 'ad-selector__platform-button--settings',
+                type: 'settings'
             }
 
         if (data.changed)
             return {
                 img: 'img/changed.png',
                 class: 'ad-selector__platform-button--changed',
-                tooltip: 'changed'
+                type: 'changed'
             }
         else
             return {
                 img: 'img/active.png',
                 class: 'ad-selector__platform-button--active',
-                tooltip: 'active'
+                type: 'active'
             }
     }
 
@@ -43,7 +44,7 @@ const genHTML = (options) => {
                           style="${options.showCheckboxes ? "" : "display: none"}"></span>
                     <div class="ad-selector__platform-info">
                         <img class="ad-selector__platform-icon" 
-                             src="${data.favicon}" width="50" height="50">
+                             src="${data.icon}" width="50" height="50">
                         <div class="wrapper">
                             <p class="ad-selector__platform-name">${data.name}</p>
                             <p class="ad-selector__platform-descr">${data.description}</p>
@@ -53,10 +54,11 @@ const genHTML = (options) => {
                     <button type="button" data-id="${data.id}"
                             style="${options.showStatuses || options.canChangeData && data.active ? 
                                         '' : 'display: none'}"
-                            class="ad-selector__platform-button ad-selector__platform-button--tooltip
-                                   ad-selector__platform-button--tooltip-${buttonData.tooltip}"
+                            class="ad-selector__platform-button ${buttonData.class}
+                                   ad-selector__platform-button--tooltip
+                                   ad-selector__platform-button--tooltip-${buttonData.type}"
                             ${buttonData.class.includes('settings') ? '' : 'tabindex="-1"'}>
-                            <span class="ad-selector__platform-button ${buttonData.class}"
+                            <span class="ad-selector__platform-button ad-selector__platform-button-icon--${buttonData.type}"
                                   data-id="${data.id}"></span>
                     </button>
                 </label>
@@ -107,16 +109,21 @@ export class AdPlatformSelector {
         this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
             event.preventDefault()
             const selectedPlatformsIds = this.selectedPlatformsIds
-            if (rememberCheckbox.checked)
-                ipcRenderer.send('standardPlatformsIds:save', selectedPlatformsIds)
+            if (rememberCheckbox.checked) {
+                // send selectedPlatformsIds to the server
+            }
 
+            let allAccountDataFilled = true
             selectedPlatformsIds.forEach(id => {
                 const authData = this.platformsAuthData.find(authData => authData.id === id)
-                if (!authData || !authData.login || !authData.password)
+                if (!authData || !authData.login || !authData.password) {
+                    allAccountDataFilled = false
                     this.blinkSettings(id)
+                }
             })
 
-            ipcRenderer.send('adPlatformsSelector:submit')
+            if (allAccountDataFilled)
+                ipcRenderer.send('adPlatformsSelector:submit')
         })
 
         // error if all platforms are not active

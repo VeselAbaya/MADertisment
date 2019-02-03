@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onClose: () => {
             Object.values(fields).forEach(field => { field.disabled = false })
             auth.style.filter = ''
-            submitButton.disabled = submitButtonStatus(fields)
+            submitButton.disabled = submitButtonStatus(Object.values(fields))
             fields.login.focus()
         },
         retryButton: document.querySelector('.network-alert .button'),
@@ -61,14 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.values(fields).forEach(field => { field.disabled = true })
 
         try {
-            const res = await axios.post('http://madadvertisement.ru/auth', {
-                domain: fields.company.value,
+            const res = await axios.post('http://madadvertisement.ru:9090/auth', {
+                companyName: fields.company.value,
                 email: fields.login.value,
                 password: fields.password.value
             })
 
             ipcRenderer.send('auth:success', res.data)
         } catch (error) {
+            console.log(Object.values(error))
             if (error.message === 'Network Error') {
                 loaderDown()
                 networkAlert.open()

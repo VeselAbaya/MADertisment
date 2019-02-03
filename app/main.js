@@ -8,6 +8,7 @@ const paths = {
     adPlatformSelector: `file://${__dirname}/ad-platforms-selector/ad-platforms-selector.html`,
     adTypeSelector: `file://${__dirname}/ad-type-selector/ad-type-selector.html`,
     publishing: `file://${__dirname}/publishing/publishing.html`,
+    adForm: `file://${__dirname}/ad-form/ad-form.html`,
     data: './app/data/',
     dataUser: './app/data/user.json',
     dataAuth: './app/data/auth-data.json',
@@ -16,6 +17,8 @@ const paths = {
 let prevPagePath = ''
 
 let mainWindow
+let sessionData
+let typeId
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
     mainWindow.loadURL(paths.auth)
@@ -32,8 +35,15 @@ app.on('ready', () => {
         mainWindow.loadURL(paths.adTypeSelector)
     })
 
-    ipcMain.on('adTypeSelector:typeSelected', () => {
+    ipcMain.on('adTypeSelector:typeSelected', (event, data) => {
         prevPagePath = paths.adTypeSelector
+
+        typeId = data.typeId
+        sessionData = {
+            id: data.session.id,
+            token: data.session.token
+        }
+
         mainWindow.loadURL(paths.adPlatformSelector)
     })
 
@@ -54,6 +64,8 @@ app.on('ready', () => {
         mainWindow.webContents.send('response:data', {
             user: userData || {},
             auth: authData || [],
+            session: sessionData || {},
+            typeId: typeId
         })
     })
 

@@ -18,7 +18,6 @@ body {
     display: none;
 
     margin: auto;
-    margin-bottom: 15px;
     width: 500px;
     min-width: 500px;
 }
@@ -207,30 +206,31 @@ body {
     transition: background-color .5s;
 }
 
-.ad-selector__platform-button--settings {
+.ad-selector__platform-button-icon--settings {
     -webkit-mask-image: url('img/settings.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
     cursor: pointer;
 }
 
-.ad-selector__platform-button--settings:focus {
+/* this class for settings buttons (they have no tooltip) */
+.ad-selector__platform-button--tooltip-settings:focus {
     outline-color: #b5051a;
 }
 
-.ad-selector__platform-button--active {
+.ad-selector__platform-button-icon--active {
     -webkit-mask-image: url('img/active.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
 }
 
-.ad-selector__platform-button--not-active {
+.ad-selector__platform-button-icon--not-active {
     -webkit-mask-image: url('img/not_active.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
 }
 
-.ad-selector__platform-button--changed {
+.ad-selector__platform-button-icon--changed {
     -webkit-mask-image: url('img/changed.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
@@ -257,6 +257,7 @@ body {
 .ad-selector__bottom {
     width: 475px;
     margin-left: auto;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;

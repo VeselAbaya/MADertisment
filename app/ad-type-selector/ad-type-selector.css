@@ -1,3 +1,5 @@
+@import "../common/loader/loader.css";
+
 body {
     width: 100vw;
     min-height: 100vh;
@@ -11,12 +13,14 @@ body {
 }
 
 .type-selector {
-    margin: 10px auto;
+    margin: auto;
     width: 620px;
     min-width: 620px;
 }
 
 .type-selector__title {
+    display: none;
+
     text-align: center;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -55,14 +59,16 @@ body {
 }
 
 .type-selector__type:hover {
+    transition: background-color 0.05s;
+}
+
+.type-selector__type:hover,
+.type-selector__type:focus {
     background-color: rgba(0, 0, 0, .1);
 }
 
 .type-selector__type:focus {
     outline: none;
-
-    background-color: rgba(181, 5, 26, .2);
-    border-bottom-color: #b5051a;
 }
 
 .type-selector__type:disabled {

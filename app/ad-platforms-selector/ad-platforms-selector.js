@@ -11,16 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             loaderUp()
             const platformsData = (await axios({
-                url: 'http://madadvertisement.ru/api/platforms',
+                url: 'http://madadvertisement.ru:9090/api/platforms',
                 method: 'get',
-                headers: {'token': data.user.user.token}
-            })).data.ad_platforms
+                headers: {'token': data.user.userResponse.token},
+                data: {
+                    action: 'create',
+                    sessionId: data.session.id,
+                    sessionToken: data.session.token,
+                    selectedAdType: data.typeId,
+                    isStandardChoice: false
+                }
+            })).data.adPlatforms
             loaderDown()
             adSelectorContainer.style.display = 'block'
 
             const selector = new AdPlatformSelector({
                 platformsData,
-                standardPlatformsIds: data.user.user.defaultAdPlatformIds,
+                standardPlatformsIds: data.user.userResponse.defaultAdPlatformsIds,
                 container: document.querySelector('.ad-selector'),
                 modal: new AccountDataAlert({
                     overlay: document.querySelector('.modal-overlay'),
@@ -68,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 platformsAuthData : data.auth
             })
         } catch (error) {
+            console.log(error)
+
             if (error.message === 'All platforms are not active') {
                 const notActiveErrorAlert = new Modal({
                     container: document.querySelector('.not-active-error-alert'),

@@ -18,10 +18,5 @@ const nextStage = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    nextStage()
-    nextStage()
-    nextStage()
-    nextStage()
-    nextStage()
-    nextStage()
+
 })
