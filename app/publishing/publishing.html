@@ -14,11 +14,11 @@
                 <p class="publish__stage-title">Категория</p>
             </li>
             <li class="publish__stage-item">
-                <span class="publish__stage-icon"></span>
+                <span class="publish__stage-icon publish__stage-icon--active"></span>
                 <p class="publish__stage-title">Адрес</p>
             </li>
             <li class="publish__stage-item">
-                <span class="publish__stage-icon publish__stage-icon--active"></span>
+                <span class="publish__stage-icon"></span>
                 <p class="publish__stage-title">Параметры</p>
             </li>
             <li class="publish__stage-item">
@@ -33,7 +33,14 @@
 
         <webview class="publish__webview"></webview>
 
-        <div class="publish__controls"></div>
+        <div class="publish__controls">
+            <div class="form-group controls__interval">
+                <input id="interval" class="form-field" type="number" min="0" max="100" value="5">
+                <label for="interval" class="form-label">Время перехода</label>
+            </div>
+
+            <button class="button">Готово</button>
+        </div>
     </div>
 
     <script src="publishing.js"></script>

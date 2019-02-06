@@ -1,3 +1,6 @@
+@import "../common/button/button.css";
+@import "../common/formInit/formInit.css";
+
 body {
     width: 100vw;
     min-height: 100vh;
@@ -77,16 +80,36 @@ body {
 .publish__stage-title {
     margin-top: 10px;
     padding: 0 5px 5px;
+    height: 28px;
+
     color: rgba(0, 0, 0, .2);
+
+    box-sizing: border-box;
 }
 
 .publish__webview {
     width: 100%;
     height: 80vh;
+    margin-bottom: 15px;
 
     border: 1px solid #b5051a;
 }
 
 .publish__controls {
+    display: flex;
+    justify-content: flex-end;
+
+    height: 47px;
     width: 100%;
+}
+
+.controls__interval {
+    flex-basis: 230px;
+    height: 100%;
+
+    margin-right: 10px;
+}
+
+.button {
+    height: 100%;
 }
