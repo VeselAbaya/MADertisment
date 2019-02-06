@@ -18,8 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     action: 'create',
                     sessionId: data.session.id,
                     sessionToken: data.session.token,
-                    selectedAdType: data.typeId,
-                    isStandardChoice: false
+                    selectedAdType: data.typeId
                 }
             })).data.adPlatforms
             loaderDown()

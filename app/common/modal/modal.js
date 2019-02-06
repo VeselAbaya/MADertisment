@@ -1,4 +1,4 @@
-import {authFormInit} from "../authFormInit-script/authFormInit"
+import {formInit} from "../formInit/formInit"
 
 export class Modal {
     constructor(options) {
@@ -73,7 +73,7 @@ export class AccountDataAlert extends Modal {
         super(options)
         this.onFormSubmit = options.onFormSubmit || ((event) => {})  // function
 
-        authFormInit([
+        formInit([
             this.container.querySelector('#login'),
             this.container.querySelector('#password')
         ]) // don't give the second argument because want to enabled submit in case of empty fields

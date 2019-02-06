@@ -1,6 +1,7 @@
-@import "../auth-form/auth-form.css";
 @import "../common/modal/modal.css";
 @import "../common/loader/loader.css";
+@import "../common/formInit/formInit.css";
+@import "../common/button/button.css";
 
 body {
     width: 100vw;

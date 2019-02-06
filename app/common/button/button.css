@@ -1,0 +1,30 @@
+.button {
+    float: right;
+    height: 40px;
+    border: solid 2px #b5051a;
+    border-radius: 6px;
+
+    background-color: transparent;
+
+    color: #b5051a;
+    text-align: center;
+    font-size: 24px;
+}
+
+.button:disabled {
+    border-color: transparent;
+    color: #aaaaaa;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.button:focus {
+    background-color: #b5051a;
+    color: white;
+
+    outline: none;
+}
+
+.button:active {
+    border-color: #6E0510;
+    background-color: #6E0510;
+}

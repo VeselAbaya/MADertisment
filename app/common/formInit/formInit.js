@@ -16,13 +16,27 @@ export const submitButtonStatus = (fields) => { // value of submitButton.disable
     return !(fields.every(field => field.value));
 }
 
-export const authFormInit = (fields, submitButton) => {
+export const formInit = (fields /*array*/, submitButton) => {
     fields.forEach(field => {
-        const label = field.closest('.auth__form-group').querySelector('label')
-        field.addEventListener('focus', () => { focusLabel(label) })
+        const formGroup = field.closest('.form-group')
+        const label = formGroup.querySelector('label')
+        field.addEventListener('focus', () => {
+            if (field.classList.contains('form-select')) {
+                formGroup.classList.remove('form-group-select--blured')
+                formGroup.classList.add('form-group-select--focused')
+            }
+
+            focusLabel(label)
+        })
 
         field.addEventListener('blur', () => {
             label.style.color = '#aaaaaa'
+
+            if (field.classList.contains('form-select')) {
+                formGroup.classList.remove('form-group-select--focused')
+                formGroup.classList.add('form-group-select--blured')
+            }
+
             if (field.value === '')
                 blurLabel(label)
         })

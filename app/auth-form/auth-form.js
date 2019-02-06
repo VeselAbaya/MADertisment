@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron'
 import axios from 'axios'
 import {Modal, NetworkAlert} from "../common/modal/modal"
 import {loaderUp, loaderDown} from "../common/loader/loader"
-import {authFormInit, submitButtonStatus} from "../common/authFormInit-script/authFormInit"
+import {formInit, submitButtonStatus} from "../common/formInit/formInit"
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         password: document.querySelector('#password')
     }
 
-    authFormInit(Object.values(fields), submitButton)
+    formInit(Object.values(fields), submitButton)
 
     const auth = document.querySelector('.auth')
     const authForm = auth.querySelector('.auth__form')
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ipcRenderer.send('auth:success', res.data)
         } catch (error) {
-            console.log(Object.values(error))
             if (error.message === 'Network Error') {
                 loaderDown()
                 networkAlert.open()

@@ -1,5 +1,5 @@
 import {ipcRenderer} from 'electron'
-import {focusLabel, blurLabel} from "../../common/authFormInit-script/authFormInit"
+import {focusLabel, blurLabel} from "../../common/formInit/formInit"
 
 const genHTML = (options) => {
     const button = (data) => {
@@ -153,7 +153,7 @@ export class AdPlatformSelector {
             }
 
             if (loginField.value && passwordField.value) {
-                this.modal.container.querySelectorAll('.auth__form-label').forEach(label => {
+                this.modal.container.querySelectorAll('.form-label').forEach(label => {
                     // TODO fix that SHIT!!!
                     focusLabel(label)
                 })
@@ -164,7 +164,7 @@ export class AdPlatformSelector {
     modalClose() {
         this.modal.container.querySelector('#login').value = ''
         this.modal.container.querySelector('#password').value = ''
-        this.modal.container.querySelectorAll('.auth__form-label').forEach(label => {
+        this.modal.container.querySelectorAll('.form-label').forEach(label => {
             // TODO fix that SHIT!!!
             blurLabel(label)
         })

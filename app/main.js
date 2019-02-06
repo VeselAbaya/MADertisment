@@ -93,6 +93,6 @@ app.on('ready', () => {
     })
 
     ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {
-        mainWindow.loadURL(paths.publishing)
+        mainWindow.loadURL(paths.adForm)
     })
 })
