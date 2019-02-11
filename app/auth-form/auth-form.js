@@ -2,17 +2,22 @@ import {ipcRenderer} from 'electron'
 import axios from 'axios'
 import {Modal, NetworkAlert} from "../common/modal/modal"
 import {loaderUp, loaderDown} from "../common/loader/loader"
-import {authFormInit, submitButtonStatus} from "../common/authFormInit-script/authFormInit"
+import {formInit, submitButtonStatus} from "../common/formInit/formInit"
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.querySelector('#auth__form-submit')
     const fields = {
-        login: document.querySelector('#login'),
+        company: document.querySelector('#company'),
+        login: document.querySelector('#email'),
         password: document.querySelector('#password')
     }
 
-    authFormInit(fields, submitButton)
+    Object.values(fields).forEach(field => {
+        field.moveLabel = true
+    })
+
+    formInit(Object.values(fields), submitButton)
 
     const auth = document.querySelector('.auth')
     const authForm = auth.querySelector('.auth__form')
@@ -29,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onClose: () => {
             Object.values(fields).forEach(field => { field.disabled = false })
             auth.style.filter = ''
-            submitButton.disabled = submitButtonStatus(fields)
+            submitButton.disabled = submitButtonStatus(Object.values(fields))
             fields.login.focus()
         },
         retryButton: document.querySelector('.network-alert .button'),
@@ -46,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onClose: () => {
             Object.values(fields).forEach(field => { field.disabled = false })
             auth.style.filter = ''
-            submitButton.disabled = submitButtonStatus(fields)
+            submitButton.disabled = submitButtonStatus(Object.values(fields))
             fields.login.focus()
         }
     })
@@ -60,12 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.values(fields).forEach(field => { field.disabled = true })
 
         try {
-            const res = await axios.post('http://madadvertisement.ru/auth', {
-                login: fields.login.value,
+            const res = await axios.post('http://madadvertisement.ru:9090/auth', {
+                companyName: fields.company.value,
+                email: fields.login.value,
                 password: fields.password.value
             })
 
-            ipcRenderer.send('auth:success', res.data.user)
+            ipcRenderer.send('auth:success', res.data)
         } catch (error) {
             if (error.message === 'Network Error') {
                 loaderDown()

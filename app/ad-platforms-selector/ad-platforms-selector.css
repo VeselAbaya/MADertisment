@@ -1,13 +1,12 @@
-@import "../auth-form/auth-form.css";
 @import "../common/modal/modal.css";
 @import "../common/loader/loader.css";
+@import "../common/formInit/formInit.css";
+@import "../common/button/button.css";
 
 body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
-
-    overflow-x: hidden;
 
     display: flex;
 
@@ -40,6 +39,10 @@ body {
     width: 100%;
 }
 
+.ad-selector__submit {
+    width: 180px;
+}
+
 .ad-selector__platforms {
     display: flex;
     justify-content: flex-end;
@@ -55,7 +58,7 @@ body {
 
     position: relative;
 
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #aaaaaa;
     padding-top: 8px;
     padding-bottom: 8px;
 }
@@ -68,70 +71,9 @@ body {
     border-bottom: none;
 }
 
-.ad-selector__checkbox {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    margin: 0;
-}
-
-.ad-selector__label {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
 /*.ad-selector__label:hover .ad-selector__platform-descr {*/
     /*-webkit-line-clamp: unset;*/
 /*}*/
-
-.checkmark {
-    position: relative;
-}
-
-.checkmark {
-    width: 20px;
-    flex-shrink: 0;
-    height: 20px;
-    border: 3px solid #6E0510;
-
-    margin-right: 10px;
-}
-
-.checkmark:after {
-    display: none;
-
-    content: "";
-    width: 10px;
-    height: 5px;
-
-    position: absolute;
-    top: 5px;
-    left: 4px;
-
-    border: solid #6E0510;
-    border-right: none;
-    border-top: none;
-    transform: rotate(-45deg);
-}
-
-.ad-selector__checkbox:checked ~ .checkmark:after {
-    display: block;
-}
-
-.ad-selector__checkbox:focus ~ .checkmark,
-.ad-selector__checkbox:focus ~ .checkmark:after {
-    border-color: #b5051a;
-}
-
-.ad-selector__checkbox:disabled ~.checkmark,
-.ad-selector__label:hover .ad-selector__checkbox:disabled ~.checkmark {
-    background-color: #aaaaaa;
-}
-
-.ad-selector__label:hover .checkmark {
-    background-color: rgba(0, 0, 0, .2);
-}
 
 .ad-selector__platform-info {
     display: flex;
@@ -183,33 +125,34 @@ body {
     padding: 0;
     flex-shrink: 0;
 
-    transition: background-color .2s;
+    transition: background-color .5s;
 }
 
-.ad-selector__platform-button--settings {
+.ad-selector__platform-button-icon--settings {
     -webkit-mask-image: url('img/settings.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
     cursor: pointer;
 }
 
-.ad-selector__platform-button--settings:focus {
+/* this class for settings buttons (they have no tooltip) */
+.ad-selector__platform-button--tooltip-settings:focus {
     outline-color: #b5051a;
 }
 
-.ad-selector__platform-button--active {
+.ad-selector__platform-button-icon--active {
     -webkit-mask-image: url('img/active.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
 }
 
-.ad-selector__platform-button--not-active {
+.ad-selector__platform-button-icon--not-active {
     -webkit-mask-image: url('img/not_active.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
 }
 
-.ad-selector__platform-button--changed {
+.ad-selector__platform-button-icon--changed {
     -webkit-mask-image: url('img/changed.png');
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
@@ -221,6 +164,29 @@ body {
 
 .alert-message {
     font-size: 18px;
+}
+
+.ad-selector__remember-checkbox {
+    display: none;
+}
+
+.ad-selector__remember-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ad-selector__bottom {
+    width: 475px;
+    margin-left: auto;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ad-selector__modal-button {
+    float: right;
 }
 
 /*Tooltip*/

@@ -11,17 +11,22 @@
         <h1 class="auth__title">MADvertisement</h1>
 
         <form class="auth__form" action="#">
-            <div class="auth__form-group">
-                <label for="login" class="auth__form-label">Login</label>
-                <input id="login" name="login" class="auth__form-field" type="text" autofocus>
+            <div class="form-group">
+                <input id="company" name="company" class="form-field" type="text" autofocus>
+                <label for="company" class="form-label">Company</label>
             </div>
 
-            <div class="auth__form-group">
-                <label for="password" class="auth__form-label">Password</label>
-                <input id="password" name="password" class="auth__form-field" type="password">
+            <div class="form-group">
+                <input id="email" name="email" class="form-field" type="email">
+                <label for="email" class="form-label">Email</label>
             </div>
 
-            <button class="button" id="auth__form-submit" type="submit" disabled>Login</button>
+            <div class="form-group">
+                <input id="password" name="password" class="form-field" type="password">
+                <label for="password" class="form-label">Password</label>
+            </div>
+
+            <button class="button auth__button" id="auth__form-submit" type="submit" disabled>Login</button>
         </form>
 
         <!-- loader -->

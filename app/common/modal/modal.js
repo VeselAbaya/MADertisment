@@ -1,10 +1,12 @@
+import {formInit} from "../formInit/formInit"
+
 export class Modal {
     constructor(options) {
         this.container = options.container                                      // DOMElement
         this.overlay = options.overlay                                          // DOMElement
-        this.onOpen = options.onOpen || (() => {})                               // function
-        this.onClose = options.onClose || (() => {})                             // function
-        this.onCloseButtonClick = options.onCloseButtonClick || (() => {})  // function
+        this.onOpen = options.onOpen || (() => {})                              // function
+        this.onClose = options.onClose || (() => {})                            // function
+        this.onCloseButtonClick = options.onCloseButtonClick || (() => {})      // function
         this.opened = false
 
         this.container.style.display = 'block'
@@ -16,7 +18,7 @@ export class Modal {
 
         document.addEventListener('keyup', (event) => {
             if (event.key === 'Escape')
-                this.close()
+                this.container.querySelector('.modal__close').click()
         })
     }
 
@@ -62,6 +64,23 @@ export class NetworkAlert extends Modal {
         this.retryButton.addEventListener('click', () => {
             this.close()
             this.onRetry()
+        })
+    }
+}
+
+export class AccountDataAlert extends Modal {
+    constructor(options) {
+        super(options)
+        this.onFormSubmit = options.onFormSubmit || ((event) => {})  // function
+
+        formInit([
+            this.container.querySelector('#login'),
+            this.container.querySelector('#password')
+        ]) // don't give the second argument because want to enabled submit in case of empty fields
+
+        this.container.querySelector('.auth__form').addEventListener('submit', (event) => {
+            this.onFormSubmit(event)
+            this.close()
         })
     }
 }

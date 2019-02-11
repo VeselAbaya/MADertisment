@@ -1,31 +1,33 @@
-import {focusLabel, blurLabel} from "../../common/authFormInit-script/authFormInit"
+import {ipcRenderer} from 'electron'
+import {focusLabel, blurLabel} from "../../common/formInit/formInit"
 
-const interfaceInit = (options) => {
+const genHTML = (options) => {
     const button = (data) => {
         if (!data.active)
             return {
                 img: 'img/not_active.png',
                 class: 'ad-selector__platform-button--not-active',
-                tooltip: 'not-active'
+                type: 'not-active'
             }
 
         if (options.canChangeData)
             return {
                 img: 'img/settings.png',
                 class: 'ad-selector__platform-button--settings',
+                type: 'settings'
             }
 
         if (data.changed)
             return {
                 img: 'img/changed.png',
                 class: 'ad-selector__platform-button--changed',
-                tooltip: 'changed'
+                type: 'changed'
             }
         else
             return {
                 img: 'img/active.png',
                 class: 'ad-selector__platform-button--active',
-                tooltip: 'active'
+                type: 'active'
             }
     }
 
@@ -34,14 +36,15 @@ const interfaceInit = (options) => {
         const buttonData = button(data)
         markup += `
             <li class="ad-selector__platform">
-                <label class="ad-selector__label">
-                    <input class="ad-selector__checkbox" id="${data.id}" 
-                           ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox">
+                <label class="form-checkbox-label">
+                    <input class="form-checkbox" id="${data.id}" 
+                       ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
+                       ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked' : ''}>
                     <span class="checkmark" 
                           style="${options.showCheckboxes ? "" : "display: none"}"></span>
                     <div class="ad-selector__platform-info">
                         <img class="ad-selector__platform-icon" 
-                             src="${data.favicon}" width="50" height="50">
+                             src="${data.icon}" width="50" height="50">
                         <div class="wrapper">
                             <p class="ad-selector__platform-name">${data.name}</p>
                             <p class="ad-selector__platform-descr">${data.description}</p>
@@ -49,12 +52,13 @@ const interfaceInit = (options) => {
                     </div>
         
                     <button type="button" data-id="${data.id}"
-                            style="${options.showStatuses || options.canChangeData && data.active ? 
-                                        '' : 'display: none'}"
-                            class="ad-selector__platform-button ad-selector__platform-button--tooltip
-                                   ad-selector__platform-button--tooltip-${buttonData.tooltip}"
+                            style="${options.showStatuses || options.canChangeData && data.active ?
+            '' : 'display: none'}"
+                            class="ad-selector__platform-button ${buttonData.class}
+                                   ad-selector__platform-button--tooltip
+                                   ad-selector__platform-button--tooltip-${buttonData.type}"
                             ${buttonData.class.includes('settings') ? '' : 'tabindex="-1"'}>
-                            <span class="ad-selector__platform-button ${buttonData.class}"
+                            <span class="ad-selector__platform-button ad-selector__platform-button-icon--${buttonData.type}"
                                   data-id="${data.id}"></span>
                     </button>
                 </label>
@@ -67,19 +71,68 @@ const interfaceInit = (options) => {
 
 export class AdPlatformSelector {
     constructor(options) {
-        this.platformsData = options.platformsData          // Array
-        this.platformsAuthData = options.platformsAuthData  // Array
-        this.showCheckboxes = options.showCheckboxes        // boolean
-        this.showStatuses = options.showStatuses            // boolean
-        this.canChangeData = options.canChangeData          // boolean
-        this.container = options.container                  // DOMElement
-        this.modal = options.modal                          // /app/common/modal
+        this.platformsData = options.platformsData               // Array
+        this.platformsAuthData = options.platformsAuthData       // Array
+        this.standardPlatformsIds = options.standardPlatformsIds // Array
+        this.showCheckboxes = options.showCheckboxes             // boolean
+        this.showStatuses = options.showStatuses                 // boolean
+        this.canChangeData = options.canChangeData               // boolean
+        this.container = options.container                       // DOMElement
+        this.modal = options.modal                               // /app/common/modal
+        this.currentOpenedId = null                              // Number
 
-        interfaceInit(options)
+        genHTML(options)
+
+        this.container.querySelectorAll('.ad-selector__platform-button--settings').forEach(button => {
+            button.addEventListener('click', () => {
+                const platformId = parseInt(button.dataset['id'])
+                this.blinkSettings(platformId)
+
+                setTimeout(() => {
+                    this.modalOpen(platformId)
+                }, 1000)
+            })
+        })
+
+        const startButton = this.container.querySelector('.ad-selector__submit')
+        if (this.selectedPlatformsIds.length)
+            startButton.disabled = false
+
+        const checkboxes = this.container.querySelectorAll('.form-checkbox')
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('input', () => {
+                startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
+            })
+        })
+
+        const rememberCheckbox = this.container.querySelector('.ad-selector__remember-checkbox')
+        this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
+            event.preventDefault()
+            const selectedPlatformsIds = this.selectedPlatformsIds
+            if (rememberCheckbox.checked) {
+                // send selectedPlatformsIds to the server
+            }
+
+            let allAccountDataFilled = true
+            selectedPlatformsIds.forEach(id => {
+                const authData = this.platformsAuthData.find(authData => authData.id === id)
+                if (!authData || !authData.login || !authData.password) {
+                    allAccountDataFilled = false
+                    this.blinkSettings(id)
+                }
+            })
+
+            if (allAccountDataFilled)
+                ipcRenderer.send('adPlatformsSelector:submit')
+        })
+
+        // error if all platforms are not active
+        if (this.platformsData.every(platform => !platform.active))
+            throw new Error('All platforms are not active')
     }
 
     get selectedPlatformsIds() {
-        const checkboxes = this.container.querySelectorAll('.ad-selector__form input[type="checkbox"]')
+        const checkboxes = this.container.querySelectorAll('.form-checkbox')
         return Array.from(checkboxes)
           .filter(el => el.checked === true)
           .map(el => parseInt(el.id))
@@ -87,38 +140,34 @@ export class AdPlatformSelector {
 
     modalOpen(id) {
         if (!this.modal.opened) {
+            this.currentOpenedId = id
             this.modal.open()
-
-            const loginField = document.querySelector('#login')
-            const passwordField = document.querySelector('#password')
-
-            const authData = this.platformsAuthData.find(el => el.id === id)
-            loginField.value = authData.login
-            passwordField.value = authData.password
-
-            if (loginField.value && passwordField.value) {
-                document.querySelector('#auth__form-submit').disabled = false
-                document.querySelectorAll('.auth__form-label').forEach(label => {
-                    // TODO fix that SHIT!!!
-                    focusLabel(label)
-                })
-            }
-            else
-                document.querySelector('#auth__form-submit').disabled = true
-        }
-    }
-
-    modalClose(id) {
-        if (this.modal.opened) {
-            this.modal.close()
 
             const loginField = this.modal.container.querySelector('#login')
             const passwordField = this.modal.container.querySelector('#password')
 
-            const authData = this.platformsAuthData.find(el => el.id === id)
-            authData.login = loginField.value
-            authData.password = passwordField.value
+            const authData = this.platformsAuthData.find(el => el.id === this.currentOpenedId)
+            if (authData) {
+                loginField.value = authData.login
+                passwordField.value = authData.password
+            }
+
+            if (loginField.value && passwordField.value) {
+                this.modal.container.querySelectorAll('.form-label').forEach(label => {
+                    // TODO fix that SHIT!!!
+                    focusLabel(label)
+                })
+            }
         }
+    }
+
+    modalClose() {
+        this.modal.container.querySelector('#login').value = ''
+        this.modal.container.querySelector('#password').value = ''
+        this.modal.container.querySelectorAll('.form-label').forEach(label => {
+            // TODO fix that SHIT!!!
+            blurLabel(label)
+        })
     }
 
     blinkSettings(id) {
@@ -127,6 +176,6 @@ export class AdPlatformSelector {
 
         setTimeout(() => {
             icon.style.backgroundColor = '#000000'
-        }, 200)
+        }, 500)
     }
 }

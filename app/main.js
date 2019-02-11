@@ -3,29 +3,96 @@ const fs = require('fs')
 
 const {app, BrowserWindow, ipcMain} = electron
 
+const paths = {
+    auth: `file://${__dirname}/auth-form/auth-form.html`,
+    adPlatformSelector: `file://${__dirname}/ad-platforms-selector/ad-platforms-selector.html`,
+    adTypeSelector: `file://${__dirname}/ad-type-selector/ad-type-selector.html`,
+    publishing: `file://${__dirname}/publishing/publishing.html`,
+    adForm: `file://${__dirname}/ad-form/ad-form.html`,
+    data: './app/data/',
+    dataUser: './app/data/user.json',
+    dataAuth: './app/data/auth-data.json',
+}
+
+let prevPagePath = ''
+
 let mainWindow
+let sessionData
+let typeId
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
-    mainWindow.loadURL(`file://${__dirname}/auth-form/auth-form.html`)
-    // mainWindow.loadURL(`file://${__dirname}/ad-platforms-selector/ad-platforms-selector.html`)
+    mainWindow.loadURL(paths.adForm)
 
     ipcMain.on('auth:success', (event, userData) => {
-        if (!fs.existsSync('./app/data'))
-            fs.mkdirSync('./app/data')
+        if (!fs.existsSync(paths.data))
+            fs.mkdirSync(paths.data)
 
-        fs.writeFile('./app/data/user.json', JSON.stringify(userData, null, '\t'), (err) => {
+        fs.writeFile(paths.dataUser, JSON.stringify(userData, null, '\t'), (err) => {
             // TODO maybe some handle???
         })
-        mainWindow.loadURL(`file://${__dirname}/ad-platforms-selector/ad-platforms-selector.html`)
+
+        prevPagePath = paths.auth
+        mainWindow.loadURL(paths.adTypeSelector)
+    })
+
+    ipcMain.on('adTypeSelector:typeSelected', (event, data) => {
+        prevPagePath = paths.adTypeSelector
+
+        typeId = data.typeId
+        sessionData = {
+            id: data.session.id,
+            token: data.session.token
+        }
+
+        mainWindow.loadURL(paths.adPlatformSelector)
     })
 
     ipcMain.on('adPlatformSelector:error', () => {
-        mainWindow.loadURL(`file://${__dirname}/auth-form/auth-form.html`)
+        // TODO if (prevPagePath === paths.auth) kill process
+        mainWindow.loadURL(prevPagePath)
     })
 
-    ipcMain.on('request:userData', () => {
-        fs.readFile('./app/data/user.json', (err, userData) => {
-            mainWindow.webContents.send('response:userData', JSON.parse(userData.toString()))
+    ipcMain.on('request:data', () => {
+        let userData
+        if (fs.existsSync(paths.dataUser))
+            userData = JSON.parse(fs.readFileSync(paths.dataUser).toString() || '""')
+
+        let authData
+        if (fs.existsSync(paths.dataAuth))
+            authData = JSON.parse(fs.readFileSync(paths.dataAuth).toString() || '""')
+
+        mainWindow.webContents.send('response:data', {
+            user: userData || {},
+            auth: authData || [],
+            session: sessionData || {},
+            typeId: typeId
         })
+    })
+
+    ipcMain.on('authData:save', (event, authDataArray) => {
+        if (!fs.existsSync(paths.data))
+            fs.mkdirSync(paths.data)
+
+        fs.writeFile(paths.auth, JSON.stringify(authDataArray, null, '\t'), (err) => {
+            // TODO maybe some handle???
+        })
+    })
+
+    ipcMain.on('authData:remove', (event, platformId) => {
+        if (fs.existsSync(paths.auth)) {
+            const authDataArray =
+              JSON.parse(fs.readFileSync(paths.auth).toString() || '""')
+
+            const removeIndex = authDataArray.findIndex(authData => authData.id === platformId)
+            authDataArray.splice(removeIndex, 1)
+
+            fs.writeFile(paths.auth, JSON.stringify(authDataArray, null, '\t'), (err) => {
+                // TODO maybe some handle???
+            })
+        }
+    })
+
+    ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {
+        mainWindow.loadURL(paths.adForm)
     })
 })

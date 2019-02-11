@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Advertisment platforms</title>
+    <title>Advertisement platforms</title>
 
     <link rel="stylesheet" href="ad-platforms-selector.css">
 </head>
@@ -13,6 +13,15 @@
 
         <form class="ad-selector__form" action="#">
             <ul class="ad-selector__platforms"></ul>
+
+            <div class="ad-selector__bottom">
+                <label class="ad-selector__remember-label form-checkbox-label">
+                    <input class="custom-checkbox ad-selector__remember-checkbox" id="rememberCheckbox" type="checkbox">
+                    <span class="checkmark checkmark--small"></span>
+                    Запомнить
+                </label>
+                <button type="submit" class="button ad-selector__submit" disabled>Старт</button>
+            </div>
         </form>
     </div>
 
@@ -28,18 +37,25 @@
         <h2 class="modal__title">Account data</h2>
         <div class="modal__body">
             <form class="auth__form">
-                <div class="auth__form-group">
-                    <label for="login" class="auth__form-label">Login</label>
-                    <input id="login" name="login" class="auth__form-field" type="text">
+                <div class="form-group">
+                    <label for="login" class="form-label">Login</label>
+                    <input id="login" name="login" class="form-field" type="text">
                 </div>
 
-                <div class="auth__form-group">
-                    <label for="password" class="auth__form-label">Password</label>
-                    <input id="password" name="password" class="auth__form-field">
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input id="password" name="password" class="form-field">
                 </div>
 
-                <button class="button" type="submit" id="auth__form-submit" disabled>Сохранить</button>
+                <button class="button ad-selector__modal-button" type="submit" id="auth__form-submit">Сохранить</button>
             </form>
+        </div>
+    </div>
+
+    <div class="modal not-active-error-alert">
+        <button class="modal__close"></button>
+        <div class="modal__body">
+            <p class="alert-message">Все площадки на даннный момент не доступны</p>
         </div>
     </div>
 
