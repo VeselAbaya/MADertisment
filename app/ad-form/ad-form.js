@@ -316,5 +316,38 @@ document.addEventListener('DOMContentLoaded', () => {
     //     ipcRenderer.send('request:data')
     // })
 
-    formInit(Array.from(document.querySelectorAll('.form-field')))
+    // select init
+    const select = document.querySelector('.form-select')
+    select.moveLabel = false
+    formInit([select])
+
+    // photos input init
+    const input = document.querySelector('.photo-input__field')
+    input.addEventListener('change', () => {
+        const preview = document.querySelector('.photo-input__preview')
+        const emptyInput = document.querySelector('.photo-input__body')
+
+        const filesList = input.files
+        console.log(event)
+        if (!filesList.length) {
+            preview.style.display = 'none'
+            emptyInput.style.display = 'flex'
+        }
+        else {
+            preview.style.display = 'block'
+            emptyInput.style.display = 'none'
+
+            let markup = ''
+            for (let file of filesList) {
+                markup += `
+                    <li class="preview__list-item">
+                        <img class="preview__list-image" src="${URL.createObjectURL(file)}">
+                        <div class="preview__list-item-overlay"></div>
+                    </li>
+                `
+            }
+
+            document.querySelector('.preview__list-item--add').insertAdjacentHTML('beforebegin', markup)
+        }
+    })
 })

@@ -1,30 +1,38 @@
 .button {
-    float: right;
     height: 40px;
-    border: solid 2px #b5051a;
+    border: solid 2px #6E0510;
     border-radius: 6px;
 
     background-color: transparent;
 
-    color: #b5051a;
+    color: #6E0510;
     text-align: center;
     font-size: 24px;
+
+    cursor: pointer;
+
+    transition: border-color .1s,
+                background-color .1s,
+                color .1s;
 }
 
 .button:disabled {
     border-color: transparent;
     color: #aaaaaa;
     background-color: rgba(0, 0, 0, .5);
+
+    cursor: default;
 }
 
 .button:focus {
-    background-color: #b5051a;
-    color: white;
+    color: #b5051a;
+    border-color: #b5051a;
 
     outline: none;
 }
 
 .button:active {
-    border-color: #6E0510;
-    background-color: #6E0510;
+    border-color: #b5051a;
+    background-color: #b5051a;
+    color: #ffffff;
 }

@@ -1,8 +1,9 @@
 .form-group {
     position: relative;
     width: 100%;
-    height: 50px;
     margin-bottom: 10px;
+
+    display: flex;
 }
 
 .form-field {
@@ -12,11 +13,14 @@
     width: 100%;
     padding: 8px;
 
-    border: 2px solid #aaaaaa;
+    border: 2px solid #6E0510;
     border-radius: 4px;
     outline: none;
 
     font-size: 20px;
+
+    transition: background-color .1s,
+                border-color .1s;
 }
 
 .form-field:focus {
@@ -43,7 +47,7 @@
     width: 2px;
     height: 47px;
 
-    background-color: #aaaaaa;
+    background-color: #6E0510;
 
     position: absolute;
     right: 40px;
@@ -66,23 +70,14 @@
     pointer-events: none;
 
     transform: translateY(-50%);
-    transition: transform .2s;
 }
 
 .form-group-select--focused:before {
     background-color: #b5051a;
 }
 
-.form-group-select--focused:after {
-    transform: translateY(-50%) rotate(180deg);
-}
-
 .form-group-select--blured:before {
-    background-color: #aaaaaa;
-}
-
-.form-group-select--blured:after {
-    transform: translateY(-50%) rotate(0);
+    background-color: #6E0510;
 }
 
 .form-label {
@@ -92,7 +87,7 @@
 
     padding: 0 2px;
 
-    color: #aaaaaa;
+    color: #6E0510;
     font-size: 24px;
     text-align: center;
 
@@ -100,4 +95,81 @@
     border-top-right-radius: 4px;
 
     background-color: white;
+}
+
+.form-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.checkmark {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+
+    flex-shrink: 0;
+    border: 2px solid #6E0510;
+
+    margin-right: 10px;
+
+    transition: background-color .1s,
+                border-color .1s;
+}
+
+.checkmark:after {
+    display: none;
+
+    content: "";
+    width: 10px;
+    height: 5px;
+
+    position: absolute;
+    top: 5px;
+    left: 4px;
+
+    border: solid #6E0510;
+    border-right: none;
+    border-top: none;
+    transform: rotate(-45deg);
+}
+
+.checkmark--small {
+    width: 15px;
+    height: 15px;
+    border-width: 1.5px;
+}
+
+.checkmark--small:after {
+    top: 4px;
+    left: 2px;
+    border-width: 1.5px;
+    width: 8px;
+    height: 3px;
+}
+
+.form-checkbox:checked ~ .checkmark:after {
+    display: block;
+}
+
+.form-checkbox:focus ~ .checkmark,
+.form-checkbox:focus ~ .checkmark:after {
+    border-color: #b5051a;
+}
+
+.form-checkbox-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-checkbox:disabled ~.checkmark,
+.form-checkbox-label:hover .form-checkbox:disabled ~.checkmark {
+    background-color: #aaaaaa;
+}
+
+.form-checkbox-label:hover .checkmark {
+    background-color: rgba(0, 0, 0, .2);
 }

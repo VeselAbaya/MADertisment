@@ -1,11 +1,9 @@
 @import "../common/loader/loader.css";
 
 body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
-
-    overflow-x: hidden;
 
     display: flex;
 

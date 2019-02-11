@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
         password: document.querySelector('#password')
     }
 
+    Object.values(fields).forEach(field => {
+        field.moveLabel = true
+    })
+
     formInit(Object.values(fields), submitButton)
 
     const auth = document.querySelector('.auth')

@@ -4,9 +4,9 @@ export class Modal {
     constructor(options) {
         this.container = options.container                                      // DOMElement
         this.overlay = options.overlay                                          // DOMElement
-        this.onOpen = options.onOpen || (() => {})                               // function
-        this.onClose = options.onClose || (() => {})                             // function
-        this.onCloseButtonClick = options.onCloseButtonClick || (() => {})  // function
+        this.onOpen = options.onOpen || (() => {})                              // function
+        this.onClose = options.onClose || (() => {})                            // function
+        this.onCloseButtonClick = options.onCloseButtonClick || (() => {})      // function
         this.opened = false
 
         this.container.style.display = 'block'

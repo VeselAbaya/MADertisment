@@ -2,7 +2,7 @@
 @import "../common/formInit/formInit.css";
 
 body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
 

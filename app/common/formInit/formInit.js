@@ -6,16 +6,17 @@ export const focusLabel = (label) => {
 }
 
 export const blurLabel = (label) => {
-    label.style.color = '#aaaaaa'
+    label.style.color = '#6E0510'
     label.style.transition = 'all .1s'
     label.style.fontSize = '24px'
-    label.style.top = '7px'
+    label.style.top = '10px'
 }
 
 export const submitButtonStatus = (fields) => { // value of submitButton.disabled
     return !(fields.every(field => field.value));
 }
 
+// field.moveLabel (boolean) - custom prop
 export const formInit = (fields /*array*/, submitButton) => {
     fields.forEach(field => {
         const formGroup = field.closest('.form-group')
@@ -26,18 +27,19 @@ export const formInit = (fields /*array*/, submitButton) => {
                 formGroup.classList.add('form-group-select--focused')
             }
 
-            focusLabel(label)
+            if (field.moveLabel)
+                focusLabel(label)
         })
 
         field.addEventListener('blur', () => {
-            label.style.color = '#aaaaaa'
+            label.style.color = '#6E0510'
 
             if (field.classList.contains('form-select')) {
                 formGroup.classList.remove('form-group-select--focused')
                 formGroup.classList.add('form-group-select--blured')
             }
 
-            if (field.value === '')
+            if (field.value === '' && field.moveLabel)
                 blurLabel(label)
         })
     })

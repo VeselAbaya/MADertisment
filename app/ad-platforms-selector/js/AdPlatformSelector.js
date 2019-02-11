@@ -36,10 +36,10 @@ const genHTML = (options) => {
         const buttonData = button(data)
         markup += `
             <li class="ad-selector__platform">
-                <label class="ad-selector__label custom-checkbox-label">
-                    <input class="custom-checkbox ad-selector__checkbox" id="${data.id}" 
+                <label class="form-checkbox-label">
+                    <input class="form-checkbox" id="${data.id}" 
                        ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
-                       ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked': ''}>
+                       ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked' : ''}>
                     <span class="checkmark" 
                           style="${options.showCheckboxes ? "" : "display: none"}"></span>
                     <div class="ad-selector__platform-info">
@@ -52,8 +52,8 @@ const genHTML = (options) => {
                     </div>
         
                     <button type="button" data-id="${data.id}"
-                            style="${options.showStatuses || options.canChangeData && data.active ? 
-                                        '' : 'display: none'}"
+                            style="${options.showStatuses || options.canChangeData && data.active ?
+            '' : 'display: none'}"
                             class="ad-selector__platform-button ${buttonData.class}
                                    ad-selector__platform-button--tooltip
                                    ad-selector__platform-button--tooltip-${buttonData.type}"
@@ -98,7 +98,7 @@ export class AdPlatformSelector {
         if (this.selectedPlatformsIds.length)
             startButton.disabled = false
 
-        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        const checkboxes = this.container.querySelectorAll('.form-checkbox')
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('input', () => {
                 startButton.disabled = !Array.from(checkboxes).some(checkbox => checkbox.checked)
@@ -132,7 +132,7 @@ export class AdPlatformSelector {
     }
 
     get selectedPlatformsIds() {
-        const checkboxes = this.container.querySelectorAll('.ad-selector__checkbox')
+        const checkboxes = this.container.querySelectorAll('.form-checkbox')
         return Array.from(checkboxes)
           .filter(el => el.checked === true)
           .map(el => parseInt(el.id))

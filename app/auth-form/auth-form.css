@@ -11,7 +11,7 @@
 /* loader position */
 
 body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
 
@@ -44,4 +44,8 @@ body {
 
 .alert-message {
     font-size: 20px;
+}
+
+.auth__button {
+    float: right;
 }

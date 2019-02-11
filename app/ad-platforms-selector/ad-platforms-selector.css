@@ -4,11 +4,9 @@
 @import "../common/button/button.css";
 
 body {
-    width: 100vw;
+    width: 100%;
     min-height: 100vh;
     margin: 0;
-
-    overflow-x: hidden;
 
     display: flex;
 
@@ -73,86 +71,9 @@ body {
     border-bottom: none;
 }
 
-.ad-selector__checkbox {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    margin: 0;
-}
-
-.ad-selector__label {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
 /*.ad-selector__label:hover .ad-selector__platform-descr {*/
     /*-webkit-line-clamp: unset;*/
 /*}*/
-
-.checkmark {
-    position: relative;
-}
-
-.checkmark {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-
-    flex-shrink: 0;
-    border: 3px solid #6E0510;
-
-    margin-right: 10px;
-}
-
-.checkmark:after {
-    display: none;
-
-    content: "";
-    width: 10px;
-    height: 5px;
-
-    position: absolute;
-    top: 5px;
-    left: 4px;
-
-    border: solid #6E0510;
-    border-right: none;
-    border-top: none;
-    transform: rotate(-45deg);
-}
-
-.checkmark-small {
-    width: 15px;
-    height: 15px;
-    border-width: 1.5px;
-}
-
-.checkmark-small:after {
-    top: 4px;
-    left: 2px;
-    border-width: 1.5px;
-    width: 8px;
-    height: 3px;
-}
-
-.custom-checkbox:checked ~ .checkmark:after {
-    display: block;
-}
-
-.custom-checkbox:focus ~ .checkmark,
-.custom-checkbox:focus ~ .checkmark:after {
-    border-color: #b5051a;
-}
-
-.custom-checkbox:disabled ~.checkmark,
-.custom-checkbox-label:hover .ad-selector__checkbox:disabled ~.checkmark {
-    background-color: #aaaaaa;
-}
-
-.custom-checkbox-label:hover .checkmark {
-    background-color: rgba(0, 0, 0, .2);
-}
 
 .ad-selector__platform-info {
     display: flex;
@@ -264,8 +185,8 @@ body {
     align-items: center;
 }
 
-.ad-selector__submit {
-    float: none;
+.ad-selector__modal-button {
+    float: right;
 }
 
 /*Tooltip*/
