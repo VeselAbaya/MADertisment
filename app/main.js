@@ -21,7 +21,7 @@ let sessionData
 let typeId
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
-    mainWindow.loadURL(paths.adPlatformSelector)
+    mainWindow.loadURL(paths.auth)
 
     ipcMain.on('auth:success', (event, userData) => {
         if (!fs.existsSync(paths.data))
