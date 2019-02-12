@@ -73,10 +73,11 @@ export class AccountDataAlert extends Modal {
         super(options)
         this.onFormSubmit = options.onFormSubmit || ((event) => {})  // function
 
-        formInit([
-            this.container.querySelector('#login'),
-            this.container.querySelector('#password')
-        ]) // don't give the second argument because want to enabled submit in case of empty fields
+        const loginField = this.container.querySelector('#login')
+        const passwordField = this.container.querySelector('#password');
+        [loginField, passwordField].forEach((field) => { field.moveLabel = true })
+        formInit([loginField, passwordField])
+        // don't give the second argument because want to enabled submit in case of empty fields
 
         this.container.querySelector('.auth__form').addEventListener('submit', (event) => {
             this.onFormSubmit(event)
