@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.values(fields).forEach(field => { field.disabled = true })
 
         try {
-            const res = await axios.post('http://madadvertisement.ru:9090/auth', {
+            const res = await axios.post('http://madadvertisement.ru/auth', {
                 companyName: fields.company.value,
                 email: fields.login.value,
                 password: fields.password.value
