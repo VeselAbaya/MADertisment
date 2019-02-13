@@ -8,7 +8,7 @@ const initInterface = async () => {
     ipcRenderer.on('response:data', async (event, data) => {
         const res = await axios({
             method: 'get',
-            url: 'http://madadvertisement.ru:9090/api/types',
+            url: 'http://madadvertisement.ru/api/types',
             headers: {
                 token: data.user.userResponse.token
             },

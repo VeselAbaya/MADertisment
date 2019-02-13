@@ -173,3 +173,8 @@
 .form-checkbox-label:hover .checkmark {
     background-color: rgba(0, 0, 0, .2);
 }
+
+.form-textarea {
+    height: auto;
+    font-family: sans-serif;
+}

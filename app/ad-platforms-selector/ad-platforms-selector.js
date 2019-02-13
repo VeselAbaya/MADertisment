@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             loaderUp()
             const platformsData = (await axios({
-                url: 'http://madadvertisement.ru:9090/api/platforms',
+                url: 'http://madadvertisement.ru/api/platforms',
                 method: 'get',
                 headers: {'token': data.user.userResponse.token},
                 data: {
