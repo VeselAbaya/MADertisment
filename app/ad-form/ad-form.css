@@ -82,6 +82,7 @@ body {
 }
 
 .ad-form-group--file {
+    box-sizing: border-box;
     border-radius: 3px;
     display: block;
     background-color: #eeeeee;
@@ -109,6 +110,10 @@ body {
     cursor: pointer;
 
     transition: border .2s;
+}
+
+.photo-input__body span {
+    text-align: center;
 }
 
 .photo-input__body:hover {
