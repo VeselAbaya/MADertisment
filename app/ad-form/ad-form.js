@@ -1,4 +1,3 @@
-import {ipcRenderer} from 'electron'
 import {selectsInit} from "./js/selectsInit"
 import {PreviewList, fileReadersList} from "./js/PreviewList"
 import {ApiRequest} from "../common/apiRequest/ApiRequest";

@@ -32,8 +32,6 @@ export const formInit = (fields /*array*/, submitButton) => {
         })
 
         field.addEventListener('blur', () => {
-            label.style.color = '#6E0510'
-
             if (field.classList.contains('form-select')) {
                 formGroup.classList.remove('form-group-select--focused')
                 formGroup.classList.add('form-group-select--blured')

@@ -16,7 +16,7 @@ export class ApiRequest extends EventEmitter {
             switch (apiMethod) {
                 case 'types':
                     axios({
-                        method: 'get',
+                        method: 'post',
                         url: this.url,
                         headers: {token: data.user.userResponse.token},
                         data: {
@@ -30,7 +30,7 @@ export class ApiRequest extends EventEmitter {
                 case 'platforms':
                     axios({
                         url: this.url,
-                        method: 'get',
+                        method: 'post',
                         headers: {'token': data.user.userResponse.token},
                         data: {
                             action: 'create',
@@ -45,7 +45,7 @@ export class ApiRequest extends EventEmitter {
 
                 case 'form':
                     axios({
-                        method: 'get',
+                        method: 'post',
                         url: this.url,
                         headers: {'token': data.user.userResponse.token},
                         data: {
