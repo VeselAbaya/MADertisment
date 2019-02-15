@@ -1,22 +1,14 @@
 import {ipcRenderer} from 'electron'
 import axios from 'axios'
 import {loaderUp, loaderDown} from "../common/loader/loader"
+import {domain} from "../common/domain";
+import {ApiRequest} from "../common/apiRequest/ApiRequest";
 
 const initInterface = async () => {
     loaderUp()
-    ipcRenderer.send('request:data')
-    ipcRenderer.on('response:data', async (event, data) => {
-        const res = await axios({
-            method: 'get',
-            url: 'http://madadvertisement.ru/api/types',
-            headers: {
-                token: data.user.userResponse.token
-            },
-            data: {
-                action: 'create'
-            }
-        })
 
+    const apiTypesRequest = new ApiRequest('types')
+    apiTypesRequest.on('success', (res) => {
         let markup = '';
         for (let type of res.data.types) {
             markup += `
@@ -45,6 +37,10 @@ const initInterface = async () => {
                 }, 400)
             })
         })
+    })
+
+    apiTypesRequest.on('error', (err) => {
+        // TODO something
     })
 }
 

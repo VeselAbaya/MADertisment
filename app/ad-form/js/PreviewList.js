@@ -29,7 +29,7 @@ let dragNDropInit = function () {
 
     const dropArea = document.querySelector('.photo-input')
     dropArea.addEventListener('dragenter', preventDefaultHandler, false)
-    dropArea.addEventistener('dragleave', preventDefaultHandler, false)
+    dropArea.addEventListener('dragleave', preventDefaultHandler, false)
     dropArea.addEventListener('dragover', preventDefaultHandler, false)
     dropArea.addEventListener('drop', (event) => {
         const filesList = Array.from(event.dataTransfer.files).filter(file => file.type.match('image/*'))

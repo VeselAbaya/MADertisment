@@ -1,16 +1,13 @@
 import {ipcRenderer} from 'electron'
-import axios from 'axios'
 import {selectsInit} from "./js/selectsInit"
 import {PreviewList, fileReadersList} from "./js/PreviewList"
+import {ApiRequest} from "../common/apiRequest/ApiRequest";
 
 document.addEventListener('DOMContentLoaded', () => {
-    // receive  data from server
-    ipcRenderer.on('response:data', async (event, data) => {
-        const formMarkup = (await axios({
-            method: 'get',
-            url: 'http://madadvertisement.ru/api/form',
-            headers: {'token': data.user.userResponse.token},
-        })).data.form
+    const apiRequest = new ApiRequest('form')
+    apiRequest.on('success', (res) => {
+        console.log(res)
+        const formMarkup = res.data.form
 
         document.querySelector('.ad-form').insertAdjacentHTML('beforeend', formMarkup)
 
@@ -18,5 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectsInit()
     })
 
-    ipcRenderer.send('request:data')
+    apiRequest.on('error', (err) => {
+        console.log(err)
+    })
 })

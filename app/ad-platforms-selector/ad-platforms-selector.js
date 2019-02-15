@@ -1,32 +1,23 @@
 import {ipcRenderer} from 'electron'
-import axios from 'axios'
 import {AdPlatformSelector} from "./js/AdPlatformSelector"
 import {Modal, NetworkAlert, AccountDataAlert} from "../common/modal/modal"
 import {loaderDown, loaderUp} from "../common/loader/loader"
+import {ApiRequest} from "../common/apiRequest/ApiRequest";
 
 document.addEventListener('DOMContentLoaded', () => {
-    ipcRenderer.on('response:data', async (event, data) => {
-        const adSelectorContainer = document.querySelector('.ad-selector')
+    const adSelectorContainer = document.querySelector('.ad-selector')
+
+    const apiRequest = new ApiRequest('platforms')
+    apiRequest.on('success', (res) => {
+        loaderUp()
+        const platformsData = res.data.adPlatforms
+        loaderDown()
+        adSelectorContainer.style.display = 'block'
 
         try {
-            loaderUp()
-            const platformsData = (await axios({
-                url: 'http://madadvertisement.ru/api/platforms',
-                method: 'get',
-                headers: {'token': data.user.userResponse.token},
-                data: {
-                    action: 'create',
-                    sessionId: data.session.id,
-                    sessionToken: data.session.token,
-                    selectedAdType: data.typeId
-                }
-            })).data.adPlatforms
-            loaderDown()
-            adSelectorContainer.style.display = 'block'
-
             const selector = new AdPlatformSelector({
                 platformsData,
-                standardPlatformsIds: data.user.userResponse.defaultAdPlatformsIds,
+                standardPlatformsIds: [], // TODO take form server
                 container: document.querySelector('.ad-selector'),
                 modal: new AccountDataAlert({
                     overlay: document.querySelector('.modal-overlay'),
@@ -42,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const loginValue = event.target[0].value
                         const passwordValue = event.target[1].value
                         let index =
-                          selector.platformsAuthData.findIndex(el => el.id === selector.currentOpenedId)
+                            selector.platformsAuthData.findIndex(el => el.id === selector.currentOpenedId)
 
                         if (loginValue && passwordValue) {
                             if (index === -1) {
@@ -71,12 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 canChangeData: true,
                 showCheckboxes: true,
                 showStatuses: true,
-                platformsAuthData : data.auth
+                platformsAuthData : [] // TODO take form server
             })
-        } catch (error) {
-            console.log(error)
-
-            if (error.message === 'All platforms are not active') {
+        }
+        catch (err) {
+            if (err.message === 'All platforms are not active') {
                 const notActiveErrorAlert = new Modal({
                     container: document.querySelector('.not-active-error-alert'),
                     overlay: document.querySelector('.modal-overlay'),
@@ -84,29 +74,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 notActiveErrorAlert.open()
             }
-            else if (error.message === 'Network Error') {
-                loaderDown()
-                const networkAlert = new NetworkAlert({
-                    container: document.querySelector('.network-alert'),
-                    overlay: document.querySelector('.modal-overlay'),
-                    retryButton: document.querySelector('.network-alert .button'),
-                    onCloseButtonClick: () => { ipcRenderer.send('adPlatformSelector:error') },
-                    onRetry: () => { location.reload() }
-                })
-                networkAlert.open()
-            }
-            else if (error.response.status === 403) {
-                loaderDown()
-                // in case if token isn't valid
-                const forbiddenAlert = new Modal({
-                    container: document.querySelector('.forbidden-alert'),
-                    overlay: document.querySelector('.modal-overlay'),
-                    onClose: () => { ipcRenderer.send('adPlatformSelector:error') }
-                })
-                forbiddenAlert.open()
-            }
         }
     })
 
-    ipcRenderer.send('request:data')
+    apiRequest.on('error', (err) => {
+        if (err.message === 'Network Error') {
+            loaderDown()
+            const networkAlert = new NetworkAlert({
+                container: document.querySelector('.network-alert'),
+                overlay: document.querySelector('.modal-overlay'),
+                retryButton: document.querySelector('.network-alert .button'),
+                onCloseButtonClick: () => { ipcRenderer.send('adPlatformSelector:error') },
+                onRetry: () => { location.reload() }
+            })
+            networkAlert.open()
+        }
+        else if (err.response.status === 403 || err.response.status === 401) {
+            loaderDown()
+            // in case if token isn't valid
+            const forbiddenAlert = new Modal({
+                container: document.querySelector('.forbidden-alert'),
+                overlay: document.querySelector('.modal-overlay'),
+                onClose: () => { ipcRenderer.send('adPlatformSelector:error') }
+            })
+            forbiddenAlert.open()
+        }
+    })
 })

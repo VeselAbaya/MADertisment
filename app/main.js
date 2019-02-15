@@ -19,6 +19,7 @@ let prevPagePath = ''
 let mainWindow
 let sessionData
 let typeId
+let platformsData
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
     mainWindow.loadURL(paths.auth)
@@ -65,6 +66,7 @@ app.on('ready', () => {
             user: userData || {},
             auth: authData || [],
             session: sessionData || {},
+            platforms: platformsData || {},
             typeId: typeId
         })
     })
@@ -92,7 +94,8 @@ app.on('ready', () => {
         }
     })
 
-    ipcMain.on('adPlatformsSelector:submit', (event, selectedPlatformsIds) => {
+    ipcMain.on('adPlatformsSelector:submit', (event, data) => {
+        platformsData = data
         mainWindow.loadURL(paths.adForm)
     })
 })

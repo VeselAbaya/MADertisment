@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Modal, NetworkAlert} from "../common/modal/modal"
 import {loaderUp, loaderDown} from "../common/loader/loader"
 import {formInit, submitButtonStatus} from "../common/formInit/formInit"
+import {domain} from "../common/domain";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.values(fields).forEach(field => { field.disabled = true })
 
         try {
-            const res = await axios.post('http://madadvertisement.ru/auth', {
+            const res = await axios.post(`${domain}/auth`, {
                 companyName: fields.company.value,
                 email: fields.login.value,
                 password: fields.password.value

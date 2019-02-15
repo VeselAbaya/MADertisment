@@ -109,9 +109,6 @@ export class AdPlatformSelector {
         this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
             event.preventDefault()
             const selectedPlatformsIds = this.selectedPlatformsIds
-            if (rememberCheckbox.checked) {
-                // send selectedPlatformsIds to the server
-            }
 
             let allAccountDataFilled = true
             selectedPlatformsIds.forEach(id => {
@@ -123,7 +120,10 @@ export class AdPlatformSelector {
             })
 
             if (allAccountDataFilled)
-                ipcRenderer.send('adPlatformsSelector:submit')
+                ipcRenderer.send('adPlatformsSelector:submit', {
+                    selectedPlatforms: selectedPlatformsIds,
+                    isStandardChoice: rememberCheckbox.checked
+                })
         })
 
         // error if all platforms are not active
