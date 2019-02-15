@@ -7,8 +7,8 @@ import {ApiRequest} from "../common/apiRequest/ApiRequest";
 document.addEventListener('DOMContentLoaded', () => {
     const adSelectorContainer = document.querySelector('.ad-selector')
 
-    const apiRequest = new ApiRequest('platforms')
-    apiRequest.on('success', (res) => {
+    const apiPlatformsRequest = new ApiRequest('platforms')
+    apiPlatformsRequest.on('success', (res) => {
         loaderUp()
         const platformsData = res.data.adPlatforms
         loaderDown()
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    apiRequest.on('error', (err) => {
+    apiPlatformsRequest.on('error', (err) => {
         if (err.message === 'Network Error') {
             loaderDown()
             const networkAlert = new NetworkAlert({

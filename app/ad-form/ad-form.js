@@ -3,8 +3,8 @@ import {PreviewList, fileReadersList} from "./js/PreviewList"
 import {ApiRequest} from "../common/apiRequest/ApiRequest";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const apiRequest = new ApiRequest('form')
-    apiRequest.on('success', (res) => {
+    const apiFormRequest = new ApiRequest('form')
+    apiFormRequest.on('success', (res) => {
         const formMarkup = res.data.form
         document.querySelector('.ad-form').insertAdjacentHTML('beforeend', formMarkup)
 
