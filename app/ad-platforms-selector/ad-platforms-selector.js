@@ -7,9 +7,9 @@ import {ApiRequest} from "../common/apiRequest/ApiRequest";
 document.addEventListener('DOMContentLoaded', () => {
     const adSelectorContainer = document.querySelector('.ad-selector')
 
+    loaderUp()
     const apiPlatformsRequest = new ApiRequest('platforms')
     apiPlatformsRequest.on('success', (res) => {
-        loaderUp()
         const platformsData = res.data.adPlatforms
         loaderDown()
         adSelectorContainer.style.display = 'block'
@@ -46,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                 auth.authData[field.type] = field.value
                             }
                         }
-
-                        console.log(platformsAuth)
                     }
                 }),
                 canChangeData: true,

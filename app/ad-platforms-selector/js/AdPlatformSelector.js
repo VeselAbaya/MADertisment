@@ -46,18 +46,21 @@ export class AdPlatformSelector {
 
             let allAccountDataFilled = true
             selectedPlatformsIds.forEach(id => {
-                const authData = this.platformsAuth.find(authData => authData.id === id)
-                if (!authData || !authData.login || !authData.password) {
+                const auth = this.platformsAuth.find(auth => auth.id === id)
+                const authDataValuesArray = Object.values(auth.authData)
+                if (authDataValuesArray.length === 0 ||
+                        authDataValuesArray.some(value => value === '')) {
                     allAccountDataFilled = false
                     this.blinkSettings(id)
                 }
             })
 
-            if (allAccountDataFilled)
+            if (allAccountDataFilled) {
                 ipcRenderer.send('adPlatformsSelector:submit', {
                     selectedPlatforms: selectedPlatformsIds,
                     isStandardChoice: rememberCheckbox.checked
                 })
+            }
         })
 
         // error if all platforms are not active
