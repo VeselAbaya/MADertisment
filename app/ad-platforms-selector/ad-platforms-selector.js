@@ -14,9 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
         loaderDown()
         adSelectorContainer.style.display = 'block'
 
+        const platformsAuth = platformsData.map(platform => {
+            return {
+                id: platform.id,
+                authField: platform.authField,
+                authData: platform.authData // TODO there is nothing
+            }
+        })
+
         try {
             const selector = new AdPlatformSelector({
-                platformsData,
+                platformsData: platformsData,
                 standardPlatformsIds: [], // TODO take form server
                 container: document.querySelector('.ad-selector'),
                 modal: new AccountDataAlert({
@@ -33,28 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         const loginValue = event.target[0].value
                         const passwordValue = event.target[1].value
                         let index =
-                            selector.platformsAuthData.findIndex(el => el.id === selector.currentOpenedId)
+                            selector.platformsAuth.findIndex(el => el.id === selector.currentOpenedId)
 
                         if (loginValue && passwordValue) {
                             if (index === -1) {
-                                selector.platformsAuthData.push({
+                                selector.platformsAuth.push({
                                     id: platformId,
                                     login: loginValue,
                                     password: passwordValue
                                 })
                             }
                             else {
-                                selector.platformsAuthData[index] = {
+                                selector.platformsAuth[index] = {
                                     id: platformId,
                                     login: loginValue,
                                     password: passwordValue
                                 }
                             }
 
-                            ipcRenderer.send('authData:save', selector.platformsAuthData)
+                            ipcRenderer.send('authData:save', selector.platformsAuth)
                         }
                         else { // remove case (save with empty fields)
-                            selector.platformsAuthData.splice(index, 1)
+                            selector.platformsAuth.splice(index, 1)
                             ipcRenderer.send('authData:remove', selector.currentOpenedId)
                         }
                     }
@@ -62,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 canChangeData: true,
                 showCheckboxes: true,
                 showStatuses: true,
-                platformsAuthData : [] // TODO take form server
+                platformsAuth: platformsAuth // TODO take form server
             })
         }
         catch (err) {

@@ -58,40 +58,12 @@ app.on('ready', () => {
         if (fs.existsSync(paths.dataUser))
             userData = JSON.parse(fs.readFileSync(paths.dataUser).toString() || '""')
 
-        let authData
-        if (fs.existsSync(paths.dataAuth))
-            authData = JSON.parse(fs.readFileSync(paths.dataAuth).toString() || '""')
-
         mainWindow.webContents.send('response:data', {
             user: userData || {},
-            auth: authData || [],
             session: sessionData || {},
             platforms: platformsData || {},
             typeId: typeId
         })
-    })
-
-    ipcMain.on('authData:save', (event, authDataArray) => {
-        if (!fs.existsSync(paths.data))
-            fs.mkdirSync(paths.data)
-
-        fs.writeFile(paths.auth, JSON.stringify(authDataArray, null, '\t'), (err) => {
-            // TODO maybe some handle???
-        })
-    })
-
-    ipcMain.on('authData:remove', (event, platformId) => {
-        if (fs.existsSync(paths.auth)) {
-            const authDataArray =
-              JSON.parse(fs.readFileSync(paths.auth).toString() || '""')
-
-            const removeIndex = authDataArray.findIndex(authData => authData.id === platformId)
-            authDataArray.splice(removeIndex, 1)
-
-            fs.writeFile(paths.auth, JSON.stringify(authDataArray, null, '\t'), (err) => {
-                // TODO maybe some handle???
-            })
-        }
     })
 
     ipcMain.on('adPlatformsSelector:submit', (event, data) => {
