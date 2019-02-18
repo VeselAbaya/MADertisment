@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron'
 import {focusLabel, blurLabel} from "../../common/formInit/formInit"
 import {genHTML} from "./genHTML"
-import {genModalHTML} from "./genModalHTML"
+import {updateModalHTML} from "./genModalHTML"
 
 export class AdPlatformSelector {
     constructor(options) {
@@ -76,34 +76,35 @@ export class AdPlatformSelector {
         if (!this.modal.opened) {
             this.currentOpenedId = id
 
-            genModalHTML(this, id)
+            updateModalHTML(this, id)
             this.modal.open()
 
-            const loginField = this.modal.container.querySelector('#login')
-            const passwordField = this.modal.container.querySelector('#password')
-
-            const authData = this.platformsAuth.find(el => el.id === this.currentOpenedId)
-            if (authData) {
-                loginField.value = authData.login
-                passwordField.value = authData.password
-            }
-
-            if (loginField.value && passwordField.value) {
-                this.modal.container.querySelectorAll('.form-label').forEach(label => {
-                    // TODO fix that SHIT!!!
-                    focusLabel(label)
-                })
-            }
+            // TODO when I will have account data
+            // const loginField = this.modal.container.querySelector('#login')
+            // const passwordField = this.modal.container.querySelector('#password')
+            //
+            // const authData = this.platformsAuth.find(el => el.id === this.currentOpenedId)
+            // if (authData) {
+            //     loginField.value = authData.login
+            //     passwordField.value = authData.password
+            // }
+            //
+            // if (loginField.value && passwordField.value) {
+            //     this.modal.container.querySelectorAll('.form-label').forEach(label => {
+            //         // TODO fix that SHIT!!!
+            //         focusLabel(label)
+            //     })
+            // }
         }
     }
 
     modalClose() {
-        this.modal.container.querySelector('#login').value = ''
-        this.modal.container.querySelector('#password').value = ''
-        this.modal.container.querySelectorAll('.form-label').forEach(label => {
+        // this.modal.container.querySelector('#login').value = ''
+        // this.modal.container.querySelector('#password').value = ''
+        // this.modal.container.querySelectorAll('.form-label').forEach(label => {
             // TODO fix that SHIT!!!
-            blurLabel(label)
-        })
+            // blurLabel(label)
+        // })
     }
 
     blinkSettings(id) {

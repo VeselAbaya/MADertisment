@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return {
                 id: platform.id,
                 authField: platform.authField,
-                authData: platform.authData // TODO there is nothing
+                authData: platform.authData || {} // TODO there is nothing
             }
         })
 
@@ -38,33 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     onFormSubmit: (event) => {
                         event.preventDefault()
                         const platformId = selector.currentOpenedId
-                        const loginValue = event.target[0].value
-                        const passwordValue = event.target[1].value
-                        let index =
-                            selector.platformsAuth.findIndex(el => el.id === selector.currentOpenedId)
+                        let auth =
+                            selector.platformsAuth.find(el => el.id === selector.currentOpenedId)
 
-                        if (loginValue && passwordValue) {
-                            if (index === -1) {
-                                selector.platformsAuth.push({
-                                    id: platformId,
-                                    login: loginValue,
-                                    password: passwordValue
-                                })
+                        for (let field of event.target) {
+                            if (field.type !== 'submit') {
+                                auth.authData[field.type] = field.value
                             }
-                            else {
-                                selector.platformsAuth[index] = {
-                                    id: platformId,
-                                    login: loginValue,
-                                    password: passwordValue
-                                }
-                            }
+                        }
 
-                            ipcRenderer.send('authData:save', selector.platformsAuth)
-                        }
-                        else { // remove case (save with empty fields)
-                            selector.platformsAuth.splice(index, 1)
-                            ipcRenderer.send('authData:remove', selector.currentOpenedId)
-                        }
+                        console.log(platformsAuth)
                     }
                 }),
                 canChangeData: true,
@@ -82,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 notActiveErrorAlert.open()
             }
+
+            console.log(err)
         }
     })
 

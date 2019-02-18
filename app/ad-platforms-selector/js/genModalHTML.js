@@ -1,6 +1,8 @@
-export const genModalHTML = (options, id) => {
+import {formInit} from "../../common/formInit/formInit"
+
+export const updateModalHTML = (options, id) => {
     const accountForm = options.modal.container.querySelector('.auth__form')
-    accountForm.querySelectorAll('form-group').forEach(formGroup => {
+    accountForm.querySelectorAll('.form-group').forEach(formGroup => {
         accountForm.removeChild(formGroup)
     })
 
@@ -15,5 +17,19 @@ export const genModalHTML = (options, id) => {
                 `
     }
 
-    options.modal.container.insertAdjacentHTML('afterbegin', markup)
+    accountForm.insertAdjacentHTML('afterbegin', markup)
+
+    const authData = options.platformsAuth.find(auth => auth.id === id).authData
+    const fields = Array.from(accountForm.querySelectorAll('.auth__form input'))
+
+    // fields values
+    for (let fieldName in authData) {
+        if (authData.hasOwnProperty(fieldName)) {
+            fields.find(field => field.type === fieldName).value = authData[fieldName]
+        }
+    }
+
+    // fields init
+    fields.forEach((field) => { field.moveLabel = true })
+    formInit(Array.from(fields))
 }
