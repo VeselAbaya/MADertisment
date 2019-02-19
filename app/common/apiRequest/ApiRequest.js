@@ -8,7 +8,7 @@ import {EventEmitter} from "events";
  * @param callback - function (response)
  */
 export class ApiRequest extends EventEmitter {
-    constructor(apiMethod) {
+    constructor(apiMethod, reqBody) {
         super()
 
         this.url = `${domain}/api/${apiMethod}`
@@ -55,6 +55,17 @@ export class ApiRequest extends EventEmitter {
                             selectedPlatforms: data.platforms.selectedPlatforms,
                             isStandardChoice: data.platforms.isStandardChoice
                         }
+                    })
+                        .then(res => { this.emit('success', res) })
+                        .catch(err => { this.emit('error', err) })
+                break
+
+                case 'submit':
+                    axios({
+                        method: 'post',
+                        url: this.url,
+                        headers: {'token': data.user.userResponse.token},
+                        data: reqBody
                     })
                         .then(res => { this.emit('success', res) })
                         .catch(err => { this.emit('error', err) })
