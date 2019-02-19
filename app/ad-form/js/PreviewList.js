@@ -51,7 +51,7 @@ let photosInputInit = function () {
 }
 
 export class PreviewList extends EventEmitter {
-    constructor(onLoadStart, onLoadEnd) {
+    constructor() {
         super()
 
         photosInputInit.call(this)
