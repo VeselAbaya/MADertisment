@@ -7,16 +7,24 @@ import {ApiRequest} from "../common/apiRequest/ApiRequest";
 document.addEventListener('DOMContentLoaded', () => {
     const adSelectorContainer = document.querySelector('.ad-selector')
 
+    loaderUp()
     const apiPlatformsRequest = new ApiRequest('platforms')
     apiPlatformsRequest.on('success', (res) => {
-        loaderUp()
         const platformsData = res.data.adPlatforms
         loaderDown()
         adSelectorContainer.style.display = 'block'
 
+        const platformsAuth = platformsData.map(platform => {
+            return {
+                id: platform.id,
+                authField: platform.authField,
+                authData: platform.authData || {} // TODO there is nothing
+            }
+        })
+
         try {
             const selector = new AdPlatformSelector({
-                platformsData,
+                platformsData: platformsData,
                 standardPlatformsIds: [], // TODO take form server
                 container: document.querySelector('.ad-selector'),
                 modal: new AccountDataAlert({
@@ -30,39 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     onFormSubmit: (event) => {
                         event.preventDefault()
                         const platformId = selector.currentOpenedId
-                        const loginValue = event.target[0].value
-                        const passwordValue = event.target[1].value
-                        let index =
-                            selector.platformsAuthData.findIndex(el => el.id === selector.currentOpenedId)
+                        let auth =
+                            selector.platformsAuth.find(el => el.id === selector.currentOpenedId)
 
-                        if (loginValue && passwordValue) {
-                            if (index === -1) {
-                                selector.platformsAuthData.push({
-                                    id: platformId,
-                                    login: loginValue,
-                                    password: passwordValue
-                                })
+                        for (let field of event.target) {
+                            if (field.type !== 'submit') {
+                                auth.authData[field.type] = field.value
                             }
-                            else {
-                                selector.platformsAuthData[index] = {
-                                    id: platformId,
-                                    login: loginValue,
-                                    password: passwordValue
-                                }
-                            }
-
-                            ipcRenderer.send('authData:save', selector.platformsAuthData)
-                        }
-                        else { // remove case (save with empty fields)
-                            selector.platformsAuthData.splice(index, 1)
-                            ipcRenderer.send('authData:remove', selector.currentOpenedId)
                         }
                     }
                 }),
                 canChangeData: true,
                 showCheckboxes: true,
                 showStatuses: true,
-                platformsAuthData : [] // TODO take form server
+                platformsAuth: platformsAuth // TODO take form server
             })
         }
         catch (err) {
@@ -74,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 notActiveErrorAlert.open()
             }
+
+            console.log(err)
         }
     })
 

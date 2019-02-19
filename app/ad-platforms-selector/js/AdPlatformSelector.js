@@ -1,78 +1,12 @@
 import {ipcRenderer} from 'electron'
 import {focusLabel, blurLabel} from "../../common/formInit/formInit"
-
-const genHTML = (options) => {
-    const button = (data) => {
-        if (!data.active)
-            return {
-                img: 'img/not_active.png',
-                class: 'ad-selector__platform-button--not-active',
-                type: 'not-active'
-            }
-
-        if (options.canChangeData)
-            return {
-                img: 'img/settings.png',
-                class: 'ad-selector__platform-button--settings',
-                type: 'settings'
-            }
-
-        if (data.changed)
-            return {
-                img: 'img/changed.png',
-                class: 'ad-selector__platform-button--changed',
-                type: 'changed'
-            }
-        else
-            return {
-                img: 'img/active.png',
-                class: 'ad-selector__platform-button--active',
-                type: 'active'
-            }
-    }
-
-    let markup = ''
-    for (let data of options.platformsData) {
-        const buttonData = button(data)
-        markup += `
-            <li class="ad-selector__platform">
-                <label class="form-checkbox-label">
-                    <input class="form-checkbox" id="${data.id}" 
-                       ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
-                       ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked' : ''}>
-                    <span class="checkmark" 
-                          style="${options.showCheckboxes ? "" : "display: none"}"></span>
-                    <div class="ad-selector__platform-info">
-                        <img class="ad-selector__platform-icon" 
-                             src="${data.icon}" width="50" height="50">
-                        <div class="wrapper">
-                            <p class="ad-selector__platform-name">${data.name}</p>
-                            <p class="ad-selector__platform-descr">${data.description}</p>
-                        </div>
-                    </div>
-        
-                    <button type="button" data-id="${data.id}"
-                            style="${options.showStatuses || options.canChangeData && data.active ?
-            '' : 'display: none'}"
-                            class="ad-selector__platform-button ${buttonData.class}
-                                   ad-selector__platform-button--tooltip
-                                   ad-selector__platform-button--tooltip-${buttonData.type}"
-                            ${buttonData.class.includes('settings') ? '' : 'tabindex="-1"'}>
-                            <span class="ad-selector__platform-button ad-selector__platform-button-icon--${buttonData.type}"
-                                  data-id="${data.id}"></span>
-                    </button>
-                </label>
-            </li>
-        `
-    }
-
-    options.container.querySelector('.ad-selector__platforms').insertAdjacentHTML('beforeend', markup)
-}
+import {genHTML} from "./genHTML"
+import {updateModalHTML} from "./genModalHTML"
 
 export class AdPlatformSelector {
     constructor(options) {
         this.platformsData = options.platformsData               // Array
-        this.platformsAuthData = options.platformsAuthData       // Array
+        this.platformsAuth = options.platformsAuth               // Array
         this.standardPlatformsIds = options.standardPlatformsIds // Array
         this.showCheckboxes = options.showCheckboxes             // boolean
         this.showStatuses = options.showStatuses                 // boolean
@@ -112,18 +46,21 @@ export class AdPlatformSelector {
 
             let allAccountDataFilled = true
             selectedPlatformsIds.forEach(id => {
-                const authData = this.platformsAuthData.find(authData => authData.id === id)
-                if (!authData || !authData.login || !authData.password) {
+                const auth = this.platformsAuth.find(auth => auth.id === id)
+                const authDataValuesArray = Object.values(auth.authData)
+                if (authDataValuesArray.length === 0 ||
+                        authDataValuesArray.some(value => value === '')) {
                     allAccountDataFilled = false
                     this.blinkSettings(id)
                 }
             })
 
-            if (allAccountDataFilled)
+            if (allAccountDataFilled) {
                 ipcRenderer.send('adPlatformsSelector:submit', {
                     selectedPlatforms: selectedPlatformsIds,
                     isStandardChoice: rememberCheckbox.checked
                 })
+            }
         })
 
         // error if all platforms are not active
@@ -141,33 +78,36 @@ export class AdPlatformSelector {
     modalOpen(id) {
         if (!this.modal.opened) {
             this.currentOpenedId = id
+
+            updateModalHTML(this, id)
             this.modal.open()
 
-            const loginField = this.modal.container.querySelector('#login')
-            const passwordField = this.modal.container.querySelector('#password')
-
-            const authData = this.platformsAuthData.find(el => el.id === this.currentOpenedId)
-            if (authData) {
-                loginField.value = authData.login
-                passwordField.value = authData.password
-            }
-
-            if (loginField.value && passwordField.value) {
-                this.modal.container.querySelectorAll('.form-label').forEach(label => {
-                    // TODO fix that SHIT!!!
-                    focusLabel(label)
-                })
-            }
+            // TODO when I will have account data
+            // const loginField = this.modal.container.querySelector('#login')
+            // const passwordField = this.modal.container.querySelector('#password')
+            //
+            // const authData = this.platformsAuth.find(el => el.id === this.currentOpenedId)
+            // if (authData) {
+            //     loginField.value = authData.login
+            //     passwordField.value = authData.password
+            // }
+            //
+            // if (loginField.value && passwordField.value) {
+            //     this.modal.container.querySelectorAll('.form-label').forEach(label => {
+            //         // TODO fix that SHIT!!!
+            //         focusLabel(label)
+            //     })
+            // }
         }
     }
 
     modalClose() {
-        this.modal.container.querySelector('#login').value = ''
-        this.modal.container.querySelector('#password').value = ''
-        this.modal.container.querySelectorAll('.form-label').forEach(label => {
+        // this.modal.container.querySelector('#login').value = ''
+        // this.modal.container.querySelector('#password').value = ''
+        // this.modal.container.querySelectorAll('.form-label').forEach(label => {
             // TODO fix that SHIT!!!
-            blurLabel(label)
-        })
+            // blurLabel(label)
+        // })
     }
 
     blinkSettings(id) {

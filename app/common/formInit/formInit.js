@@ -27,8 +27,9 @@ export const formInit = (fields /*array*/, submitButton) => {
                 formGroup.classList.add('form-group-select--focused')
             }
 
-            if (field.moveLabel)
+            if (field.moveLabel) {
                 focusLabel(label)
+            }
         })
 
         field.addEventListener('blur', () => {
@@ -37,9 +38,17 @@ export const formInit = (fields /*array*/, submitButton) => {
                 formGroup.classList.add('form-group-select--blured')
             }
 
-            if (field.value === '' && field.moveLabel)
+            if (field.moveLabel) {
+                label.style.color = '#6E0510'
+            }
+
+            if (field.value === '' && field.moveLabel) {
                 blurLabel(label)
+            }
         })
+
+        field.dispatchEvent(new Event('focus'))
+        field.dispatchEvent(new Event('blur'))
     })
 
     if (submitButton) {
