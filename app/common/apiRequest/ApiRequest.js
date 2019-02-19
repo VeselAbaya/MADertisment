@@ -65,10 +65,103 @@ export class ApiRequest extends EventEmitter {
                         method: 'post',
                         url: this.url,
                         headers: {'token': data.user.userResponse.token},
-                        data: reqBody
+                        data: {
+                            action: "create",
+                            sessionToken: data.session.token,
+                            sessionId: data.session.id,
+                            formData: {
+                                reqBody
+                            }
+                        }
                     })
                         .then(res => { this.emit('success', res) })
                         .catch(err => { this.emit('error', err) })
+                break
+
+                case 'publish':
+                    this.emit('success', {
+                        "status": "ok",
+                        "data": [
+                            {
+                                "url": "https://realty.yandex.ru/management-new/add/",
+                                "stages": [
+                                    {
+                                        "name": "Тип объявления",
+                                        "actions": [
+                                            {
+                                                "selector": "#userType-AGENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#type-RENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#category-ROOMS",
+                                                "type": "click"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "Описание",
+                                        "actions": [
+                                            {
+                                                "selector": "#userType-AGENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#type-RENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#category-ROOMS",
+                                                "type": "click"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "url": "https://avito.ru/publish",
+                                "stages": [
+                                    {
+                                        "name": "Тип объявления",
+                                        "actions": [
+                                            {
+                                                "selector": "#userType-AGENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#type-RENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#category-ROOMS",
+                                                "type": "click"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "Описание",
+                                        "actions": [
+                                            {
+                                                "selector": "#userType-AGENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#type-RENT",
+                                                "type": "click"
+                                            },
+                                            {
+                                                "selector": "#category-ROOMS",
+                                                "type": "click"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    })
                 break
             }
         })

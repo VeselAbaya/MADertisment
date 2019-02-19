@@ -1,3 +1,4 @@
+import {ipcRenderer} from 'electron'
 import {selectsInit} from "./js/selectsInit"
 import {fileReadersList, PreviewList} from "./js/PreviewList"
 import {ApiRequest} from "../common/apiRequest/ApiRequest";
@@ -44,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const reqBody = _.defaultsDeep(...objArray)
 
             new ApiRequest('submit', reqBody)
+            ipcRenderer.send('adForm:submit')
         })
 
         const previewList = new PreviewList()
