@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiPublishRequest = new ApiRequest('publish')
     apiPublishRequest.on('success', (res) => {
         const publishView = new PublishView(res.data)
+        console.log(res.data)
 
         const intervalField = document.querySelector('#interval')
         intervalField.moveLabel = true

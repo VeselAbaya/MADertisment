@@ -76,6 +76,7 @@ export const WebviewWrapper = class {
 
     loadstop(){
         console.log(this.webview)
+        this.webview.openDevTools()
         var wc = this.webview.getWebContents()
         console.log(window)
         this.deburgger = new Debugger(wc.debugger)
