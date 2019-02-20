@@ -5,15 +5,14 @@ import {PublishView} from "./js/PublishView"
 document.addEventListener('DOMContentLoaded', () => {
     const apiPublishRequest = new ApiRequest('publish')
     apiPublishRequest.on('success', (res) => {
-        const publishView = new PublishView(res)
-        const stagesBar = publishView.stagesBar
+        const publishView = new PublishView(res.data)
 
         const intervalField = document.querySelector('#interval')
         intervalField.moveLabel = true
         formInit([intervalField])
 
         let timerId = setInterval(() => {
-            if (!stagesBar.nextStage())
+            if (!publishView.nextStage())
                 clearInterval(timerId)
         }, parseInt(intervalField.value) * 1000)
 
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (intervalField.value) {
                 clearInterval(timerId)
                 timerId = setInterval(() => {
-                    if (!stagesBar.nextStage())
+                    if (!publishView.nextStage())
                         clearInterval(timerId)
                 }, parseInt(intervalField.value) * 1000)
             }

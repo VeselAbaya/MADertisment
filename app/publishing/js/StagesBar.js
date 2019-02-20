@@ -6,6 +6,7 @@ export class StagesBar {
         this.data = options.data
         this.currentURLIndex = 0
         this.currentURL = options.data[0].url
+        this.currentStageIndex = 0
 
         genStagesBarHTML(this)
     }
@@ -23,6 +24,7 @@ export class StagesBar {
     }
 
     nextStage() {
+        ++this.currentStageIndex
         let hasNext = true
 
         const currentStageIcon = document.querySelector('.publish__stage-icon--active')

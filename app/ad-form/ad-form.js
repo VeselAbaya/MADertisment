@@ -6,7 +6,7 @@ import _ from "lodash"
 
 document.addEventListener('DOMContentLoaded', () => {
     const apiFormRequest = new ApiRequest('form')
-    apiFormRequest.on('success', (res) => {
+    apiFormRequest.once('success', (res) => {
         const formMarkup = res.data.form
         document.querySelector('.ad-form').insertAdjacentHTML('beforeend', formMarkup)
 
