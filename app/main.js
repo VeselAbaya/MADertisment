@@ -70,4 +70,8 @@ app.on('ready', () => {
         platformsData = data
         mainWindow.loadURL(paths.adForm)
     })
+
+    ipcMain.on('adForm:submit', () => {
+        mainWindow.loadURL(paths.publishing)
+    })
 })

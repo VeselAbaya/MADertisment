@@ -65,7 +65,27 @@ export class ApiRequest extends EventEmitter {
                         method: 'post',
                         url: this.url,
                         headers: {'token': data.user.userResponse.token},
-                        data: reqBody
+                        data: {
+                            action: "create",
+                            sessionToken: data.session.token,
+                            sessionId: data.session.id,
+                            formData: reqBody
+                        }
+                    })
+                        .then(res => { this.emit('success', res) })
+                        .catch(err => { this.emit('error', err) })
+                break
+
+                case 'publish':
+                    axios({
+                        method: 'post',
+                        url: this.url,
+                        headers: {'token': data.user.userResponse.token},
+                        data: {
+                            action: "create",
+                            sessionToken: data.session.token,
+                            sessionId: data.session.id,
+                        }
                     })
                         .then(res => { this.emit('success', res) })
                         .catch(err => { this.emit('error', err) })
