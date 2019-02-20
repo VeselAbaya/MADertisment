@@ -11,13 +11,12 @@ export class PublishView {
     }
 
     nextStage() {
-        const res = this.stagesBar.nextStage()
-
         const stages = this.stagesBar.data[this.stagesBar.currentURLIndex].stages
-        const actions = stages[this.stagesBar.currentStageIndex].actions
-        console.log(actions)
-        this.webviewWrapper.performActions(actions)
+        if (this.stagesBar.currentStageIndex < stages.length) {
+            const actions = stages[this.stagesBar.currentStageIndex].actions
+            this.webviewWrapper.performActions(actions)
+        }
 
-        return res
+        return this.stagesBar.nextStage()
     }
 }

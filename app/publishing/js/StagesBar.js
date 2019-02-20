@@ -37,8 +37,9 @@ export class StagesBar {
                 const nextStageIcon = nextStage.querySelector('.publish__stage-icon')
                 nextStageIcon.classList.add('publish__stage-icon--active')
             }
-            else
+            else {
                 hasNext = false
+            }
         }
         else {
             const firstStageIcon = document.querySelector('.publish__stage-icon')
