@@ -14,6 +14,7 @@ export class PublishView {
         const stages = this.stagesBar.data[this.stagesBar.currentURLIndex].stages
         if (this.stagesBar.currentStageIndex < stages.length) {
             const actions = stages[this.stagesBar.currentStageIndex].actions
+            console.log(actions)
             this.webviewWrapper.performActions(actions)
         }
 
