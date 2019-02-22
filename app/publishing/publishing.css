@@ -19,9 +19,9 @@ body {
 
 .publish__stage-list {
     display: flex;
-    justify-content: center;
+    overflow-x: auto;
 
-    margin: 0;
+    margin: 0 0 20px;
     padding: 0;
 }
 
@@ -32,6 +32,14 @@ body {
     margin: 0 5px;
 
     font-size: 18px;
+}
+
+.publish__stage-item:first-child {
+    margin-left: auto;
+}
+
+.publish__stage-item:last-child {
+    margin-right: auto;
 }
 
 .publish__stage-icon {
@@ -78,13 +86,13 @@ body {
 }
 
 .publish__stage-title {
-    margin-top: 10px;
+    margin: 10px 0 0;
     padding: 0 5px 5px;
-    height: 28px;
+
+    border: 2px solid transparent;
 
     color: rgba(0, 0, 0, .2);
-
-    box-sizing: border-box;
+    text-align: center;
 }
 
 .publish__webview {

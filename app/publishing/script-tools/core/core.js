@@ -71,13 +71,14 @@ const WebviewWrapper = class {
 
   }
 
-  loadstop(){
-    console.log(this.webview)
-    var wc = this.webview.getWebContents()
-    console.log(window)
-    this.deburgger = new Debugger(wc.debugger)
-    this.webview.send('webview_did-finish-load')
-  }
+    loadstop(){
+        console.log(this.webview)
+        this.webview.getWebContents().openDevTools()
+        var wc = this.webview.getWebContents()
+        console.log(window)
+        this.deburgger = new Debugger(wc.debugger)
+        this.webview.send('webview_did-finish-load')
+    }
 
   ipcMessage(event){
     data = event.args[0]

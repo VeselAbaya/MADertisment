@@ -6,22 +6,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiPublishRequest = new ApiRequest('publish')
     apiPublishRequest.on('success', (res) => {
         const publishView = new PublishView(res.data)
+        console.log(res.data)
 
         const intervalField = document.querySelector('#interval')
         intervalField.moveLabel = true
         formInit([intervalField])
 
         let timerId = setInterval(() => {
-            if (!publishView.nextStage())
+            if (!publishView.nextStage()) {
                 clearInterval(timerId)
+            }
         }, parseInt(intervalField.value) * 1000)
 
         intervalField.addEventListener('input', () => {
             if (intervalField.value) {
                 clearInterval(timerId)
                 timerId = setInterval(() => {
-                    if (!publishView.nextStage())
+                    const hasNext = publishView.nextStage()
+                    if (!hasNext) {
                         clearInterval(timerId)
+                    }
                 }, parseInt(intervalField.value) * 1000)
             }
         })
