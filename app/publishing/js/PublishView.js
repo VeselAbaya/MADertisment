@@ -20,4 +20,10 @@ export class PublishView {
 
         return this.stagesBar.nextStage()
     }
+
+    nextURL() {
+        this.stagesBar.nextURL()
+
+        this.webview.src = this.stagesBar.currentURL
+    }
 }
