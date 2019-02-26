@@ -1,7 +1,7 @@
 const electron = require('electron')
 const fs = require('fs')
 
-const {app, BrowserWindow, ipcMain} = electron
+const {app, BrowserWindow, ipcMain, session} = electron
 
 const paths = {
     auth: `file://${__dirname}/auth-form/auth-form.html`,
@@ -23,6 +23,11 @@ let platformsData
 app.on('ready', () => {
     mainWindow = new BrowserWindow({ width: 1200, height: 900 })
     mainWindow.loadURL(paths.auth)
+
+    mainWindow.on('close', () => {
+        session.defaultSession.clearStorageData()
+        app.quit()
+    })
 
     ipcMain.on('auth:success', (event, userData) => {
         if (!fs.existsSync(paths.data))

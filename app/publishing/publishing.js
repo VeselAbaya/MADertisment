@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const hasNext = publishView.nextStage()
                     if (!hasNext) {
                         clearInterval(timerId)
+                        publishView.nextURL()
+
+                        publishView.webview.addEventListener('did-stop-loading', () => {
+                            publishView.nextStage()
+                        })
                     }
                 }, parseInt(intervalField.value) * 1000)
             }
