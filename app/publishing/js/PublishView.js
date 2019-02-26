@@ -18,12 +18,13 @@ export class PublishView {
             this.webviewWrapper.performActions(actions)
         }
 
+        ipcRenderer.send('clearSession')
         return this.stagesBar.nextStage()
     }
 
     nextURL() {
         this.stagesBar.nextURL()
 
-        this.webview.src = this.stagesBar.currentURL
+        this.webview.src = this.stagesBar.currentURL // in webviewWrapper changes too
     }
 }
