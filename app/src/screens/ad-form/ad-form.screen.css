@@ -1,0 +1,228 @@
+@import "../../components/formInit/formInit.component.css";
+@import "../../components/button/button.component.css";
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+
+    font-family: sans-serif;
+}
+
+.ad-form {
+    margin-top: 20px;
+    width: 80%;
+}
+
+.ad-form__submit-button {
+    margin: auto;
+    width: 60%;
+    height: 50px;
+}
+
+@media (max-width: 600px) {
+    .ad-form {
+        min-width: 560px;
+    }
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.photo-input__field {
+    display: none;
+}
+
+.ad-form-group__title {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 0 0 10px 0;
+}
+
+.ad-form-field {
+    width: auto;
+    flex-basis: 75%;
+}
+
+.ad-form-checkbox-label {
+    display: flex;
+    width: 100%;
+}
+
+.ad-form__checkmark {
+    width: 30px;
+    height: 30px;
+    margin: 5px 0;
+}
+
+.ad-form__checkmark:after {
+    width: 15px;
+    height: 7px;
+    top: 9px;
+    left: 7px;
+}
+
+.ad-form__button {
+    border-radius: 3px;
+    border-width: 1.5px;
+    font-size: 18px;
+
+    height: 26px;
+    line-height: 26px;
+    padding: 0 5px;
+
+    margin-bottom: 10px;
+}
+
+.ad-form-group--file {
+    box-sizing: border-box;
+    border-radius: 3px;
+    display: block;
+    background-color: #eeeeee;
+    padding: 10px;
+}
+
+.ad-form-label,
+.ad-form-checkbox-label__title {
+    flex-basis: 25%;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.photo-input__body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border: 1px dashed #aaaaaa;
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    transition: border .2s;
+}
+
+.photo-input__body span {
+    text-align: center;
+}
+
+.photo-input__body:hover {
+    border: 1px dashed #555555;
+}
+
+.photo-input__body:hover .ad-form__button {
+    border-color: #b5051a;
+    color: #b5051a;
+}
+
+.photo-input__body:active .ad-form__button {
+    border-color: #b5051a;
+    background-color: #b5051a;
+    color: #ffffff;
+}
+
+.photo-input__preview {
+    display: none;
+}
+
+.preview__list {
+    display: grid;
+    grid-template-columns: 19% 19% 19% 19% 19%;
+    grid-auto-rows: 1fr;
+    grid-row-gap: 5px;
+    grid-column-gap: 1.25%;
+
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+}
+
+.preview__list-item {
+    position: relative;
+    height: 100%;
+
+    transition: border .2s;
+}
+
+.preview__list-image {
+    width: 100%;
+    height: 100%;
+}
+
+.preview__list-item-overlay {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+
+    transition: background-color .2s;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.plus-icon {
+    width: 30px;
+    height: 30px;
+    display: block;
+    border-radius: 50%;
+
+    background: #fff url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTYgMTYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTkgN1YwSDd2N0gwdjJoN3Y3aDJWOWg3VjdIOXoiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==) no-repeat 50%/15px 20px;
+}
+
+.list-item__add-button {
+    width: 100%;
+    height: 100%;
+    border: 1.5px dashed #aaaaaa;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.list-item__add-button:hover {
+    border: 1.5px dashed #555555;
+}
+
+.list-item__add-button span {
+    text-align: center;
+}
+
+.list-item__remove-button {
+    width: 18px;
+    height: 18px;
+    margin: auto;
+
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTggMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2IDR2MTIuMzM3YzAgLjkxOS0uODk3IDEuNjYzLTIuMDA2IDEuNjYzSDQuMDA2QzIuODk4IDE4IDIgMTcuMjU2IDIgMTYuMzM3VjRIMFYyaDE4djJoLTJ6TTQgMTYuMDA0YzAtLjAwMyA5Ljk5NC0uMDAzIDkuOTk0LS4wMDNDMTQgMTYgMTQgNCAxNCA0YzAgLjAwNC05Ljk5NC4wMDQtOS45OTQuMDA0LS4wMDYgMC0uMDA2IDEyLS4wMDYgMTJ6TTYgNmgydjhINlY2em0wLTZoNnYySDZWMHptNCA2aDJ2OGgtMlY2eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==);
+    background-size: 18px 18px;
+
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.preview__list-item:hover .preview__list-item-overlay {
+    background-color: rgba(0, 0, 0, .7);
+}
+
+.preview__list-item:hover .list-item__remove-button {
+    opacity: 1;
+}
