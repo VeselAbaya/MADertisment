@@ -1,0 +1,263 @@
+@import "../../components/modal/modal.component.css";
+@import "../../components/loader/loader.component.css";
+@import "../../components/formInit/formInit.component.css";
+@import "../../components/button/button.component.css";
+
+body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+
+    display: flex;
+
+    font-family: sans-serif;
+}
+
+.ad-selector {
+    display: none;
+
+    margin: auto;
+    width: 500px;
+    min-width: 500px;
+}
+
+.ad-selector__title {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.ad-selector__description {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+
+    font-size: 18px;
+}
+
+.ad-selector__form {
+    width: 100%;
+}
+
+.ad-selector__submit {
+    width: 180px;
+}
+
+.ad-selector__platforms {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+
+    padding: 0;
+
+    list-style: none;
+}
+
+.ad-selector__platform {
+    width: 95%;
+
+    position: relative;
+
+    border-bottom: 1px solid #aaaaaa;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.ad-selector__platform:first-child {
+    padding-top: 0;
+}
+
+.ad-selector__platform:last-child {
+    border-bottom: none;
+}
+
+/*.ad-selector__label:hover .ad-selector__platform-descr {*/
+/*-webkit-line-clamp: unset;*/
+/*}*/
+
+.ad-selector__platform-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+
+    padding: 0 10px;
+    height: 100%;
+}
+
+.ad-selector__platform-icon {
+    border-radius: 50%;
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+
+    object-fit: contain;
+}
+
+.wrapper {
+    flex-basis: 80%;
+}
+
+.ad-selector__platform-name,
+.ad-selector__platform-descr {
+    margin: 0
+}
+
+.ad-selector__platform-descr {
+    /*http://hackingui.com/front-end/a-pure-css-solution-for-multiline-text-truncation!*/
+    /*overflow: hidden;*/
+    /*display: -webkit-box;*/
+    /*-webkit-line-clamp: 2;*/
+    /*-webkit-box-orient: vertical;*/
+
+    font-size: 14px;
+}
+
+.ad-selector__platform-button {
+    outline-color: transparent;
+    border: none;
+
+    background-color: black;
+    background-size: cover;
+
+    display: block;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    flex-shrink: 0;
+
+    transition: background-color .5s;
+}
+
+.ad-selector__platform-button-icon--settings {
+    -webkit-mask-image: url('img/settings.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+    cursor: pointer;
+}
+
+/* this class for settings buttons (they have no tooltip) */
+.ad-selector__platform-button--tooltip-settings:focus {
+    outline-color: #b5051a;
+}
+
+.ad-selector__platform-button-icon--active {
+    -webkit-mask-image: url('img/active.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button-icon--not-active {
+    -webkit-mask-image: url('img/not_active.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button-icon--changed {
+    -webkit-mask-image: url('img/changed.png');
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+}
+
+.ad-selector__platform-button ~ .checkmark {
+    background-color: transparent;
+}
+
+.alert-message {
+    font-size: 18px;
+}
+
+.ad-selector__remember-checkbox {
+    display: none;
+}
+
+.ad-selector__remember-label {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ad-selector__bottom {
+    width: 475px;
+    margin-left: auto;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ad-selector__modal-button {
+    float: right;
+}
+
+/*Tooltip*/
+.ad-selector__platform-button--tooltip {
+    background-color: transparent;
+}
+
+.ad-selector__platform-button--tooltip-active:before,
+.ad-selector__platform-button--tooltip-not-active:before,
+.ad-selector__platform-button--tooltip-changed:before {
+    content: "";
+    position: absolute;
+    left: 102%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 0;
+    height: 0;
+
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-right: 20px solid #f1f1f1;
+
+    opacity: 0;
+    transition: all .2s;
+}
+
+.ad-selector__platform-button--tooltip:after {
+    position: absolute;
+    left: 106%;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: block;
+    width: 75px;
+    height: 32px;
+    border-radius: 5px;
+
+    text-align: center;
+    line-height: 32px;
+
+    background-color: #f1f1f1;
+
+    opacity: 0;
+    transition: all .3s;
+}
+
+.ad-selector__platform-button--tooltip:hover:after {
+    left: 104%;
+}
+
+.ad-selector__platform-button--tooltip:hover:before {
+    left: 100%;
+}
+
+.ad-selector__platform-button--tooltip:hover:after,
+.ad-selector__platform-button--tooltip:hover:before {
+    opacity: 1;
+}
+
+.ad-selector__platform-button--tooltip-active:after {
+    content: "Active";
+}
+
+.ad-selector__platform-button--tooltip-not-active:after {
+    content: "Not active"
+}
+
+.ad-selector__platform-button--tooltip-changed:after {
+    content: "Changed";
+}
+
+/*Tooltip*/
