@@ -57,7 +57,7 @@ const Debugger = function (_debugger) {
 //
 // this.Debugger = Debugger
 
-export const WebviewWrapper = class {
+export class WebviewWrapper {
   constructor(webview, ipcRenderer, preload) {
     this.webview = webview;
     this.webview.preload = preload;

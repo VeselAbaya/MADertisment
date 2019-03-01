@@ -1,8 +1,14 @@
-import {updateStagesBarHTML} from './updateStagesBarHTML'
+import {updateStagesBarHTML} from './updateStagesBarHTML.js'
 
 export class StagesBar {
+  public container: HTMLUListElement;
+  public data: any[];
+  public currentURLIndex: number;
+  public currentURL: string;
+  public currentStageIndex: number;
+
   constructor(options) {
-    this.container = document.querySelector('.publish__stage-list');
+    this.container = <HTMLUListElement>document.querySelector('.publish__stage-list');
     this.data = options.data;
     this.currentURLIndex = 0;
     this.currentURL = options.data[0].url;
@@ -26,7 +32,7 @@ export class StagesBar {
     if (currentStageIcon) {
       currentStageIcon.classList.remove('publish__stage-icon--active');
 
-      const currentStage = currentStageIcon.parentNode;
+      const currentStage: HTMLElement = <HTMLElement>currentStageIcon.parentNode;
       const nextStage = currentStage.nextElementSibling;
       if (nextStage) {
         const nextStageIcon = nextStage.querySelector('.publish__stage-icon');

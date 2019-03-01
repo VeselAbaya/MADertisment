@@ -1,10 +1,15 @@
-import {formInit} from '../../../../components/formInit/formInit.component';
+import {formInit} from '../../../../components/formInit/formInit.component.js';
+import {PublishView} from '../PublishView/PublishView';
 
 export class IntervalField {
-  constructor(publishView) {
-    this.field = document.querySelector('#interval');
+  public field: HTMLInputElement;
+  private publishView: PublishView;
+  private timerId: Number;
 
-    this.field.moveLabel = true;
+  constructor(publishView) {
+    this.field = <HTMLInputElement>document.querySelector('#interval');
+
+    (<any>this.field).moveLabel = true;
     formInit([this.field]);
 
     this.publishView = publishView;
@@ -15,7 +20,9 @@ export class IntervalField {
       this.timerId = setInterval(() => {
         if (!this.publishView.nextStage()) {
           clearInterval(this.timerId);
-          this.publishView.nextURL();
+          setTimeout(() => {
+              this.publishView.nextURL();
+          }, 5000);
         }
       }, parseInt(this.field.value) * 1000);
     };
