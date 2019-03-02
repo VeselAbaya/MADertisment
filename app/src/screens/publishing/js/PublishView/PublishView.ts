@@ -16,8 +16,8 @@ export class PublishView extends EventEmitter {
     this.webviewWrapper = new WebviewWrapper(this.webview, ipcRenderer, './script-tools/preload.js');
     this.webview.src = this.stagesBar.currentURL;
 
-    this.webview.addEventListener('did-stop-loading', () => {
-        this.emit('loaded');
+    this.webview.addEventListener('did-finish-load', () => {
+      this.emit('loaded');
     });
   }
 
@@ -26,7 +26,6 @@ export class PublishView extends EventEmitter {
     if (this.stagesBar.currentStageIndex < stages.length) {
       const actions = stages[this.stagesBar.currentStageIndex].actions;
       this.webviewWrapper.performActions(actions);
-      setTimeout(() => {}, 6000);
     }
 
     return this.stagesBar.nextStage()

@@ -21,8 +21,8 @@ export class IntervalField {
         if (!this.publishView.nextStage()) {
           clearInterval(this.timerId);
           setTimeout(() => {
-              this.publishView.nextURL();
-          }, 5000);
+            this.publishView.nextURL();
+          }, 10000);
         }
       }, parseInt(this.field.value) * 1000);
     };
