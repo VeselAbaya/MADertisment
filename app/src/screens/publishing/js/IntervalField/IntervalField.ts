@@ -20,9 +20,6 @@ export class IntervalField {
       this.timerId = setInterval(() => {
         if (!this.publishView.nextStage()) {
           clearInterval(this.timerId);
-          setTimeout(() => {
-            this.publishView.nextURL();
-          }, 10000);
         }
       }, parseInt(this.field.value) * 1000);
     };
@@ -36,4 +33,5 @@ export class IntervalField {
       }
     })
   }
+
 }

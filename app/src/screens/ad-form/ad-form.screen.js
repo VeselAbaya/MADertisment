@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron'
 import {selectsInit} from '../../components/formInit/formInit.component'
-import {fileReadersList, PreviewList} from './js/PreviewList/PreviewList'
+import {fileUrlList, PreviewList} from './js/PreviewList/PreviewList'
 import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
 import _ from 'lodash'
 
@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
           case 'file':
             let filesArray = [];
-            fileReadersList.forEach(fileReader => {
-              filesArray.push(fileReader.result)
+            fileUrlList.forEach(fileUrl => {
+              console.log(fileUrl);
+              filesArray.push(fileUrl.path)
             });
 
             objArray.push(idParts.reduceRight((acc, currentValue) => {
@@ -45,9 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const reqBody = _.defaultsDeep(...objArray);
+      const submitRequest = new ApiRequest('submit', reqBody);
 
-      new ApiRequest('submit', reqBody);
-      ipcRenderer.send('adForm:submit')
+      submitRequest.once('success', (res) => {
+        ipcRenderer.send('adForm:submit');
+      });
+
+      submitRequest.send()
     });
 
     const previewList = new PreviewList();

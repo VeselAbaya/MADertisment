@@ -13,18 +13,20 @@ export class AccountDataAlert extends FormAlert {
 
     this.on('close', () => {
       adSelector.container.style.filter = '';
-      adSelector.modalClose();
+      adSelector.modalClose(adSelector.currentOpenedId);
     });
 
     this.on('formSubmit', (event) => {
       event.preventDefault();
-      let auth = adSelector.platformsAuth.find(el => el.id === adSelector.currentOpenedId);
 
-      for (let field of event.target) {
-        if (field.type !== 'submit') {
-          auth.authData[field.type] = field.value
-        }
+      const authData = adSelector.platformsAuth.find(el => el.id === adSelector.currentOpenedId).authData;
+      const fields = Array.from(document.querySelectorAll('.auth__form input'));
+  
+      for (let fieldName in authData) {
+        const field = fields.find(field => field.id === fieldName);
+        authData[field.id] = field.value;
       }
+      
     });
   }
 }

@@ -3,7 +3,11 @@ import {genHTML} from './genHTML'
 import {updateModalHTML} from './updateModalHTML'
 import {AccountDataAlert} from '../AccountDataAlert/AccountDataAlert';
 
+const path = require('path');
+const Store = require('../store.js');
+
 export class AdPlatformSelector {
+
   constructor(options) {
     this.platformsData = options.platformsData;               // Array
     this.platformsAuth = options.platformsAuth;               // Array
@@ -13,6 +17,9 @@ export class AdPlatformSelector {
     this.canChangeData = options.canChangeData;               // boolean
     this.container = options.container;                       // DOMElement
     this.modal = new AccountDataAlert(this);
+    this.store = new Store({
+      configName: 'user-auth-platforms'
+    });
     this.currentOpenedId = null;                              // Number
 
     options.container.querySelector('.ad-selector__platforms').insertAdjacentHTML('beforeend', genHTML(options));
@@ -41,6 +48,8 @@ export class AdPlatformSelector {
     });
 
     const rememberCheckbox = this.container.querySelector('.ad-selector__remember-checkbox');
+    rememberCheckbox.checked = this.standardPlatformsIds.length != 0;
+
     this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
       event.preventDefault();
       const selectedPlatformsIds = this.selectedPlatformsIds;
@@ -59,7 +68,7 @@ export class AdPlatformSelector {
       if (allAccountDataFilled) {
         ipcRenderer.send('adPlatformsSelector:submit', {
           selectedPlatforms: selectedPlatformsIds,
-          isStandardChoice: rememberCheckbox.checked
+          isDefaultSelect: rememberCheckbox.checked
         })
       }
     });
@@ -67,6 +76,18 @@ export class AdPlatformSelector {
     // error if all platforms are not active
     if (this.platformsData.every(platform => !platform.active)) {
       throw new Error('All platforms are not active')
+    }
+
+    for (let auth of this.platformsAuth) {
+      const id = auth.id;
+
+      for (let fieldName of auth.authField) {
+        const value = this.store.get('auth_data_' + id + "_" + fieldName);
+  
+        if(value != null) {
+          auth.authData[fieldName] = value
+        }
+      }
     }
   }
 
@@ -85,31 +106,29 @@ export class AdPlatformSelector {
       this.modal.open()
 
       // TODO when I will have account data
-      // const loginField = this.modal.container.querySelector('#login')
-      // const passwordField = this.modal.container.querySelector('#password')
-      //
-      // const authData = this.platformsAuth.find(el => el.id === this.currentOpenedId)
-      // if (authData) {
-      //     loginField.value = authData.login
-      //     passwordField.value = authData.password
-      // }
-      //
-      // if (loginField.value && passwordField.value) {
-      //     this.modal.container.querySelectorAll('.form-label').forEach(label => {
-      //         // TODO fix that SHIT!!!
-      //         focusLabel(label)
-      //     })
-      // }
+      const auth = this.platformsAuth.find(auth => auth.id === id)
+      console.log(auth);
+      for (let fieldName of auth.authField) {
+        const value = auth.authData[fieldName];
+        const field = this.modal.container.querySelector('#' + fieldName);
+
+        if(value != null) {
+          field.value = value; //value from storage
+        }
+      }
+
     }
   }
 
-  modalClose() {
-    // this.modal.container.querySelector('#login').value = ''
-    // this.modal.container.querySelector('#password').value = ''
-    // this.modal.container.querySelectorAll('.form-label').forEach(label => {
-    // TODO fix that SHIT!!!
-    // blurLabel(label)
-    // })
+  modalClose(id) {
+    for (let fieldName of this.platformsAuth.find(auth => auth.id === id).authField) {
+        const field = this.modal.container.querySelector('#' + fieldName);
+        const value = field.value; 
+
+        console.log(field);
+
+        this.store.set('auth_data_' + id + "_" + fieldName, value);
+      }
   }
 
   blinkSettings(id) {

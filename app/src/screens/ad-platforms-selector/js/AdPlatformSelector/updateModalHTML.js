@@ -25,7 +25,7 @@ export const updateModalHTML = (options, id) => {
   // fields values
   for (let fieldName in authData) {
     if (authData.hasOwnProperty(fieldName)) {
-      fields.find(field => field.type === fieldName).value = authData[fieldName]
+      fields.find(field => field.id === fieldName).value = authData[fieldName]
     }
   }
 

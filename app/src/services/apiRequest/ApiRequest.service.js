@@ -12,12 +12,28 @@ export class ApiRequest extends EventEmitter {
     super();
 
     this.url = `${domain}/api/${apiMethod}`;
-    this.apiMethod = apiMethod
+    this.apiMethod = apiMethod;
+    this.reqBody = reqBody;
   }
 
   send() {
     ipcRenderer.on('response:data', async (event, data) => {
       switch (this.apiMethod) {
+        case 'prolong':
+          axios({
+            method: 'post',
+            url: this.url,
+            headers: {token: data.user.userResponse.token},
+            data: {}
+          })
+            .then(res => {
+              this.emit('success', res)
+            })
+            .catch(err => {
+              this.emit('error', err)
+            });
+          break;
+
         case 'types':
           axios({
             method: 'post',
@@ -65,7 +81,7 @@ export class ApiRequest extends EventEmitter {
               sessionToken: data.session.token,
               sessionId: data.session.id,
               selectedPlatforms: data.platforms.selectedPlatforms,
-              isStandardChoice: data.platforms.isStandardChoice
+              isDefaultSelect: data.platforms.isDefaultSelect
             }
           })
             .then(res => {
@@ -85,7 +101,7 @@ export class ApiRequest extends EventEmitter {
               action: 'create',
               sessionToken: data.session.token,
               sessionId: data.session.id,
-              formData: reqBody
+              formData: this.reqBody
             }
           })
             .then(res => {

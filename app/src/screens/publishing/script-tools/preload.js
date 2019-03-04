@@ -12,6 +12,7 @@ ipcRenderer.on('fill-form', (event, data) => {
   queryes.forEach((query, index) => {
     setTimeout(function () {
       elem = document.querySelector(query['selector']);
+      console.log(query)
       if (elem == null) {
         console.error(query)
       } else {
@@ -19,6 +20,10 @@ ipcRenderer.on('fill-form', (event, data) => {
           case 'click':
             elem.focus();
             simulateMouseClick(elem);
+            break;
+          case "native-pick":
+            elem.focus()
+            ipcRenderer.sendToHost("input-text", {selector:query.selector, value:query.value})
             break;
           case 'value':
             elem.focus();

@@ -167,7 +167,7 @@ body {
 }
 
 .ad-selector__remember-checkbox {
-    display: none;
+    /*display: none;*/
 }
 
 .ad-selector__remember-label {

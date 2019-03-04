@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const apiPlatformsRequest = new ApiRequest('platforms');
   apiPlatformsRequest.on('success', (res) => {
     const platformsData = res.data.adPlatforms;
+    const defaultAdPlatforms = res.data.defaultAdPlatforms;
+
     loaderDown();
     adSelectorContainer.style.display = 'block';
 
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       new AdPlatformSelector({
         platformsData: platformsData,
-        standardPlatformsIds: [], // TODO take form server
+        standardPlatformsIds: defaultAdPlatforms, // TODO take form server
         container: document.querySelector('.ad-selector'),
         canChangeData: true,
         showCheckboxes: true,

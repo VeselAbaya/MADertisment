@@ -10,6 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const intervalField = new IntervalField(publishView);
     publishView.on('loaded', () => {
       intervalField.startTimer();
+
+      if (publishView.isLastStage()) {
+        publishView.nextURL();
+      }
+    })
+
+    const playPauseButton = document.querySelector('#publish__screen-play-pause');
+    playPauseButton.addEventListener('click', () => {
+      var text = playPauseButton.innerHTML;
+
+      if(text == "Продолжить") {
+        publishView.play();
+      }
+      else if(text == "Пауза") {
+        publishView.pause();
+      }
     })
   });
 

@@ -2,6 +2,7 @@ import EventEmitter from 'events'
 import {photosInputInit, dragNDropInit, removeButtonsInit} from './init';
 
 export const fileReadersList = [];
+export const fileUrlList = [];
 
 export class PreviewList extends EventEmitter {
   constructor() {
@@ -35,6 +36,7 @@ export class PreviewList extends EventEmitter {
     for (let i = 0; i !== filesList.length; ++i) {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(filesList[i]);
+      fileUrlList.push(filesList[i]);
       fileReadersList.push(fileReader);
 
       const imgs = document.querySelectorAll('.preview__list-image');

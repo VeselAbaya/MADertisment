@@ -15,12 +15,48 @@ export class StagesBar {
     this.currentStageIndex = 0;
 
     updateStagesBarHTML(this)
+    this.initBreakpointsListeners()
+  }
+
+  initBreakpointsListeners() {
+    let icons = document.querySelectorAll('.publish__stage-icon');
+    for (let i = 0; i < icons.length; i++) {
+      icons[i].addEventListener('click', () => {
+          let breakpoint = this.data[this.currentURLIndex].stages[i].breakpoint;
+
+          if(breakpoint === undefined) {
+            this.data[this.currentURLIndex].stages[i].breakpoint = true;
+          } else {
+            this.data[this.currentURLIndex].stages[i].breakpoint = !breakpoint;
+          }
+
+          if(this.data[this.currentURLIndex].stages[i].breakpoint === true) {
+            icons[i].style.backgroundColor='#ff0000';
+          } else {
+            icons[i].style.backgroundColor='#cecece';
+          }
+      })
+    }
+  }
+
+  removeBreakpointFor(stage) {
+    stage.isBreakpoint = false;
+
+    let icons = document.querySelectorAll('.publish__stage-icon');
+    const stages = this.data[this.currentURLIndex].stages;
+    for (let i = 0; i < icons.length; i++) {
+      if(stages[i].name == stage.name) {
+        this.data[this.currentURLIndex].stages[i].breakpoint = false;
+        icons[i].style.backgroundColor='#cecece';
+      }
+    }
   }
 
   nextURL() {
     if (++this.currentURLIndex !== this.data.length) {
       this.currentURL = this.data[this.currentURLIndex].url;
       updateStagesBarHTML(this)
+      this.initBreakpointsListeners()
     }
   }
 
