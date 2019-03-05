@@ -2,7 +2,7 @@
   "name": "mad",
   "version": "1.0.0",
   "description": "",
-  "main": "./app/main.js",
+  "main": "./app/pc/main.js",
   "scripts": {
     "start": "electron ."
   },

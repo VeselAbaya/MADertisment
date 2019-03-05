@@ -3,9 +3,6 @@ import {genHTML} from './genHTML'
 import {updateModalHTML} from './updateModalHTML'
 import {AccountDataAlert} from '../AccountDataAlert/AccountDataAlert';
 
-const path = require('path');
-const Store = require('../store.js');
-
 export class AdPlatformSelector {
 
   constructor(options) {
@@ -17,9 +14,6 @@ export class AdPlatformSelector {
     this.canChangeData = options.canChangeData;               // boolean
     this.container = options.container;                       // DOMElement
     this.modal = new AccountDataAlert(this);
-    this.store = new Store({
-      configName: 'user-auth-platforms'
-    });
     this.currentOpenedId = null;                              // Number
 
     options.container.querySelector('.ad-selector__platforms').insertAdjacentHTML('beforeend', genHTML(options));
@@ -48,7 +42,7 @@ export class AdPlatformSelector {
     });
 
     const rememberCheckbox = this.container.querySelector('.ad-selector__remember-checkbox');
-    rememberCheckbox.checked = this.standardPlatformsIds.length != 0;
+    rememberCheckbox.checked = this.standardPlatformsIds.length !== 0;
 
     this.container.querySelector('.ad-selector__form').addEventListener('submit', () => {
       event.preventDefault();
@@ -59,7 +53,7 @@ export class AdPlatformSelector {
         const auth = this.platformsAuth.find(auth => auth.id === id);
         const authDataValuesArray = Object.values(auth.authData);
         if (authDataValuesArray.length === 0 ||
-          authDataValuesArray.some(value => value === '')) {
+            authDataValuesArray.some(value => value === '')) {
           allAccountDataFilled = false;
           this.blinkSettings(id)
         }
@@ -78,21 +72,24 @@ export class AdPlatformSelector {
       throw new Error('All platforms are not active')
     }
 
-    for (let auth of this.platformsAuth) {
-      const id = auth.id;
-
-      for (let fieldName of auth.authField) {
-        const value = this.store.get('auth_data_' + id + "_" + fieldName);
-  
-        if(value != null) {
-          auth.authData[fieldName] = value
-        }
+    // auth data Init
+    ipcRenderer.once('adPlatformsSelector:authDataResponse', (event, store) => {
+      for (let auth of this.platformsAuth) {
+       const id = auth.id;
+       for (let fieldName of auth.authField) {
+         const value = store.data['auth_data_' + id + "_" + fieldName];
+         if(value != null) {
+           auth.authData[fieldName] = value
+         }
+       }
       }
-    }
+    });
+
+    ipcRenderer.send('adPlatformsSelector:authDataRequest');
   }
 
   get selectedPlatformsIds() {
-    const checkboxes = this.container.querySelectorAll('.form-checkbox');
+    const checkboxes = this.container.querySelectorAll('.ad-selector__platforms .form-checkbox');
     return Array.from(checkboxes)
       .filter(el => el.checked === true)
       .map(el => parseInt(el.id))
@@ -103,17 +100,15 @@ export class AdPlatformSelector {
       this.currentOpenedId = id;
 
       updateModalHTML(this, id);
-      this.modal.open()
+      this.modal.open();
 
-      // TODO when I will have account data
-      const auth = this.platformsAuth.find(auth => auth.id === id)
-      console.log(auth);
+      const auth = this.platformsAuth.find(auth => auth.id === id);
       for (let fieldName of auth.authField) {
         const value = auth.authData[fieldName];
         const field = this.modal.container.querySelector('#' + fieldName);
 
         if(value != null) {
-          field.value = value; //value from storage
+          field.value = value; // value from storage
         }
       }
 
@@ -121,14 +116,7 @@ export class AdPlatformSelector {
   }
 
   modalClose(id) {
-    for (let fieldName of this.platformsAuth.find(auth => auth.id === id).authField) {
-        const field = this.modal.container.querySelector('#' + fieldName);
-        const value = field.value; 
 
-        console.log(field);
-
-        this.store.set('auth_data_' + id + "_" + fieldName, value);
-      }
   }
 
   blinkSettings(id) {

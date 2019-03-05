@@ -1,3 +1,4 @@
+import {ipcRenderer} from 'electron';
 import {FormAlert} from '../../../../components/modal/modal.component';
 
 export class AccountDataAlert extends FormAlert {
@@ -25,8 +26,14 @@ export class AccountDataAlert extends FormAlert {
       for (let fieldName in authData) {
         const field = fields.find(field => field.id === fieldName);
         authData[field.id] = field.value;
+
+        // saving data in pc local storage
+        ipcRenderer.send('adPlatformsSelector:authDataSave', {
+          id: adSelector.currentOpenedId,
+          fieldName: fieldName,
+          value: field.value
+        })
       }
-      
     });
   }
 }

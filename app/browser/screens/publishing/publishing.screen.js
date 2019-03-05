@@ -14,16 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (publishView.isLastStage()) {
         publishView.nextURL();
       }
-    })
+    });
 
     const playPauseButton = document.querySelector('#publish__screen-play-pause');
     playPauseButton.addEventListener('click', () => {
-      var text = playPauseButton.innerHTML;
+      const text = playPauseButton.innerHTML;
 
-      if(text == "Продолжить") {
+      if (text === "Продолжить") {
         publishView.play();
       }
-      else if(text == "Пауза") {
+      else if (text === "Пауза") {
         publishView.pause();
       }
     })
