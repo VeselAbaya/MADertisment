@@ -48,7 +48,6 @@ export class AdPlatformSelector {
       event.preventDefault();
       const selectedPlatformsIds = this.selectedPlatformsIds;
 
-      console.log(selectedPlatformsIds);
       let allAccountDataFilled = true;
       selectedPlatformsIds.forEach(id => {
         const auth = this.platformsAuth.find(auth => auth.id === id);
@@ -91,7 +90,6 @@ export class AdPlatformSelector {
 
   get selectedPlatformsIds() {
     const checkboxes = this.container.querySelectorAll('.ad-selector__platforms .form-checkbox');
-    console.log(checkboxes);
     return Array.from(checkboxes)
       .filter(el => el.checked === true)
       .map(el => parseInt(el.id))

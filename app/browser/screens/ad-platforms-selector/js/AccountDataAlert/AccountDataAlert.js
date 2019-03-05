@@ -27,22 +27,13 @@ export class AccountDataAlert extends FormAlert {
         const field = fields.find(field => field.id === fieldName);
         authData[field.id] = field.value;
 
+        // saving data in pc local storage
         ipcRenderer.send('adPlatformsSelector:authDataSave', {
           id: adSelector.currentOpenedId,
           fieldName: fieldName,
           value: field.value
         })
       }
-
-      // // saving data in pc local storage
-      // for (let fieldName of this.platformsAuth.find(auth => auth.id === id).authField) {
-      //   const field = this.modal.container.querySelector('#' + fieldName);
-      //   const value = field.value;
-      //
-      //   ipcRenderer.send('adPlatformsSelector:authDataSave', {
-      //     id, fieldName, value
-      //   })
-      // }
     });
   }
 }

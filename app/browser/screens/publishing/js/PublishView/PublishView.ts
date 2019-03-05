@@ -18,7 +18,10 @@ export class PublishView extends EventEmitter {
     this.webview.src = this.stagesBar.currentURL;
 
     this.webview.addEventListener('did-finish-load', () => {
-      this.emit('loaded');
+      const URLArray = this.stagesBar.data.map(el => el.url);
+      if (URLArray.indexOf(this.webview.getURL()) !== -1) {
+        this.emit('loaded');
+      }
     });
   }
 
@@ -28,8 +31,8 @@ export class PublishView extends EventEmitter {
 
     this.onPause = false;
 
-    const allStagesLength = this.currentStagesLength();
-    const stages = this.stagesBar.data[this.stagesBar.currentURLIndex].stages
+    const allStagesLength = this.currentStagesLength;
+    const stages = this.stagesBar.data[this.stagesBar.currentURLIndex].stages;
     let stage = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length) - 1];
     if(stage !== undefined && stage.breakpoint === true) {
       this.stagesBar.removeBreakpointFor(stage);
@@ -45,9 +48,9 @@ export class PublishView extends EventEmitter {
     this.onPause = true;
   }
 
-  currentStagesLength() {
-    var stagesLength = 0;
-    for(var i = 0; i <= this.stagesBar.currentURLIndex; i++) {
+  get currentStagesLength() {
+    let stagesLength = 0;
+    for(let i = 0; i <= this.stagesBar.currentURLIndex; i++) {
       const stages = this.stagesBar.data[i].stages;
       stagesLength += stages.length;
     }
@@ -56,13 +59,13 @@ export class PublishView extends EventEmitter {
   }
 
   isLastStage() {
-    return this.stagesBar.currentStageIndex >= this.currentStagesLength() - 1;
+    return this.stagesBar.currentStageIndex >= this.currentStagesLength - 1;
   }
 
   nextStage() {
     const stages = this.stagesBar.data[this.stagesBar.currentURLIndex].stages;
-    const allStagesLength = this.currentStagesLength();
-    const stage = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length)]
+    const allStagesLength = this.currentStagesLength;
+    const stage = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length)];
 
     if(this.onPause) {
       return false;
@@ -91,6 +94,6 @@ export class PublishView extends EventEmitter {
   nextURL() {
     this.stagesBar.nextURL();
 
-    this.webview.src = this.stagesBar.currentURL; // in webviewWrapper changes too
+    this.webview.loadURL(this.stagesBar.currentURL); // in webviewWrapper changes too
   }
 }
