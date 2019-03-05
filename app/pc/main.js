@@ -1,18 +1,23 @@
 const electron = require('electron');
 const fs = require('fs');
+const Store = require('./Store/Store');
 
 const {app, BrowserWindow, ipcMain, session} = electron;
 
 const paths = {
-  auth: `file://${__dirname}/src/screens/auth-form/auth-form.screen.html`,
-  adPlatformSelector: `file://${__dirname}/src/screens/ad-platforms-selector/ad-platforms-selector.screen.html`,
-  adTypeSelector: `file://${__dirname}/src/screens/ad-type-selector/ad-type-selector.screen.html`,
-  publishing: `file://${__dirname}/src/screens/publishing/publishing.screen.html`,
-  adForm: `file://${__dirname}/src/screens/ad-form/ad-form.screen.html`,
+  auth: `file://${__dirname}/../browser/screens/auth-form/auth-form.screen.html`,
+  adPlatformSelector: `file://${__dirname}/../browser/screens/ad-platforms-selector/ad-platforms-selector.screen.html`,
+  adTypeSelector: `file://${__dirname}/../browser/screens/ad-type-selector/ad-type-selector.screen.html`,
+  publishing: `file://${__dirname}/../browser/screens/publishing/publishing.screen.html`,
+  adForm: `file://${__dirname}/../browser/screens/ad-form/ad-form.screen.html`,
   data: './app/data/',
   dataUser: './app/data/user.json',
   dataAuth: './app/data/auth-data.json',
 };
+
+const store = new Store({
+  configName: 'user-auth-platforms'
+});
 
 let prevPagePath = '';
 
@@ -78,5 +83,13 @@ app.on('ready', () => {
 
   ipcMain.on('adForm:submit', () => {
     mainWindow.loadURL(paths.publishing)
-  })
+  });
+
+  ipcMain.on('adPlatformsSelector:authDataSave', (event, data) => {
+    store.set('auth_data_' + data.id + "_" + data.fieldName, data.value);
+  });
+
+  ipcMain.on('adPlatformsSelector:authDataRequest', (event) => {
+    mainWindow.webContents.send('adPlatformsSelector:authDataResponse', store)
+  });
 });

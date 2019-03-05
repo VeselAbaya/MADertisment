@@ -31,12 +31,13 @@ export const genHTML = (options, id) => {
   let markup = '';
   for (let data of options.platformsData) {
     const buttonData = button(data);
+
     markup += `
       <li class="ad-selector__platform">
         <label class="form-checkbox-label">
           <input class="form-checkbox" id="${data.id}" 
            ${options.showCheckboxes && data.active ? '' : 'disabled'} type="checkbox"
-           ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked' : ''}>
+           ${options.standardPlatformsIds.includes(data.id) && data.active ? 'checked' : ''}> 
           <span class="checkmark" 
             style="${options.showCheckboxes ? '' : 'display: none'}"></span>
           <div class="ad-selector__platform-info">

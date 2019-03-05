@@ -20,19 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
       return {
         id: platform.id,
         authField: platform.authField,
-        authData: platform.authData || {} // TODO there is nothing
+        authData: /*in case if auth data comes from server*/ platform.authData || {}
       }
     });
 
     try {
       new AdPlatformSelector({
         platformsData: platformsData,
-        standardPlatformsIds: defaultAdPlatforms, // TODO take form server
+        standardPlatformsIds: defaultAdPlatforms,
         container: document.querySelector('.ad-selector'),
         canChangeData: true,
         showCheckboxes: true,
         showStatuses: true,
-        platformsAuth: platformsAuth // TODO take form server
+        platformsAuth: platformsAuth
       })
     }
     catch (err) {

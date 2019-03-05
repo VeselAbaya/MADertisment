@@ -21,13 +21,12 @@ class Store {
   }
 }
 
-function parseDataFile(filePath) {
+const parseDataFile = (filePath) => {
   try {
-    let result = JSON.parse(fs.readFileSync(filePath));
-    return result;
+    return JSON.parse(fs.readFileSync(filePath));
   } catch(error) {
     return {};
   }
-}
+};
 
 module.exports = Store;

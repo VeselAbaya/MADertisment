@@ -2,6 +2,7 @@
 @import "../../components/loader/loader.component.css";
 @import "../../components/formInit/formInit.component.css";
 @import "../../components/button/button.component.css";
+@import "../../components/modal/networkAlert.component.css";
 
 body {
     width: 100%;
