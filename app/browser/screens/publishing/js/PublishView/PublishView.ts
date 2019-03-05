@@ -18,10 +18,7 @@ export class PublishView extends EventEmitter {
     this.webview.src = this.stagesBar.currentURL;
 
     this.webview.addEventListener('did-finish-load', () => {
-      const URLArray = this.stagesBar.data.map(el => el.url);
-      if (URLArray.indexOf(this.webview.getURL()) !== -1) {
-        this.emit('loaded');
-      }
+      this.emit('loaded');
     });
   }
 
