@@ -22,15 +22,15 @@ export class AccountDataAlert extends FormAlert {
 
       const authData = adSelector.platformsAuth.find(el => el.id === adSelector.currentOpenedId).authData;
       const fields = Array.from(document.querySelectorAll('.auth__form input'));
-  
-      for (let fieldName in authData) {
-        const field = fields.find(field => field.id === fieldName);
+      console.log(fields);
+
+      for (let field of fields) {
         authData[field.id] = field.value;
 
         // saving data in pc local storage
         ipcRenderer.send('adPlatformsSelector:authDataSave', {
           id: adSelector.currentOpenedId,
-          fieldName: fieldName,
+          fieldName: field.id,
           value: field.value
         })
       }
