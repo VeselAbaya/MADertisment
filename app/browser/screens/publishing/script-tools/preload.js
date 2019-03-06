@@ -8,7 +8,7 @@ ipcRenderer.on('webview_did-finish-load', (event, data) => {
 })
 
 ipcRenderer.on('fill-form', (event, data) => {
-  queryes = data.queryes
+  queryes = data.actions
   queue = new Queue()
   queryes.forEach((query, index) =>  {
     queue.addAction(callWithMinCallbackDelay.bind(this, function (callback) {

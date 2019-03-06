@@ -1,22 +1,24 @@
-const Debugger = function (_debugger){
-  _debugger.attach("1.1");
-  this.debugger = _debugger
+class Debugger{
+  constructor(_debugger){
+    _debugger.attach("1.1");
+    this.debugger = _debugger
+  }
 
-  this.attach = function(){
+  attach(){
     _debugger.attach("1.1");
   }
 
-  this.detach = function(){
+  detach(){
     if (_debugger){
       _debugger.detach();
     }
   }
 
-  this.getDocument = function(callback = ()=>{}) {
+  getDocument(callback = ()=>{}) {
     this.debugger.sendCommand("DOM.getDocument", {}, callback)
   };
 
-  this.qSelector = function(selector, callback = ()=>{}) {
+  qSelector(selector, callback = ()=>{}) {
     this.getDocument((err,res) => {
       this.debugger.sendCommand("DOM.querySelector",
         {
@@ -28,7 +30,7 @@ const Debugger = function (_debugger){
     })
   }
 
-  this.focus = function(selector, callback = ()=>{}) {
+ focus(selector, callback = ()=>{}) {
     this.qSelector(selector, (err,res)=>{
       this.debugger.sendCommand("DOM.focus",
         {nodeId: res.nodeId,},
@@ -37,11 +39,11 @@ const Debugger = function (_debugger){
     })
   }
 
-  this.typeChar = function(char, callback = ()=>{}) {
+  typeChar(char, callback = ()=>{}) {
     this.debugger.sendCommand("Input.dispatchKeyEvent", { type: 'char', text: char }, callback)
   }
 
-  this.uploadFile = function(selector, filePath, callback = ()=>{}){
+  uploadFile(selector, filePath, callback = ()=>{}){
     if (!Array.isArray(filePath)){
       filePath = [filePath]
     }
@@ -57,9 +59,7 @@ const Debugger = function (_debugger){
   }
 }
 
-this.Debugger = Debugger
-
-Queue = class {
+class Queue{
   constructor(){
     this.actions = [];
   }
@@ -77,8 +77,6 @@ Queue = class {
   }
 }
 
-this.Queue = Queue
-
 EventTarget.prototype.addEventListenerRunOnce = function(name, callback) {
   const eventWrapper = (event) => {
     this.removeEventListener(name, eventWrapper);
@@ -88,7 +86,7 @@ EventTarget.prototype.addEventListenerRunOnce = function(name, callback) {
   this.addEventListener(name, eventWrapper);
 };
 
-this.simulateMouseClick = function (element, callback = ()=>{}){
+function simulateMouseClick(element, callback = ()=>{}){
   const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
   mouseClickEvents.forEach(mouseEventType =>
     element.dispatchEvent(
@@ -103,7 +101,7 @@ this.simulateMouseClick = function (element, callback = ()=>{}){
   callback();
 }
 
-this.callWithMinCallbackDelay = function(func, timeout, callback) {
+function callWithMinCallbackDelay(func, timeout, callback) {
   let someoneDone = false
   function doneHandler() {
     if (someoneDone){
@@ -116,7 +114,7 @@ this.callWithMinCallbackDelay = function(func, timeout, callback) {
   func(doneHandler)
 }
 
-this.WebviewWrapper = class extends EventTarget{
+class WebviewWrapper extends EventTarget{
   constructor(webview, ipcRenderer, preload){
     super()
 
@@ -205,3 +203,5 @@ this.WebviewWrapper = class extends EventTarget{
     })
   }
 };
+
+module.exports = {Debugger, Queue, WebviewWrapper, callWithMinCallbackDelay, simulateMouseClick}
