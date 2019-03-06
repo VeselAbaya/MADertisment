@@ -17,9 +17,14 @@ export class PublishView extends EventEmitter {
     this.webviewWrapper = new WebviewWrapper(this.webview, ipcRenderer, './script-tools/preload.js');
     this.webview.src = this.stagesBar.currentURL;
 
-    this.webview.addEventListener('did-finish-load', () => {
-      this.emit('loaded');
+    // to avoid multiple timers
+    this.on('url-start-loading', () => {
+      this.webview.addEventListener('did-finish-load', () => {
+        this.emit('loaded');
+      }, {once: true});
     });
+
+    // this.emit('url-start-loading');
   }
 
   play() {
@@ -92,5 +97,6 @@ export class PublishView extends EventEmitter {
     this.stagesBar.nextURL();
 
     this.webview.loadURL(this.stagesBar.currentURL); // in webviewWrapper changes too
+    this.emit('url-start-loading');
   }
 }
