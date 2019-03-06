@@ -18,21 +18,27 @@ export class ApiRequest extends EventEmitter {
 
   send() {
     ipcRenderer.on('response:data', async (event, data) => {
+
       switch (this.apiMethod) {
         case 'prolong':
-          axios({
-            method: 'post',
-            url: this.url,
-            headers: {token: data.user.userResponse.token},
-            data: {}
-          })
-            .then(res => {
-              this.emit('success', res)
+          if (data.user.userResponse) {
+            axios({
+              method: 'post',
+              url: this.url,
+              headers: {token: data.user.userResponse.token},
+              data: {}
             })
-            .catch(err => {
-              this.emit('error', err)
-            });
-          break;
+              .then(res => {
+                this.emit('success', res)
+              })
+              .catch(err => {
+                this.emit('error', err)
+              });
+          }
+          else {
+            this.emit('error');
+          }
+        break;
 
         case 'types':
           axios({

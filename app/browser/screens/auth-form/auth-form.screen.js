@@ -6,7 +6,6 @@ import {loaderDown, loaderUp} from '../../components/loader/loader.component'
 import {formInit, submitButtonStatus} from '../../components/formInit/formInit.component'
 import {domain} from '../../domain';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   const submitButton = document.querySelector('#auth__form-submit');
   const fields = {
