@@ -77,8 +77,8 @@ export class AdPlatformSelector {
       for (let auth of this.platformsAuth) {
        const id = auth.id;
        for (let fieldName of auth.authField) {
-         const value = store.data['auth_data_' + id + "_" + fieldName];
-         if(value != null) {
+         const value = store.data[`auth_data_${id}_${fieldName}`];
+         if(value) {
            auth.authData[fieldName] = value
          }
        }
@@ -107,7 +107,7 @@ export class AdPlatformSelector {
         const value = auth.authData[fieldName];
         const field = this.modal.container.querySelector('#' + fieldName);
 
-        if(value != null) {
+        if(value) {
           field.value = value; // value from storage
         }
       }

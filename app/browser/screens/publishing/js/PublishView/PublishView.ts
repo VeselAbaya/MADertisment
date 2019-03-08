@@ -72,16 +72,26 @@ export class PublishView extends EventEmitter {
 
     if (this.stagesBar.currentStageIndex < allStagesLength) {
       const actions = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length)].actions;
-      console.log(actions)
-      console.log(this.webviewWrapper.performActions)
-      this.webviewWrapper.performActions(actions, ()=>{console.log("perfomActions Callback")});
+      ipcRenderer.on('adPlatformsSelector:authDataResponse', (event, store) => {
+        actions.forEach(action => {
+          if (['phone', 'city', 'password', 'email', 'login'].indexOf(action.value) !== -1) {
+            action.value = store.data[`auth_data${stage.id}_${action.value}`]
+          }
+        });
 
-      let result = this.stagesBar.nextStage();
-      if(stage !== undefined && stage.breakpoint === true) {
-        this.pause();
-      }
+        console.log(actions)
+        console.log(this.webviewWrapper.performActions)
+        this.webviewWrapper.performActions(actions, ()=>{console.log("perfomActions Callback")});
 
-      return result;
+        let result = this.stagesBar.nextStage();
+        if(stage !== undefined && stage.breakpoint === true) {
+            this.pause();
+        }
+
+        return result;
+      });
+
+      ipcRenderer.send('adPlatformsSelector:authDataRequest');
     }
     else {
       if(stage !== undefined && stage.breakpoint === true) {
