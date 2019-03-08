@@ -19,7 +19,9 @@ export class PublishView extends EventEmitter {
     console.log(this.webviewWrapper.performActions) // BUG: says is not a func??????? WTF?
     this.webview.src = this.stagesBar.currentURL;
 
-
+    this.webview.addEventListener('did-finish-load', () => {
+      this.emit('loaded')
+    }, {once: true});
 
     // this.emit('url-start-loading');
   }
@@ -75,7 +77,8 @@ export class PublishView extends EventEmitter {
       ipcRenderer.on('adPlatformsSelector:authDataResponse', (event, store) => {
         actions.forEach(action => {
           if (['phone', 'city', 'password', 'email', 'login'].indexOf(action.value) !== -1) {
-            action.value = store.data[`auth_data${stage.id}_${action.value}`]
+            const id = this.stagesBar.data[this.stagesBar.currentURLIndex].id;
+            action.value = store.data[`auth_data_${id}_${action.value}`]
           }
         });
 
