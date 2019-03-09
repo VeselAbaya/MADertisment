@@ -32,10 +32,10 @@ export class StagesBar {
         }
 
         if(this.data[this.currentURLIndex].stages[i].breakpoint === true) {
-          icons[i].style.backgroundColor='#ff0000';
+          icons[i].classList.add('publish__stage-icon--breakpoint');
         }
         else {
-          icons[i].style.backgroundColor='#cecece';
+          icons[i].classList.remove('publish__stage-icon--breakpoint');
         }
       })
     }

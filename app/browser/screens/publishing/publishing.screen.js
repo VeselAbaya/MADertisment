@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = playPauseButton.innerHTML;
 
       if (text === "Продолжить") {
-        publishView.play();
+        intervalField.play();
       }
       else if (text === "Пауза") {
-        publishView.pause();
+        intervalField.pause();
       }
     })
   });

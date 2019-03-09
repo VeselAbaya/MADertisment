@@ -67,7 +67,7 @@ export class PublishView extends EventEmitter {
     const stage = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length)];
 
     if(this.onPause) {
-      return false;
+      return true;
     }
 
     if (this.stagesBar.currentStageIndex < allStagesLength) {

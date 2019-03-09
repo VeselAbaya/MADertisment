@@ -17,6 +17,16 @@ export class IntervalField {
     this.isWorking = false;
   }
 
+  play() {
+    this.isWorking = true;
+    this.publishView.play();
+  }
+
+  pause() {
+    this.isWorking = false;
+    this.publishView.pause();
+  }
+
   startTimer() {
     const setTimer = () => {
       this.timerId = setInterval(() => {
