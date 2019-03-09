@@ -5,6 +5,7 @@ export class IntervalField {
   public field: HTMLInputElement;
   private publishView: PublishView;
   private timerId: Number;
+  public isWorking: boolean;
 
   constructor(publishView) {
     this.field = <HTMLInputElement>document.querySelector('#interval');
@@ -13,6 +14,7 @@ export class IntervalField {
     formInit([this.field]);
 
     this.publishView = publishView;
+    this.isWorking = false;
   }
 
   startTimer() {
@@ -20,8 +22,11 @@ export class IntervalField {
       this.timerId = setInterval(() => {
         if (!this.publishView.nextStage()) {
           clearInterval(this.timerId);
+          this.isWorking = false;
         }
       }, parseInt(this.field.value) * 1000);
+
+      this.isWorking = true;
     };
 
     setTimer();

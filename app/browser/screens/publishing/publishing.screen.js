@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const intervalField = new IntervalField(publishView);
     publishView.on('loaded', () => {
-      intervalField.startTimer();
+      if (!intervalField.isWorking) {
+        intervalField.startTimer();
+      }
 
       if (publishView.isLastStage()) {
         publishView.nextURL();

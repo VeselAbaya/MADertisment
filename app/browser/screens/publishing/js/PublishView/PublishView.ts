@@ -17,6 +17,10 @@ export class PublishView extends EventEmitter {
     this.webviewWrapper = new WebviewWrapper(this.webview, ipcRenderer, './script-tools/preload.js');
     this.webviewWrapper.loadUrl(this.stagesBar.currentURL, ()=>{this.emit('loaded')} );
 
+    this.webview.addEventListener('did-finish-load', () => {
+      this.emit('loaded');
+    })
+
     // this.emit('url-start-loading');
   }
 
@@ -68,7 +72,7 @@ export class PublishView extends EventEmitter {
 
     if (this.stagesBar.currentStageIndex < allStagesLength) {
       const actions = stages[this.stagesBar.currentStageIndex - (allStagesLength - stages.length)].actions;
-      ipcRenderer.on('adPlatformsSelector:authDataResponse', (event, store) => {
+      ipcRenderer.once('adPlatformsSelector:authDataResponse', (event, store) => {
         actions.forEach(action => {
           if (['phone', 'city', 'password', 'email', 'login'].indexOf(action.value) !== -1) {
             const id = this.stagesBar.data[this.stagesBar.currentURLIndex].id;
@@ -77,7 +81,6 @@ export class PublishView extends EventEmitter {
         });
 
         console.log(actions)
-        console.log(this.webviewWrapper.performActions)
         this.webviewWrapper.performActions({actions:actions}, ()=>{console.log("perfomActions Callback")});
       });
 
@@ -85,7 +88,7 @@ export class PublishView extends EventEmitter {
 
       let result = this.stagesBar.nextStage();
       if(stage !== undefined && stage.breakpoint === true) {
-          this.pause();
+        this.pause();
       }
 
       return result;
