@@ -15,13 +15,7 @@ export class PublishView extends EventEmitter {
     this.stagesBar = new StagesBar(options);
     this.webview = document.querySelector('webview');
     this.webviewWrapper = new WebviewWrapper(this.webview, ipcRenderer, './script-tools/preload.js');
-    console.log(this.webviewWrapper)
-    console.log(this.webviewWrapper.performActions) // BUG: says is not a func??????? WTF?
-    this.webview.src = this.stagesBar.currentURL;
-
-    this.webview.addEventListener('did-finish-load', () => {
-      this.emit('loaded')
-    }, {once: true});
+    this.webviewWrapper.loadUrl(this.stagesBar.currentURL, ()=>{this.emit('loaded')} );
 
     // this.emit('url-start-loading');
   }
@@ -84,7 +78,7 @@ export class PublishView extends EventEmitter {
 
         console.log(actions)
         console.log(this.webviewWrapper.performActions)
-        this.webviewWrapper.performActions(actions, ()=>{console.log("perfomActions Callback")});
+        this.webviewWrapper.performActions({actions:actions}, ()=>{console.log("perfomActions Callback")});
 
         let result = this.stagesBar.nextStage();
         if(stage !== undefined && stage.breakpoint === true) {
@@ -108,6 +102,6 @@ export class PublishView extends EventEmitter {
   nextURL() {
     this.stagesBar.nextURL();
 
-    webviewWrapper.loadUrl(this.stagesBar.currentURL, ()=>{this.emit('loaded')} );
+    this.webviewWrapper.loadUrl(this.stagesBar.currentURL, ()=>{this.emit('loaded')} );
   }
 }

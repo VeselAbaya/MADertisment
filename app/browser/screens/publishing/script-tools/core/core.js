@@ -128,7 +128,7 @@ class WebviewWrapper extends EventTarget{
 
 
   }
-  perfomActions(actionList, callback){
+  performActions(actionList, callback){
     this.ipcRenderer.send("focus")
     this.webview.focus()
     actionList.callback_channel = Math.random().toString(36);
