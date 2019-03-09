@@ -79,16 +79,16 @@ export class PublishView extends EventEmitter {
         console.log(actions)
         console.log(this.webviewWrapper.performActions)
         this.webviewWrapper.performActions({actions:actions}, ()=>{console.log("perfomActions Callback")});
-
-        let result = this.stagesBar.nextStage();
-        if(stage !== undefined && stage.breakpoint === true) {
-            this.pause();
-        }
-
-        return result;
       });
 
       ipcRenderer.send('adPlatformsSelector:authDataRequest');
+
+      let result = this.stagesBar.nextStage();
+      if(stage !== undefined && stage.breakpoint === true) {
+          this.pause();
+      }
+
+      return result;
     }
     else {
       if(stage !== undefined && stage.breakpoint === true) {
