@@ -5,12 +5,12 @@ class Debugger{
   }
 
   attach(){
-    _debugger.attach("1.1");
+    this.debugger.attach("1.1");
   }
 
   detach(){
-    if (_debugger){
-      _debugger.detach();
+    if (this.debugger){
+      this.debugger.detach();
     }
   }
 
