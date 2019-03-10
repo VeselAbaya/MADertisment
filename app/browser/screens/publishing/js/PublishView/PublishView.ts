@@ -103,8 +103,14 @@ export class PublishView extends EventEmitter {
   }
 
   nextURL() {
-    this.stagesBar.nextURL();
+    let url = this.webviewWrapper.webview.src;
+    url = this.stagesBar.nextURL(url);
 
-    this.webviewWrapper.loadUrl(this.stagesBar.currentURL, ()=>{this.emit('loaded')} );
+    if(url != null) {
+      this.webviewWrapper.loadUrl(url, ()=>{this.emit('loaded')} );
+    }
+    else {
+      this.emit('loaded');
+    }
   }
 }
