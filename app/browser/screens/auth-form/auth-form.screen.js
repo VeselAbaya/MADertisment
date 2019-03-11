@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
 import axios from 'axios';
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 import {Modal, NetworkAlert} from '../../components/modal/modal.component';
 import {loaderDown, loaderUp} from '../../components/loader/loader.component';
 import {formInit, submitButtonStatus} from '../../components/formInit/formInit.component';
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   apiProlongRequest.on('success', (res) => { 
     ipcRenderer.send('auth:success', res.data);
   });
-  apiProlongRequest.on('error', (res) => { 
+  apiProlongRequest.on('error', () => {
     authForm.querySelector('.button').disabled = false;
     loaderDown();
     Object.values(fields).forEach(field => {

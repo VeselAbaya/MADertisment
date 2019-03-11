@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron';
 import {selectsInit} from '../../components/formInit/formInit.component';
 import {fileUrlList, PreviewList} from './js/PreviewList/PreviewList';
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 import _ from 'lodash';
 
 document.addEventListener('DOMContentLoaded', () => {

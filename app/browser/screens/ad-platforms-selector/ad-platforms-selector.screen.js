@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron';
 import {AdPlatformSelector} from './js/AdPlatformSelector/AdPlatformSelector';
 import {Modal, NetworkAlert} from '../../components/modal/modal.component';
 import {loaderDown, loaderUp} from '../../components/loader/loader.component';
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 
 document.addEventListener('DOMContentLoaded', () => {
   const adSelectorContainer = document.querySelector('.ad-selector');

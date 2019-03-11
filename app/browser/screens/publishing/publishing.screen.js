@@ -1,4 +1,4 @@
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 import {PublishView} from './js/PublishView/PublishView';
 import {IntervalField} from './js/IntervalField/IntervalField';
 

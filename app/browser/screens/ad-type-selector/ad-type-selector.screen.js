@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
 import {loaderDown, loaderUp} from '../../components/loader/loader.component';
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 
 const initInterface = async () => {
   loaderUp();
