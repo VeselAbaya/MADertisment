@@ -32,7 +32,7 @@ export class AccountDataAlert extends FormAlert {
           id: adSelector.currentOpenedId,
           fieldName: field.id,
           value: field.value
-        })
+        });
       }
     });
   }

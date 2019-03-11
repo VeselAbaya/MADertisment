@@ -1,5 +1,5 @@
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service'
-import {PublishView} from './js/PublishView/PublishView'
+import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {PublishView} from './js/PublishView/PublishView';
 import {IntervalField} from './js/IntervalField/IntervalField';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -22,14 +22,14 @@ document.addEventListener('DOMContentLoaded', () => {
     playPauseButton.addEventListener('click', () => {
       const text = playPauseButton.innerHTML;
 
-      if (text === "Продолжить") {
+      if (text === 'Продолжить') {
         intervalField.play();
       }
-      else if (text === "Пауза") {
+      else if (text === 'Пауза') {
         intervalField.pause();
       }
-    })
+    });
   });
 
-  apiPublishRequest.send()
+  apiPublishRequest.send();
 });

@@ -1,7 +1,7 @@
-import {ipcRenderer} from 'electron'
-import {AdPlatformSelector} from './js/AdPlatformSelector/AdPlatformSelector'
-import {Modal, NetworkAlert} from '../../components/modal/modal.component'
-import {loaderDown, loaderUp} from '../../components/loader/loader.component'
+import {ipcRenderer} from 'electron';
+import {AdPlatformSelector} from './js/AdPlatformSelector/AdPlatformSelector';
+import {Modal, NetworkAlert} from '../../components/modal/modal.component';
+import {loaderDown, loaderUp} from '../../components/loader/loader.component';
 import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         id: platform.id,
         authField: platform.authField,
         authData: /*in case if auth data comes from server*/ platform.authData || {}
-      }
+      };
     });
 
     try {
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showCheckboxes: true,
         showStatuses: true,
         platformsAuth: platformsAuth
-      })
+      });
     }
     catch (err) {
       if (err.message === 'All platforms are not active') {
@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         notActiveErrorAlert.on('close', () => {
-          ipcRenderer.send('adPlatformSelector:error')
+          ipcRenderer.send('adPlatformSelector:error');
         });
 
-        notActiveErrorAlert.open()
+        notActiveErrorAlert.open();
       }
 
-      console.log(err)
+      console.log(err);
     }
   });
 
@@ -64,15 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       networkAlert.on('close', (closeButtonClicked) => {
         if (closeButtonClicked) {
-          ipcRenderer.send('adPlatformSelector:error')
+          ipcRenderer.send('adPlatformSelector:error');
         }
       });
 
       networkAlert.on('retry', () => {
-        location.reload()
+        location.reload();
       });
 
-      networkAlert.open()
+      networkAlert.open();
     }
     else if (err.response.status === 403 || err.response.status === 401) {
       loaderDown();
@@ -83,12 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       forbiddenAlert.on('close', () => {
-        ipcRenderer.send('adPlatformSelector:error')
+        ipcRenderer.send('adPlatformSelector:error');
       });
 
-      forbiddenAlert.open()
+      forbiddenAlert.open();
     }
   });
 
-  apiPlatformsRequest.send()
+  apiPlatformsRequest.send();
 });

@@ -1,4 +1,4 @@
-import EventEmitter from 'events'
+import EventEmitter from 'events';
 import {photosInputInit, dragNDropInit, removeButtonsInit} from './init';
 
 export const fileReadersList = [];
@@ -45,9 +45,9 @@ export class PreviewList extends EventEmitter {
 
         if (++filesLoadedAmount === filesList.length &&
           fileReadersList.every(fileReader => fileReader.readyState === 2)) {
-          this.emit('loadEnd')
+          this.emit('loadEnd');
         }
-      }
+      };
     }
   }
 }

@@ -1,9 +1,9 @@
-import {ipcRenderer} from 'electron'
-import axios from 'axios'
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service'
-import {Modal, NetworkAlert} from '../../components/modal/modal.component'
-import {loaderDown, loaderUp} from '../../components/loader/loader.component'
-import {formInit, submitButtonStatus} from '../../components/formInit/formInit.component'
+import {ipcRenderer} from 'electron';
+import axios from 'axios';
+import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
+import {Modal, NetworkAlert} from '../../components/modal/modal.component';
+import {loaderDown, loaderUp} from '../../components/loader/loader.component';
+import {formInit, submitButtonStatus} from '../../components/formInit/formInit.component';
 import {domain} from '../../domain';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   Object.values(fields).forEach(field => {
-    field.moveLabel = true
+    field.moveLabel = true;
   });
 
   formInit(Object.values(fields), submitButton);
@@ -27,18 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
   authForm.querySelector('.button').disabled = true;
   loaderUp();
   Object.values(fields).forEach(field => {
-    field.disabled = true
+    field.disabled = true;
   });
 
   const apiProlongRequest = new ApiRequest('prolong');
   apiProlongRequest.on('success', (res) => { 
-    ipcRenderer.send('auth:success', res.data)
+    ipcRenderer.send('auth:success', res.data);
   });
   apiProlongRequest.on('error', (res) => { 
     authForm.querySelector('.button').disabled = false;
     loaderDown();
     Object.values(fields).forEach(field => {
-      field.disabled = false
+      field.disabled = false;
     });
   });
 
@@ -46,15 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // modals
   const modalCloseHandler = () => {
-    Object.values(fields).forEach(field => { field.disabled = false });
+    Object.values(fields).forEach(field => { field.disabled = false; });
     auth.style.filter = '';
     submitButton.disabled = submitButtonStatus(Object.values(fields));
-    fields.login.focus()
+    fields.login.focus();
   };
 
   const modalOpenHandler = () => {
     auth.style.filter = 'blur(8px)';
-    submitButton.disabled = true
+    submitButton.disabled = true;
   };
 
   const networkAlert = new NetworkAlert({
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     authForm.querySelector('.button').disabled = true;
     loaderUp();
     Object.values(fields).forEach(field => {
-      field.disabled = true
+      field.disabled = true;
     });
 
     try {
@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         password: fields.password.value
       });
 
-      ipcRenderer.send('auth:success', res.data)
+      ipcRenderer.send('auth:success', res.data);
     } catch (error) {
       if (error.message === 'Network Error') {
         loaderDown();
-        networkAlert.open()
+        networkAlert.open();
       }
       else if (error.response.status === 403) {
         loaderDown();
-        forbiddenAlert.open()
+        forbiddenAlert.open();
       }
     }
-  })
+  });
 });

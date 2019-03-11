@@ -1,5 +1,5 @@
-import {formInit} from '../formInit/formInit.component'
-import EventEmitter from 'events'
+import {formInit} from '../formInit/formInit.component';
+import EventEmitter from 'events';
 
 export class Modal extends EventEmitter {
   constructor(options) {
@@ -19,8 +19,8 @@ export class Modal extends EventEmitter {
 
     document.addEventListener('keyup', (event) => {
       if (event.key === 'Escape')
-        this.container.querySelector('.modal__close').click()
-    })
+        this.container.querySelector('.modal__close').click();
+    });
   }
 
   open() {
@@ -35,7 +35,7 @@ export class Modal extends EventEmitter {
       this.container.style.opacity = 1;
 
       this.overlay.style.display = 'block';
-      this.overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.2)'
+      this.overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
     }
   }
 
@@ -51,7 +51,7 @@ export class Modal extends EventEmitter {
       this.container.style.opacity = 0;
 
       this.overlay.style.display = 'none';
-      this.overlay.style.backgroundColor = ''
+      this.overlay.style.backgroundColor = '';
     }
   }
 }
@@ -64,7 +64,7 @@ export class NetworkAlert extends Modal {
     this.retryButton.addEventListener('click', () => {
       this.close();
       this.emit('retry');
-    })
+    });
   }
 }
 
@@ -74,17 +74,17 @@ export class FormAlert extends Modal {
 
     const fields = this.container.querySelectorAll('.auth__form input');
     fields.forEach((field) => {
-      field.moveLabel = true
+      field.moveLabel = true;
     });
     formInit(Array.from(fields));
 
     this.container.querySelector('.auth__form').addEventListener('submit', (event) => {
       this.emit('formSubmit', event);
-      this.close()
-    })
+      this.close();
+    });
   }
 
   get fields() {
-    return this.container.querySelectorAll('.auth__form input')
+    return this.container.querySelectorAll('.auth__form input');
   }
 }

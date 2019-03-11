@@ -1,16 +1,18 @@
+import {fileReadersList} from './PreviewList';
+
 export const photosInputInit = function () {
   const input = document.querySelector('.photo-input__field');
   input.addEventListener('change', () => {
     if (input.files.length) {
-      this.append(input.files)
+      this.append(input.files);
     }
-  })
+  });
 };
 
 export const dragNDropInit = function () {
   const preventDefaultHandler = (event) => {
     event.preventDefault();
-    event.stopPropagation()
+    event.stopPropagation();
   };
 
   const dropArea = document.querySelector('.photo-input');
@@ -20,9 +22,9 @@ export const dragNDropInit = function () {
   dropArea.addEventListener('drop', (event) => {
     const filesList = Array.from(event.dataTransfer.files).filter(file => file.type.match('image/*'));
     if (filesList.length) {
-      this.append(filesList)
+      this.append(filesList);
     }
-  })
+  });
 };
 
 export const removeButtonsInit = () => {
@@ -40,8 +42,8 @@ export const removeButtonsInit = () => {
         const preview = document.querySelector('.photo-input__preview');
         const emptyInput = document.querySelector('.photo-input__body');
         preview.style.display = 'none';
-        emptyInput.style.display = 'flex'
+        emptyInput.style.display = 'flex';
       }
-    })
-  })
+    });
+  });
 };

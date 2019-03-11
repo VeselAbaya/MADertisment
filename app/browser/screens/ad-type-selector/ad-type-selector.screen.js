@@ -1,6 +1,6 @@
-import {ipcRenderer} from 'electron'
-import {loaderDown, loaderUp} from '../../components/loader/loader.component'
-import {ApiRequest} from '../../services/apiRequest/ApiRequest.service'
+import {ipcRenderer} from 'electron';
+import {loaderDown, loaderUp} from '../../components/loader/loader.component';
+import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
 
 const initInterface = async () => {
   loaderUp();
@@ -13,7 +13,7 @@ const initInterface = async () => {
         <li class="type-selector__types-list-item">
           <button id="${type.id}" class="type-selector__type">${type.name}</button>
         </li>
-      `
+      `;
     }
 
     document.querySelector('.type-selector__title').style.display = 'block';
@@ -31,17 +31,17 @@ const initInterface = async () => {
               token: res.data.sessionToken
             },
             typeId: parseInt(button.id)
-          })
-        }, 400)
-      })
-    })
+          });
+        }, 400);
+      });
+    });
   });
 
-  apiTypesRequest.on('error', (err) => {
+  apiTypesRequest.on('error', () => {
     // TODO something
   });
 
-  apiTypesRequest.send()
+  apiTypesRequest.send();
 };
 
 document.addEventListener('DOMContentLoaded', () => {

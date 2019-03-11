@@ -1,8 +1,8 @@
-import {ipcRenderer} from 'electron'
-import {selectsInit} from '../../components/formInit/formInit.component'
-import {fileUrlList, PreviewList} from './js/PreviewList/PreviewList'
+import {ipcRenderer} from 'electron';
+import {selectsInit} from '../../components/formInit/formInit.component';
+import {fileUrlList, PreviewList} from './js/PreviewList/PreviewList';
 import {ApiRequest} from '../../services/apiRequest/ApiRequest.service';
-import _ from 'lodash'
+import _ from 'lodash';
 
 document.addEventListener('DOMContentLoaded', () => {
   const apiFormRequest = new ApiRequest('form');
@@ -19,28 +19,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const idParts = field.id.split('.');
 
         switch (field.type) {
-          case 'checkbox':
-            objArray.push(idParts.reduceRight((acc, currentValue) => {
-              return {[currentValue]: acc}
-            }, field.checked));
+        case 'checkbox':
+          objArray.push(idParts.reduceRight((acc, currentValue) => {
+            return {[currentValue]: acc};
+          }, field.checked));
           break;
 
-          case 'file':
-            let filesArray = [];
-            fileUrlList.forEach(fileUrl => {
-              console.log(fileUrl);
-              filesArray.push(fileUrl.path)
-            });
+        case 'file':
+          let filesArray = [];
+          fileUrlList.forEach(fileUrl => {
+            console.log(fileUrl);
+            filesArray.push(fileUrl.path);
+          });
 
-            objArray.push(idParts.reduceRight((acc, currentValue) => {
-              return {[currentValue]: acc}
-            }, filesArray));
+          objArray.push(idParts.reduceRight((acc, currentValue) => {
+            return {[currentValue]: acc};
+          }, filesArray));
           break;
 
-          default:
-            objArray.push(idParts.reduceRight((acc, currentValue) => {
-              return {[currentValue]: acc}
-            }, field.value));
+        default:
+          objArray.push(idParts.reduceRight((acc, currentValue) => {
+            return {[currentValue]: acc};
+          }, field.value));
           break;
         }
       }
@@ -48,24 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const reqBody = _.defaultsDeep(...objArray);
       const submitRequest = new ApiRequest('submit', reqBody);
 
-      submitRequest.once('success', (res) => {
+      submitRequest.once('success', () => {
         ipcRenderer.send('adForm:submit');
       });
 
-      submitRequest.send()
+      submitRequest.send();
     });
 
     const previewList = new PreviewList();
     const submitButton = form.querySelector('.ad-form__submit-button');
     previewList.on('loadStart', () => {
-      submitButton.disabled = true
+      submitButton.disabled = true;
     });
     previewList.on('loadEnd', () => {
-      submitButton.disabled = false
+      submitButton.disabled = false;
     });
 
-    selectsInit()
+    selectsInit();
   });
 
-  apiFormRequest.send()
+  apiFormRequest.send();
 });
