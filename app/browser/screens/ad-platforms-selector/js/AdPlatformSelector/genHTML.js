@@ -1,4 +1,4 @@
-export const genHTML = (options, id) => {
+export const genHTML = (options) => {
   const button = (data) => {
     if (!data.active)
       return {
@@ -25,7 +25,7 @@ export const genHTML = (options, id) => {
         img: 'img/active.png',
         class: 'ad-selector__platform-button--active',
         type: 'active'
-      }
+      };
   };
 
   let markup = '';
@@ -51,7 +51,7 @@ export const genHTML = (options, id) => {
 
           <button type="button" data-id="${data.id}"
                   style="${options.showStatuses || options.canChangeData && data.active ?
-'' : 'display: none'}"
+    '' : 'display: none'}"
                   class="ad-selector__platform-button ${buttonData.class}
                          ad-selector__platform-button--tooltip
                          ad-selector__platform-button--tooltip-${buttonData.type}"
@@ -62,8 +62,8 @@ export const genHTML = (options, id) => {
           </button>
         </label>
       </li>
-    `
+    `;
   }
 
-  return markup
+  return markup;
 };

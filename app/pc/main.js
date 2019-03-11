@@ -65,8 +65,9 @@ app.on('ready', () => {
 
   ipcMain.on('request:data', () => {
     let userData;
-    if (fs.existsSync(paths.dataUser))
+    if (fs.existsSync(paths.dataUser)) {
       userData = JSON.parse(fs.readFileSync(paths.dataUser).toString() || '""');
+    }
 
     mainWindow.webContents.send('response:data', {
       user: userData || {},

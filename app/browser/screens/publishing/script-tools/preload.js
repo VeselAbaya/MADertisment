@@ -1,60 +1,101 @@
 const {ipcRenderer} = require('electron');
-const {palette} = require('./core/core');
+const {Queue, simulateMouseClick, callWithMinCallbackDelay} = require('./core/core');
+
 
 
 ipcRenderer.on('webview_did-finish-load', (event, data) => {
-  //console.log("lol")
+  console.log('webview_did-finish-load');
 });
 
 ipcRenderer.on('fill-form', (event, data) => {
-  queryes = data;
-
-  queryes.forEach((query, index) => {
-    setTimeout(function () {
+  queryes = data.actions;
+  queue = new Queue();
+  queryes.forEach((query, index) =>  {
+    queue.addAction(callWithMinCallbackDelay.bind(this, function (callback) {
       elem = document.querySelector(query['selector']);
-      console.log(query)
       if (elem == null) {
-        console.error(query)
+        console.error(query);
+        let checkExistInterval = setInterval(function() {
+          elem = document.querySelector(query['selector']);
+
+          if (elem) {
+            console.log(query);
+            actionDict[query['type']](elem,query,callback);
+            clearInterval(checkExistInterval);
+          } else {
+            console.error(query);
+          }
+        }, 10);
+        // console.error("undefined selector:", query)
+        // callback()
       } else {
-        switch (query['type']) {
-          case 'click':
-            elem.focus();
-            simulateMouseClick(elem);
-            break;
-          case "native-pick":
-            elem.focus()
-            ipcRenderer.sendToHost("input-text", {selector:query.selector, value:query.value})
-            break;
-          case 'value':
-            elem.focus();
-            ipcRenderer.sendToHost('input-text', {selector: query.selector, value: query.value});
-            break;
-          case 'checkbox':
-            if (query['checked']) {
-              simulateMouseClick(elem)
-            }
-            break;
-          case 'file':
-            ipcRenderer.sendToHost('input-file', {selector: query.selector, value: query.value});
-            break;
-        }
+        console.log(query);
+        actionDict[query['type']](elem,query,callback);
       }
-    }, index * 600);
-  })
+
+    }, 0));
+
+  });
+  queue.dispatchNext(()=>{
+    ipcRenderer.sendToHost('ipc-event',{callback_channel:data.callback_channel});
+  });
 });
 
+actionDict = {
 
-const mouseClickEvents = ['mousedown', 'click', 'mouseup'];
+  'click': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    if (elem.disabled === true){ //TODO: STUPID PLS DO ADEKVATE CODE
+      setTimeout(()=>{simulateMouseClick(elem, callback);}, 500);
+    } else {
+      simulateMouseClick(elem, callback);
+    }
+  },
 
-function simulateMouseClick(element, callback) {
-  mouseClickEvents.forEach(mouseEventType =>
-    element.dispatchEvent(
-      new MouseEvent(mouseEventType, {
-        view: window,
-        bubbles: true,
-        cancelable: true,
-        buttons: 1
-      })
-    )
-  );
-}
+  'react-pick': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    simulateMouseClick(elem, ()=>{
+      item = document.querySelector(action['item']['selector'] + ':nth-of-type('+action['item']['item-number']+')');
+      simulateMouseClick(item, callback);
+    });
+  },
+
+  'value': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    document.execCommand('insertText', false, action.value);
+    callback();
+    // let callback_channel = Math.random().toString(36)
+    // ipcRenderer.sendToHost("input-text", {selector:action.selector, value:action.value, callback_channel: callback_channel});
+    // ipcRenderer.once(callback_channel, (event) =>{
+    //   callback();
+    // })
+  },
+
+  'checkbox': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    if (action['checked']){
+      simulateMouseClick(elem, callback);
+    } else {
+      callback();
+    }
+  },
+
+  'file': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    let callback_channel = Math.random().toString(36);
+    ipcRenderer.sendToHost('input-file', {selector:action.selector, value:action.value, callback_channel: callback_channel});
+    ipcRenderer.once(callback_channel, (event) =>{
+      callback();
+    });
+  },
+
+  'native-pick': function(elem, action, callback = ()=>{}) {
+    elem.focus();
+    let callback_channel = Math.random().toString(36);
+    ipcRenderer.sendToHost('input-text', {selector:action.selector, value:action.value, callback_channel: callback_channel});
+    ipcRenderer.once(callback_channel, (event) =>{
+      callback();
+    });
+  },
+
+};

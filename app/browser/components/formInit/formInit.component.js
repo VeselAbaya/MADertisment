@@ -2,14 +2,14 @@ export const focusLabel = (label) => {
   label.style.transition = 'all .1s';
   label.style.color = '#b5051a';
   label.style.fontSize = '16px';
-  label.style.top = '-8px'
+  label.style.top = '-8px';
 };
 
 export const blurLabel = (label) => {
   label.style.color = '#6E0510';
   label.style.transition = 'all .1s';
   label.style.fontSize = '24px';
-  label.style.top = '10px'
+  label.style.top = '10px';
 };
 
 export const submitButtonStatus = (fields) => { // value of submitButton.disabled
@@ -24,41 +24,41 @@ export const formInit = (fields /*array*/, submitButton) => {
     field.addEventListener('focus', () => {
       if (field.classList.contains('form-select')) {
         formGroup.classList.remove('form-group-select--blured');
-        formGroup.classList.add('form-group-select--focused')
+        formGroup.classList.add('form-group-select--focused');
       }
 
       if (field.moveLabel) {
-        focusLabel(label)
+        focusLabel(label);
       }
     });
 
     field.addEventListener('blur', () => {
       if (field.classList.contains('form-select')) {
         formGroup.classList.remove('form-group-select--focused');
-        formGroup.classList.add('form-group-select--blured')
+        formGroup.classList.add('form-group-select--blured');
       }
 
       if (field.moveLabel) {
-        label.style.color = '#6E0510'
+        label.style.color = '#6E0510';
       }
 
       if (field.value === '' && field.moveLabel) {
-        blurLabel(label)
+        blurLabel(label);
       }
     });
 
     field.dispatchEvent(new Event('focus'));
-    field.dispatchEvent(new Event('blur'))
+    field.dispatchEvent(new Event('blur'));
   });
 
   if (submitButton) {
     fields.forEach((field) => {
-      field.addEventListener('input', (event) => {
-        submitButton.disabled = submitButtonStatus(fields)
-      })
+      field.addEventListener('input', () => {
+        submitButton.disabled = submitButtonStatus(fields);
+      });
     });
 
-    submitButton.disabled = submitButtonStatus(fields)
+    submitButton.disabled = submitButtonStatus(fields);
   }
 
   // if (userData) {
@@ -74,7 +74,7 @@ export const formInit = (fields /*array*/, submitButton) => {
 export const selectsInit = () => {
   const selects = document.querySelectorAll('.form-select');
   selects.forEach(select => {
-    select.moveLabel = false
+    select.moveLabel = false;
   });
-  formInit(Array.from(selects))
+  formInit(Array.from(selects));
 };

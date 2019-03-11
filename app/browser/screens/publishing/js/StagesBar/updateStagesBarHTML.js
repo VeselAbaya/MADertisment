@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash';
 
 export const updateStagesBarHTML = (stagesBar) => {
   stagesBar.container.innerHTML = '';
@@ -10,8 +10,8 @@ export const updateStagesBarHTML = (stagesBar) => {
         <span class="publish__stage-icon"></span>
         <p class="publish__stage-title">${stage.name}</p>
       </li>
-    `
+    `;
   }
 
-  stagesBar.container.insertAdjacentHTML('beforeend', markup)
+  stagesBar.container.insertAdjacentHTML('beforeend', markup);
 };

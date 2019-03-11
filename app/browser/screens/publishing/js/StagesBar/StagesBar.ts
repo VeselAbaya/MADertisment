@@ -32,10 +32,10 @@ export class StagesBar {
         }
 
         if(this.data[this.currentURLIndex].stages[i].breakpoint === true) {
-          icons[i].style.backgroundColor='#ff0000';
+          icons[i].classList.add('publish__stage-icon--breakpoint');
         }
         else {
-          icons[i].style.backgroundColor='#cecece';
+          icons[i].classList.remove('publish__stage-icon--breakpoint');
         }
       })
     }
@@ -54,12 +54,21 @@ export class StagesBar {
     }
   }
 
-  nextURL() {
+  nextURL(currentUrl) {
     if (++this.currentURLIndex !== this.data.length) {
-      this.currentURL = this.data[this.currentURLIndex].url;
       updateStagesBarHTML(this);
-      this.initBreakpointsListeners()
+      this.initBreakpointsListeners();
+      if(this.data[this.currentURLIndex].url) {
+        this.currentURL = this.data[this.currentURLIndex].url;
+        return this.currentURL;
+      }
+      else {
+        this.currentURL = currentUrl;
+        return null;
+      }
     }
+
+    return null;
   }
 
   nextStage() {

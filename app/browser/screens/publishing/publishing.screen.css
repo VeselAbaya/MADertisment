@@ -57,6 +57,10 @@ body {
     filter: drop-shadow(0 2px 1px #efefef);
 }
 
+.publish__stage-icon--breakpoint {
+    background-color: #ff0000;
+}
+
 .publish__stage-icon--active {
     background-color: #b5051a;
     position: relative;
