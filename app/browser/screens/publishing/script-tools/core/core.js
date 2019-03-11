@@ -159,10 +159,14 @@ class WebviewWrapper extends EventTarget{
   }
 
   loadUrl(url, callback = ()=>{}){
-    this.webview.src = url;
-    this.webview.addEventListenerRunOnce('did-finish-load', ()=>{
+    if (url == ''){
       callback()
-    })
+    } else {
+      this.webview.src = url;
+      this.webview.addEventListenerRunOnce('did-finish-load', ()=>{
+        callback()
+      })
+    }
   }
 
   ipcMessage(event){
