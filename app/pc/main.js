@@ -29,9 +29,10 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({width: 1200, height: 900});
   mainWindow.loadURL(paths.auth);
 
+  // TODO make more sophisticated way to delete app session data
   mainWindow.on('close', () => {
     session.defaultSession.clearStorageData();
-    app.quit()
+    app.quit();
   });
 
   ipcMain.on('auth:success', (event, userData) => {
@@ -43,7 +44,7 @@ app.on('ready', () => {
     });
 
     prevPagePath = paths.auth;
-    mainWindow.loadURL(paths.adTypeSelector)
+    mainWindow.loadURL(paths.adTypeSelector);
   });
 
   ipcMain.on('adTypeSelector:typeSelected', (event, data) => {
@@ -55,12 +56,12 @@ app.on('ready', () => {
       token: data.session.token
     };
 
-    mainWindow.loadURL(paths.adPlatformSelector)
+    mainWindow.loadURL(paths.adPlatformSelector);
   });
 
   ipcMain.on('adPlatformSelector:error', () => {
     // TODO if (prevPagePath === paths.auth) kill process
-    mainWindow.loadURL(prevPagePath)
+    mainWindow.loadURL(prevPagePath);
   });
 
   ipcMain.on('request:data', () => {
@@ -74,23 +75,23 @@ app.on('ready', () => {
       session: sessionData || {},
       platforms: platformsData || {},
       typeId: typeId
-    })
+    });
   });
 
   ipcMain.on('adPlatformsSelector:submit', (event, data) => {
     platformsData = data;
-    mainWindow.loadURL(paths.adForm)
+    mainWindow.loadURL(paths.adForm);
   });
 
   ipcMain.on('adForm:submit', () => {
-    mainWindow.loadURL(paths.publishing)
+    mainWindow.loadURL(paths.publishing);
   });
 
   ipcMain.on('adPlatformsSelector:authDataSave', (event, data) => {
-    store.set('auth_data_' + data.id + "_" + data.fieldName, data.value);
+    store.set('auth_data_' + data.id + '_' + data.fieldName, data.value);
   });
 
-  ipcMain.on('adPlatformsSelector:authDataRequest', (event) => {
-    mainWindow.webContents.send('adPlatformsSelector:authDataResponse', store)
+  ipcMain.on('adPlatformsSelector:authDataRequest', () => {
+    mainWindow.webContents.send('adPlatformsSelector:authDataResponse', store);
   });
 });
