@@ -2,7 +2,7 @@
   "name": "mad",
   "version": "1.0.0",
   "description": "",
-  "main": "./app/main.js",
+  "main": "./app/pc/main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -13,6 +13,7 @@
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "electron-prebuilt-compile": "^4.0.0"
+    "electron-prebuilt-compile": "^4.0.0",
+    "eslint": "^5.15.1"
   }
 }
