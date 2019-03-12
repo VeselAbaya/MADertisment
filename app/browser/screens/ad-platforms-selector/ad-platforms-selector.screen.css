@@ -18,8 +18,8 @@ body {
     display: none;
 
     margin: auto;
-    width: 500px;
-    min-width: 500px;
+    width: 580px;
+    min-width: 580px;
 }
 
 .ad-selector__title {
@@ -178,7 +178,7 @@ body {
 }
 
 .ad-selector__bottom {
-    width: 475px;
+    width: 95%;
     margin-left: auto;
     margin-bottom: 15px;
     display: flex;
@@ -250,15 +250,15 @@ body {
 }
 
 .ad-selector__platform-button--tooltip-active:after {
-    content: "Active";
+    content: "Активный";
 }
 
 .ad-selector__platform-button--tooltip-not-active:after {
-    content: "Not active"
+    content: "Не активный"
 }
 
 .ad-selector__platform-button--tooltip-changed:after {
-    content: "Changed";
+    content: "Изменилась";
 }
 
 /*Tooltip*/
