@@ -7,77 +7,80 @@
   <link rel="stylesheet" href="ad-platforms-selector.screen.css">
 </head>
 <body>
-<div class="ad-selector">
-  <h1 class="ad-selector__title">Выбор площадок</h1>
-  <p class="ad-selector__description">Выберите площадки, на которых хотите опубликовать объявление</p>
-  <form class="ad-selector__form" action="#">
-    <ul class="ad-selector__platforms"></ul>
+  <button class="prev-page-button">
+    <span class="prev-page-button__arrow"></span>
+  </button>
+  <div class="ad-selector">
+    <h1 class="ad-selector__title">Выбор площадок</h1>
+    <p class="ad-selector__description">Выберите площадки, на которых хотите опубликовать объявление</p>
+    <form class="ad-selector__form" action="#">
+      <ul class="ad-selector__platforms"></ul>
 
-    <div class="ad-selector__bottom">
-      <label for="rememberCheckbox" class="ad-selector__remember-label form-checkbox-label">
-        <input class="form-checkbox ad-selector__remember-checkbox" id="rememberCheckbox" type="checkbox">
-        <span class="checkmark checkmark--small"></span>
-        Запомнить
-      </label>
-      <button type="submit" class="button ad-selector__submit" disabled>Старт</button>
-    </div>
-  </form>
-</div>
-
-<!-- loader -->
-<div class="lds-default">
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-</div>
-<!-- loader -->
-
-<!-- modals -->
-<div class="modal-overlay"></div>
-
-<div class="modal">
-  <button class="modal__close"></button>
-  <h2 class="modal__title">Данные аккаунта</h2>
-  <div class="modal__body">
-    <form class="auth__form">
-      <button class="button ad-selector__modal-button" type="submit" id="auth__form-submit">Сохранить</button>
+      <div class="ad-selector__bottom">
+        <label for="rememberCheckbox" class="ad-selector__remember-label form-checkbox-label">
+          <input class="form-checkbox ad-selector__remember-checkbox" id="rememberCheckbox" type="checkbox">
+          <span class="checkmark checkmark--small"></span>
+          Запомнить
+        </label>
+        <button type="submit" class="button ad-selector__submit" disabled>Старт</button>
+      </div>
     </form>
   </div>
-</div>
 
-<div class="modal not-active-error-alert">
-  <button class="modal__close"></button>
-  <div class="modal__body">
-    <p class="alert-message">Все площадки на даннный момент не доступны</p>
+  <!-- loader -->
+  <div class="lds-default">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
   </div>
-</div>
+  <!-- loader -->
 
-<div class="modal network-alert">
-  <button class="modal__close"></button>
-  <div class="modal__body">
-    <p class="alert-message">Ошибка: проверьте соединение с интернетом</p>
-    <button class="button">Повторить</button>
+  <!-- modals -->
+  <div class="modal-overlay"></div>
+
+  <div class="modal">
+    <button class="modal__close"></button>
+    <h2 class="modal__title">Данные аккаунта</h2>
+    <div class="modal__body">
+      <form class="auth__form">
+        <button class="button ad-selector__modal-button" type="submit" id="auth__form-submit">Сохранить</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<div class="modal forbidden-alert">
-  <button class="modal__close"></button>
-  <div class="modal__title"></div>
-  <div class="modal__body">
-    <p class="alert-message">Ошибка авторизации: авторизуйтесь</p>
+  <div class="modal not-active-error-alert">
+    <button class="modal__close"></button>
+    <div class="modal__body">
+      <p class="alert-message">Все площадки на даннный момент не доступны</p>
+    </div>
   </div>
-</div>
-<!-- modals -->
 
-<script src="ad-platforms-selector.screen.js"></script>
+  <div class="modal network-alert">
+    <button class="modal__close"></button>
+    <div class="modal__body">
+      <p class="alert-message">Ошибка: проверьте соединение с интернетом</p>
+      <button class="button">Повторить</button>
+    </div>
+  </div>
+
+  <div class="modal forbidden-alert">
+    <button class="modal__close"></button>
+    <div class="modal__title"></div>
+    <div class="modal__body">
+      <p class="alert-message">Ошибка авторизации: авторизуйтесь</p>
+    </div>
+  </div>
+  <!-- modals -->
+
+  <script src="ad-platforms-selector.screen.js"></script>
 </body>
 </html>

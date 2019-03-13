@@ -7,22 +7,25 @@
   <link rel="stylesheet" href="publishing.screen.css">
 </head>
 <body>
-<div class="publish">
-  <ul class="publish__stage-list"></ul>
+  <button class="prev-page-button">
+    <span class="prev-page-button__arrow"></span>
+  </button>
+  <div class="publish">
+    <ul class="publish__stage-list"></ul>
 
-  <webview class="publish__webview" preload="./script-tools/preload.js"></webview>
+    <webview class="publish__webview" preload="./script-tools/preload.js"></webview>
 
-  <div class="publish__controls">
-    <div class="form-group controls__interval">
-      <input id="interval" class="form-field" type="number" min="0" max="100" value="5">
-      <label for="interval" class="form-label">Время перехода</label>
+    <div class="publish__controls">
+      <div class="form-group controls__interval">
+        <input id="interval" class="form-field" type="number" min="0" max="100" value="5">
+        <label for="interval" class="form-label">Время перехода</label>
+      </div>
+
+      <button class="button" id="publish__screen-play-pause">Пауза</button>
+      <button class="button" id="publish__screen-submit">Готово</button>
     </div>
-
-    <button class="button" id="publish__screen-play-pause">Пауза</button>
-    <button class="button" id="publish__screen-submit">Готово</button>
   </div>
-</div>
 
-<script src="publishing.screen.js"></script>
+  <script src="publishing.screen.js"></script>
 </body>
 </html>

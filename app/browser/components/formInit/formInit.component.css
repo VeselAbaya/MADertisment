@@ -127,13 +127,13 @@
     height: 5px;
 
     position: absolute;
-    top: 5px;
-    left: 4px;
+    top: 48%;
+    left: 50%;
 
     border: solid #6E0510;
     border-right: none;
     border-top: none;
-    transform: rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .checkmark--small {
@@ -143,8 +143,8 @@
 }
 
 .checkmark--small:after {
-    top: 4.5px;
-    left: 3.5px;
+    top: 48%;
+    left: 50%;
     border-width: 1.5px;
     width: 8px;
     height: 3px;

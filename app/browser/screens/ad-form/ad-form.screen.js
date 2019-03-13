@@ -1,12 +1,18 @@
+import _ from 'lodash';
 import {ipcRenderer} from 'electron';
 import {selectsInit} from '../../components/formInit/formInit.component';
 import {fileUrlList, PreviewList} from './js/PreviewList/PreviewList';
 import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
-import _ from 'lodash';
+import {prevPageButtonInit} from '../../components/prevPageButton/prevPageButton.component';
+import {loaderDown, loaderUp} from '../../components/loader/loader.component';
 
 document.addEventListener('DOMContentLoaded', () => {
+  prevPageButtonInit();
+
   const apiFormRequest = new ApiRequest('form');
   apiFormRequest.once('success', (res) => {
+    loaderDown();
+
     const formMarkup = res.data.form;
     document.querySelector('.ad-form').insertAdjacentHTML('beforeend', formMarkup);
 
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitRequest = new ApiRequest('submit', reqBody);
 
       submitRequest.once('success', () => {
+        loaderDown();
         ipcRenderer.send('adForm:submit');
       });
 
