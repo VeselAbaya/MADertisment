@@ -1,11 +1,8 @@
 import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
 import {PublishView} from './js/PublishView/PublishView';
 import {IntervalField} from './js/IntervalField/IntervalField';
-import {prevPageButtonInit} from '../../components/prevPageButton/prevPageButton.component';
 
 document.addEventListener('DOMContentLoaded', () => {
-  prevPageButtonInit();
-
   const apiPublishRequest = new ApiRequest('publish');
   apiPublishRequest.on('success', (res) => {
     const publishView = new PublishView(res.data);
