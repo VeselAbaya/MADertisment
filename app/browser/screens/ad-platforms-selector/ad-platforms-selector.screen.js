@@ -3,8 +3,11 @@ import {AdPlatformSelector} from './js/AdPlatformSelector/AdPlatformSelector';
 import {Modal, NetworkAlert} from '../../components/modal/modal.component';
 import {loaderDown, loaderUp} from '../../components/loader/loader.component';
 import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
+import {prevPageButtonInit} from '../../components/prevPageButton/prevPageButton.component';
 
 document.addEventListener('DOMContentLoaded', () => {
+  prevPageButtonInit();
+
   const adSelectorContainer = document.querySelector('.ad-selector');
 
   loaderUp();

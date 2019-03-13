@@ -1,6 +1,7 @@
 import {ipcRenderer} from 'electron';
 import {loaderDown, loaderUp} from '../../components/loader/loader.component';
 import {ApiRequest} from '../../services/ApiRequest/ApiRequest.service';
+import {prevPageButtonInit} from '../../components/prevPageButton/prevPageButton.component';
 
 const initInterface = async () => {
   loaderUp();
@@ -45,5 +46,7 @@ const initInterface = async () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  prevPageButtonInit();
+
   initInterface();
 });

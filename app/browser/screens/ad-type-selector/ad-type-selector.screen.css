@@ -1,4 +1,5 @@
 @import "../../components/loader/loader.component.css";
+@import "../../components/prevPageButton/prevPageButton.component.css";
 
 body {
     width: 100%;

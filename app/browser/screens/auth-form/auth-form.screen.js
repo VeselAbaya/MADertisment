@@ -24,25 +24,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const authForm = auth.querySelector('.auth__form');
 
   //prolong
-  authForm.querySelector('.button').disabled = true;
-  loaderUp();
-  Object.values(fields).forEach(field => {
-    field.disabled = true;
-  });
-
-  const apiProlongRequest = new ApiRequest('prolong');
-  apiProlongRequest.on('success', (res) => { 
-    ipcRenderer.send('auth:success', res.data);
-  });
-  apiProlongRequest.on('error', () => {
-    authForm.querySelector('.button').disabled = false;
-    loaderDown();
+  if (window.history.length < 2) {
+    authForm.querySelector('.button').disabled = true;
+    loaderUp();
     Object.values(fields).forEach(field => {
-      field.disabled = false;
+      field.disabled = true;
     });
-  });
 
-  apiProlongRequest.send();
+    const apiProlongRequest = new ApiRequest('prolong');
+    apiProlongRequest.on('success', (res) => {
+      ipcRenderer.send('auth:success', res.data);
+    });
+    apiProlongRequest.on('error', () => {
+      authForm.querySelector('.button').disabled = false;
+      loaderDown();
+      Object.values(fields).forEach(field => {
+        field.disabled = false;
+      });
+    });
+
+    apiProlongRequest.send();
+  }
 
   // modals
   const modalCloseHandler = () => {

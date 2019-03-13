@@ -3,6 +3,7 @@
 @import "../../components/formInit/formInit.component.css";
 @import "../../components/button/button.component.css";
 @import "../../components/modal/networkAlert.component.css";
+@import "../../components/prevPageButton/prevPageButton.component.css";
 
 body {
     width: 100%;
