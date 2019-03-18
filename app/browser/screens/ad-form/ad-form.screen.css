@@ -81,8 +81,6 @@ body {
 .ad-form__checkmark:after {
     width: 15px;
     height: 7px;
-    top: 9px;
-    left: 7px;
 }
 
 .ad-form__button {
